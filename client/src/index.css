@@ -1,0 +1,320 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&family=Source+Sans+Pro:wght@300&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Montserrat", sans-serif;
+}
+
+.navbar {
+  background-color: yellow;
+  height: 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.logo h1 {
+  background-color: white;
+  color: rgb(232, 232, 62);
+  box-shadow: 2.5px 2.5px 2.5px rgb(183, 236, 185);
+  padding: 3px;
+  text-transform: uppercase;
+  font-weight: lighter;
+  border-radius: 5px;
+  font-size: 1.5rem;
+}
+
+.logo h2 {
+  text-transform: capitalize;
+  font-weight: lighter;
+  font-weight: lighter;
+  font-size: 1.1rem;
+}
+.icons {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1.8rem;
+}
+.icons .dark-light {
+  background: none;
+  outline: none;
+  cursor: pointer;
+  border: none;
+}
+
+.inputContainer {
+  margin: auto;
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 25%;
+  border-radius: 0.81rem;
+  box-shadow: 2.5px 2.5px 8px rgb(231, 231, 47);
+  position: relative;
+  background-color: whitesmoke;
+}
+
+.input {
+  height: 1.5rem;
+  width: 100%;
+  text-transform: capitalize;
+  font-weight: bolder;
+  padding: 0.6rem 1.42rem;
+  border: none;
+  outline: none;
+  border-radius: 0.81rem 0.81rem 0 0;
+  margin-bottom: 0.21rem;
+  background-color: whitesmoke;
+  padding-top: 1rem;
+}
+
+.textarea {
+  width: 100%;
+  font-weight: lighter;
+  border: none;
+  padding: 0.7rem;
+  outline: none;
+  border-radius: 0 0 0.81rem 0.81rem;
+  background-color: whitesmoke;
+}
+
+.inputContainer button {
+  background-color: yellow;
+  color: purple;
+  fill: purple;
+  border-radius: 50%;
+  height: 3rem;
+  width: 3rem;
+  display: grid;
+  place-items: center;
+  border: none;
+  outline: none;
+  position: absolute;
+  bottom: -0.71rem;
+  right: -0.71rem;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.error {
+  color: red;
+  font-size: 0.7rem;
+  font-weight: 600;
+  position: absolute;
+  bottom: -0.4rem;
+  right: 0.6rem;
+  background: white;
+  padding: 0 0.2rem;
+}
+.homeError {
+  right: 2rem;
+}
+/* login */
+.log-container {
+  height: 100vh;
+  width: 100%;
+  display: grid;
+  place-items: center;
+}
+
+.login {
+  width: 28%;
+  padding: 0.2rem 1rem;
+  padding-bottom: 1rem;
+  background-color: rgb(250, 252, 250);
+  border-radius: 1.5rem;
+  box-shadow: 2.5px 2.5px 8px rgb(183, 236, 185);
+}
+
+.login .logo {
+  margin-top: 0.6rem;
+}
+
+.log-input {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 0.3rem;
+  margin-top: 1.1rem;
+  position: relative;
+}
+.log-input h1 {
+  font-size: 1rem;
+  font-weight: 500;
+  color: rgb(21, 21, 21);
+  margin-left: 0.5rem;
+}
+.log-input input {
+  border-radius: 1.5rem;
+  width: 100%;
+  height: 100%;
+  padding: 8px;
+  font-weight: 400;
+  border: 1.5px solid rgb(139, 225, 11) !important;
+  outline: none;
+  color: rgb(37, 36, 36);
+  border: none;
+}
+.loginButton {
+  border: none;
+  outline: none;
+  font-size: 1.4rem;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 1.2rem;
+  border-radius: 1.5rem;
+  background: yellow;
+  color: purple;
+  padding: 0.3rem 0;
+}
+
+.login-to-signup {
+  display: flex;
+  justify-content: flex-end;
+  margin: 1.1rem 0.2rem;
+  margin-bottom: 0.3rem;
+}
+
+.login-to-signup p {
+  font-size: 1rem;
+}
+
+.login-to-signup span {
+  color: rgb(40, 40, 209);
+  cursor: pointer;
+}
+
+/* output */
+
+.output {
+  display: grid;
+  place-items: center;
+  max-width: 98%;
+  grid-template-columns: repeat(5, 2fr);
+  grid-gap: 3rem;
+  padding: 1rem;
+  padding-left: 2.4rem;
+  margin-top: 2rem;
+  position: relative;
+}
+
+.card-cont {
+  position: relative;
+  box-shadow: 2.5px 2.5px 9px rgb(231, 231, 47);
+  width: 16.5vw;
+  border-radius: 0.91rem;
+}
+
+.cards {
+  padding: 1rem;
+  max-height: 27vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  text-align: center;
+  background-color: whitesmoke;
+  border-top-right-radius: 0.91rem;
+  border-top-left-radius: 0.91rem;
+}
+
+.cards h3 {
+  text-transform: capitalize;
+  font-weight: bolder;
+  letter-spacing: 1px;
+  margin-bottom: 1rem;
+}
+
+.cards p {
+  font-weight: lighter;
+  font-size: 1rem;
+  text-align: start;
+}
+
+.button_cnt {
+  padding: 0 1rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.button_cnt button {
+  padding: 0.41rem;
+  border-radius: 0.2rem;
+  border: none;
+  outline: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  background: none;
+  transition: all 0.3s ease-in-out;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.button_cnt button:first-child {
+  color: red;
+}
+
+.button_cnt button:nth-child(2) {
+  color: rgb(10, 10, 10);
+}
+
+.cards::-webkit-scrollbar {
+  display: none;
+}
+
+.spinnerContainer {
+  z-index: 300;
+  align-self: center;
+  transform: translateX(-3px) translateY(-1px);
+}
+.lds-ring {
+  display: inline-block;
+  position: relative;
+  width: 1.8rem;
+  height: 1.8rem;
+}
+.lds-ring div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: 1.7rem;
+  height: 1.7rem;
+  margin: 2px;
+  border-radius: 50%;
+  border: 2px solid #572bf4;
+  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: #572bf4 transparent transparent transparent;
+}
+/* .spinnerClassName {
+  width: 1.2rem;
+  height: 1.2rem;
+} */
+.lds-ring div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+.lds-ring div:nth-child(2) {
+  animation-delay: -0.3s;
+}
+.lds-ring div:nth-child(3) {
+  animation-delay: -0.15s;
+}
+@keyframes lds-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
