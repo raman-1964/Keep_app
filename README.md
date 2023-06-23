@@ -10,24 +10,28 @@ Then, use that link to clone the repository and access the code on your local ma
   # for Frontend
       ```bash
         cd client
-        ```
+      ```
+      
         Now Install all dependencies which is used in this project by running npm insatll
         ```bash
         npm install
         ```
+        
         Now run this project using npm start
         ```bash
         npm start
         ```
-   Here yor frontend started, Now start your backend
+   Here your frontend started, Now run your backend
  # for Backend
       ```bash
         cd server
-        ```
+      ```
+      
         Now Install all dependencies which is used in this project by running npm insatll
         ```bash
         npm install
         ```
+        
         Now run this project using npm start
         ```bash
         nodemon app.js
