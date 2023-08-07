@@ -12,7 +12,7 @@ const register = async (req, res, next) => {
     if (error) return res.status(400).send(error.details[0].message);
 
     let newUser = await Users.findOne({ email });
-    if (newUser) res.status(400).send("This user had already registered");
+    if (newUser) res.status(400).send({ msg: "This email is already in used" });
 
     const salt = bcrypt.genSaltSync(10);
     const hashPassword = bcrypt.hashSync(password, salt);
@@ -43,10 +43,11 @@ const login = async (req, res, next) => {
     if (error) return res.status(400).send(error.details[0].message);
 
     const user = await Users.findOne({ email });
-    if (!user) res.status(400).send("user not found");
+    if (!user) res.status(400).send({ msg: "user not found" });
 
     const isCorrect = await bcrypt.compare(password, user.password);
-    if (!isCorrect) res.status(400).send("email or password is not correct");
+    if (!isCorrect)
+      res.status(400).send({ msg: "email or password is not correct" });
 
     const token = user.generateAuthToken();
 

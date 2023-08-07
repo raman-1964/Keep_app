@@ -165,6 +165,16 @@
   outline: none;
   color: rgb(37, 36, 36);
   border: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+.log-input .seeOrHidePassword {
+  height: 1.2rem;
+  width: 1.2rem;
+  position: absolute;
+  cursor: pointer;
+  right: 0.8rem;
+  top: 2rem;
 }
 .loginButton {
   border: none;

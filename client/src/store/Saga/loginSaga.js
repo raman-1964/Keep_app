@@ -10,12 +10,16 @@ import {
   signupSuccess,
 } from "../Actions/loginAction";
 import { LOGIN_REQUEST, SIGNUP_REQUEST } from "../Constants/loginConstants";
+import { toast } from "react-toastify";
+import { defaultToastSetting } from "../../utils/Toast";
 
 function* loginRequest(action) {
   try {
     const res = yield call(loginRequestApi, action.payload);
+    toast.success("logged in successfully", defaultToastSetting);
     yield put(loginSuccess(res));
   } catch (e) {
+    toast.error(`${e}`, defaultToastSetting);
     yield put(loginFailed(e));
   }
 }
@@ -23,8 +27,10 @@ function* loginRequest(action) {
 function* signupRequest(action) {
   try {
     const res = yield call(signupRequestApi, action.payload);
+    toast.success("registered successfully", defaultToastSetting);
     yield put(signupSuccess(res));
   } catch (e) {
+    toast.error(`${e}`, defaultToastSetting);
     yield put(signupFailed(e));
   }
 }

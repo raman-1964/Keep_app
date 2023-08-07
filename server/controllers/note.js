@@ -4,8 +4,10 @@ const validateNote = require("../validate/note");
 const getNotes = async (req, res, next) => {
   try {
     const { page, limit } = req.query;
-    const count = await Notes.find({ user: req.user_token_details }).countDocuments();
-    console.log(count);
+    const count = await Notes.find({
+      user: req.user_token_details,
+    }).countDocuments();
+
     const notes = await Notes.find({ user: req.user_token_details })
       .select("-user")
       .lean();
@@ -44,7 +46,8 @@ const updateNote = async (req, res, next) => {
     if (error) res.status(400).send(error.details[0].message);
 
     const foundNote = await Notes.findOne({ _id });
-    if (!foundNote) res.status(400).send("There is no note of this id");
+    if (!foundNote)
+      res.status(400).send({ msg: "There is no note of this id" });
 
     const id = req.user_token_details._id;
     note.user = id;
@@ -68,7 +71,8 @@ const deleteNote = async (req, res, next) => {
     const _id = req.params.id;
 
     const foundNote = await Notes.findOne({ _id });
-    if (!foundNote) res.status(400).send("There is no note of this id");
+    if (!foundNote)
+      res.status(400).send({ msg: "There is no note of this id" });
 
     await foundNote.deleteOne({ _id });
 
