@@ -6,10 +6,13 @@ import { loginAllValidation } from "../utils/validation";
 import Button from "../widgets/Button";
 import Input from "../widgets/Input";
 import Logo from "./Logo";
+import hidePassword from "../assets/hidePassword.png";
+import showPassword from "../assets/showPassword.png";
 
 function Login({ setLoginToggle }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [seePassword, setSeePassword] = useState(false);
 
   const [loginData, setLoginData] = useState({
     email: "",
@@ -21,7 +24,9 @@ function Login({ setLoginToggle }) {
     password: "",
   });
 
-  const { userToken, loginLoading } = useSelector((state) => state.loginReducer);
+  const { userToken, loginLoading } = useSelector(
+    (state) => state.loginReducer
+  );
 
   const login = (e) => {
     e.preventDefault();
@@ -56,7 +61,7 @@ function Login({ setLoginToggle }) {
           <div className="log-input">
             <h1>Password</h1>
             <Input
-              type="text"
+              type={seePassword ? "text" : "password"}
               placeholder="Enter your password"
               autoComplete="off"
               name="password"
@@ -64,6 +69,21 @@ function Login({ setLoginToggle }) {
               setValue={setLoginData}
               onKeyDown={(e) => e.key === "Enter" && login(e)}
             />
+            {seePassword ? (
+              <img
+                src={hidePassword}
+                alt="hideEye"
+                onClick={() => setSeePassword(!seePassword)}
+                className="seeOrHidePassword"
+              />
+            ) : (
+              <img
+                src={showPassword}
+                alt="hideEye"
+                onClick={() => setSeePassword(!seePassword)}
+                className="seeOrHidePassword"
+              />
+            )}
             <p className="error">
               {error && error["password"] ? error["password"][0] : ""}
             </p>
@@ -75,7 +95,13 @@ function Login({ setLoginToggle }) {
             </p>
           </div>
 
-          <Button className="loginButton" loading={loginLoading} onClick={(e) => login(e)}>Login</Button>
+          <Button
+            className="loginButton"
+            loading={loginLoading}
+            onClick={(e) => login(e)}
+          >
+            Login
+          </Button>
         </div>
       </div>
     </>

@@ -29,6 +29,8 @@ import {
   UNLIKE_NOTE_REQUEST,
   UPDATE_NOTE_REQUEST,
 } from "../Constants/noteConstants";
+import { toast } from "react-toastify";
+import { defaultToastSetting } from "../../utils/Toast";
 
 function* getNote(action) {
   try {
@@ -42,8 +44,10 @@ function* getNote(action) {
 function* addNote(action) {
   try {
     const res = yield call(addNoteApi, action.payload);
+    toast.success("note added successfully", defaultToastSetting);
     yield put(addNoteSuccess(res));
   } catch (error) {
+    toast.error(`${error}`, defaultToastSetting);
     yield put(addNoteFailed(error));
   }
 }
@@ -51,8 +55,10 @@ function* addNote(action) {
 function* updateNote(action) {
   try {
     const res = yield call(updateNoteApi, action.payload);
+    toast.success("note updated successfully", defaultToastSetting);
     yield put(updateNoteSuccess(res));
   } catch (error) {
+    toast.error(`${error}`, defaultToastSetting);
     yield put(updateNoteFailed(error));
   }
 }
@@ -60,8 +66,10 @@ function* updateNote(action) {
 function* deleteNote(action) {
   try {
     const res = yield call(deleteNoteApi, action.payload);
+    toast.success("note deleted successfully", defaultToastSetting);
     yield put(deleteNoteSuccess(action.payload));
   } catch (error) {
+    toast.error(`${error}`, defaultToastSetting);
     yield put(deleteNoteFailed(action.payload));
   }
 }
