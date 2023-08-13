@@ -2,6 +2,8 @@ import React from "react";
 import { Navigate, Routes, Route } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Home from "../pages/Home";
+import ChatPage from "../pages/ChatPage/ChatPage";
+import Navbar from "../components/Navbar";
 
 function KaRoutes() {
   const { userToken } = useSelector((state) => state.loginReducer);
@@ -11,11 +13,15 @@ function KaRoutes() {
   };
 
   return checkAuthentication() ? (
-    <div>
-      <Routes>
-        <Route path="/" element={<Home />} />
-      </Routes>
-    </div>
+    <>
+      <Navbar />
+      <div>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/chat" element={<ChatPage />} />
+        </Routes>
+      </div>
+    </>
   ) : (
     <Navigate to="/login-signup" />
   );

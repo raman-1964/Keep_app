@@ -1,0 +1,154 @@
+.spinnerCont {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 90vh;
+  background: #2a3942;
+}
+
+.pageContainer {
+  padding: 1rem 1.5rem;
+  height: 93.8vh;
+  background: #2a3942;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  overflow: hidden;
+}
+
+.chatHighlitcontNDsearch {
+  flex: 2;
+  height: 100%;
+}
+.chatHighlitcont {
+  border-top: 1px solid wheat;
+  border-radius: 0.3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  width: 100%;
+  height: 92%;
+  min-height: 12%;
+  overflow-y: scroll;
+  padding-top: 0.3rem;
+}
+.chatHighlitcont::-webkit-scrollbar {
+  display: none;
+}
+.chatHighlitcont > div:last-child {
+  border-bottom: 1px solid wheat;
+}
+.chatHighlitcont > div:first-child {
+  border-top: none;
+}
+.chatHighlit {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 1rem;
+  background: #111b21;
+  width: 100%;
+  border-top: 1px solid wheat;
+  cursor: pointer;
+}
+.BG-chatHighlit {
+  background: #2a3942;
+}
+.chatHighlit:hover {
+  background: #202c33;
+}
+.img {
+  background: red;
+  margin: 0.7rem 1rem;
+  border-radius: 2rem;
+  width: 3rem;
+  height: 3rem;
+}
+.chatData {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 0.5rem;
+}
+.chatData h1 {
+  color: #fff;
+  font-size: 1.2rem;
+}
+.chatData p {
+  color: #fff;
+  font-size: 0.9rem;
+}
+
+.msgCont {
+  box-shadow: 0 0 0 0.3em rgb(26, 39, 39);
+  border-radius: 0.3rem;
+  height: 100%;
+  flex: 5;
+  display: flex;
+  flex-direction: column;
+}
+.msgCont .chatHighlit {
+  border: none;
+}
+.msgCont .img {
+  margin: 0.6rem 1rem;
+  width: 2.5rem;
+  height: 2.5rem;
+}
+.allMsg {
+  flex: 15;
+  overflow-y: scroll;
+  padding: 0 1rem;
+  display: flex;
+  gap: 0.6rem;
+  flex-direction: column;
+}
+.allMsg::-webkit-scrollbar {
+  display: none;
+}
+.allMsg > div:first-child {
+  margin-top: 0.8rem;
+}
+.allMsg > div:last-child {
+  margin-bottom: 0.8rem;
+}
+.singlemsg {
+  width: auto;
+  background: #005c4b;
+  max-width: 55%;
+  align-self: flex-start;
+  padding: 0.3rem 1rem;
+  color: #fff;
+  border-radius: 0.4rem;
+}
+.msgInputCont {
+  background: #202c33;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  padding: 0.6rem 0;
+  flex: 1;
+}
+.msgInput {
+  width: 100%;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  border: none;
+  outline: none;
+  padding: 0.6rem 1.5rem;
+  border-radius: 0.2rem;
+  background: #2a3942;
+  color: #e6ebea;
+}
+.selectChat {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+}
+/* #2a3942  #202c33 */

@@ -2,10 +2,11 @@ import axios from "axios";
 import authHeader from "./auth-header";
 const BASE_URL = process.env.REACT_APP_URL;
 
-export const loginRequestApi = async (data) => {
+export const getAllMessageRequestApi = async (data) => {
   try {
-    const res = await axios.post(BASE_URL + "/auth/login", data, {
+    const res = await axios.get(BASE_URL + "/message", {
       headers: { ...authHeader() },
+      params: { ...data },
     });
     return res.data;
   } catch (e) {
@@ -13,9 +14,9 @@ export const loginRequestApi = async (data) => {
   }
 };
 
-export const signupRequestApi = async (data) => {
+export const createMessageRequestApi = async (data) => {
   try {
-    const res = await axios.post(BASE_URL + "/auth/register", data, {
+    const res = await axios.post(BASE_URL + "/message", data, {
       headers: { ...authHeader() },
     });
     return res.data;

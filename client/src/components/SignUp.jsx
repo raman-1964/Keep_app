@@ -16,6 +16,7 @@ function SignUp({ setLoginToggle }) {
   const [seePassword, setSeePassword] = useState(false);
   const [signUp, setsignUp] = useState({
     name: "",
+    username: "",
     email: "",
     password: "",
   });
@@ -30,7 +31,10 @@ function SignUp({ setLoginToggle }) {
   );
 
   const signup = (e) => {
-    e.preventDefault();
+    console.log("====================================");
+    console.log(signUp);
+    console.log("====================================");
+    // e.preventDefault();
     const { isValid, errors } = signUpAllValidation(signUp);
     if (isValid) dispatch(signupRequest(signUp));
     setError(errors);
@@ -45,6 +49,20 @@ function SignUp({ setLoginToggle }) {
       <div className="log-container">
         <div className="login">
           <Logo />
+          <div className="log-input">
+            <h1>userName</h1>
+            <Input
+              type="text"
+              placeholder="Enter your name"
+              autoComplete="off"
+              name="username"
+              value={signUp}
+              setValue={setsignUp}
+            />
+            <p className="error">
+              {error && error["name"] ? error["name"][0] : ""}
+            </p>
+          </div>
           <div className="log-input">
             <h1>Name</h1>
             <Input

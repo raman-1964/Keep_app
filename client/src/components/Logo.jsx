@@ -1,8 +1,10 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const Logo = () => {
+  const navigate = useNavigate();
   return (
-    <div className="logo">
+    <div className="logo" onClick={() => navigate("/")}>
       <h1>rk</h1>
       <h2>raman keep</h2>
     </div>

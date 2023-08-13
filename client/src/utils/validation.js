@@ -9,6 +9,7 @@ const signUpRule = {
   email: "required|email",
   password: "required|string",
   name: "required|string",
+  username: "required|string",
 };
 
 const noteRule = {

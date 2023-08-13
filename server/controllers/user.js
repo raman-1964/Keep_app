@@ -1,3 +1,4 @@
+const Notes = require("../models/note");
 const Users = require("../models/user");
 const { validateUpdateUser } = require("../validate/user");
 
@@ -36,6 +37,7 @@ const deleteUser = async (req, res, next) => {
     const me = await Users.findOne();
     if (!me) res.status(400).send("User not found");
 
+    await Notes.deleteMany({ user: me._id });
     await me.delete();
 
     res.status(200).send(me);
@@ -44,4 +46,22 @@ const deleteUser = async (req, res, next) => {
   }
 };
 
-module.exports = { getUser, updateUser, deleteUser };
+const searchUser = async (req, res, next) => {
+  try {
+    const { user } = req.query;
+
+    const data = await Users.find({
+      username: new RegExp("^" + user, "i"),
+      _id: { $ne: req.user_token_details._id },
+    })
+      .select("username")
+      .limit(15)
+      .lean();
+
+    res.status(200).send(data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+module.exports = { getUser, updateUser, deleteUser, searchUser };
