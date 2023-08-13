@@ -43,7 +43,6 @@ function Home() {
 
   return (
     <>
-      <Navbar />
       <InputHome
         note={note}
         setNote={setNote}

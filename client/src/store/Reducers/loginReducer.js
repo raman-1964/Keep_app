@@ -23,7 +23,12 @@ export const loginReducer = (state = initialState, action) => {
 
     case LOGIN_SUCCESS:
       localStorage.setItem("Raman-Keep-Token", action.payload.token);
-      return { ...state, userToken: action.payload.token, loginLoading: false };
+      localStorage.setItem("Raman-Keep-Username", action.payload.data.username);
+      return {
+        ...state,
+        userToken: action.payload.token,
+        loginLoading: false,
+      };
 
     case LOGIN_FAILED:
       return { ...state, loginLoading: false };
@@ -33,6 +38,7 @@ export const loginReducer = (state = initialState, action) => {
 
     case SIGNUP_SUCCESS:
       localStorage.setItem("Raman-Keep-Token", action.payload.token);
+      localStorage.setItem("Raman-Keep-Username", action.payload.data.username);
       return {
         ...state,
         userToken: action.payload.token,

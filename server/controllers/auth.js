@@ -5,9 +5,9 @@ const { validateCreateUser, validateLoginUser } = require("../validate/user");
 
 const register = async (req, res, next) => {
   try {
-    const { name, email, password } = req.body;
+    const { username, name, email, password } = req.body;
 
-    const valUser = { username: name, email, password };
+    const valUser = { username, name, email, password };
     const { error } = validateCreateUser(valUser);
     if (error) return res.status(400).send(error.details[0].message);
 
@@ -18,7 +18,8 @@ const register = async (req, res, next) => {
     const hashPassword = bcrypt.hashSync(password, salt);
 
     newUser = await new Users({
-      username: name,
+      username,
+      name,
       email,
       password: hashPassword,
     });
@@ -26,9 +27,10 @@ const register = async (req, res, next) => {
 
     const token = newUser.generateAuthToken();
 
-    res
-      .status(201)
-      .send({ data: { ..._.pick(newUser, ["_id", "name", "email"]) }, token });
+    res.status(201).send({
+      data: { ..._.pick(newUser, ["_id", "name", "username", "email"]) },
+      token,
+    });
   } catch (error) {
     console.log(error);
   }
@@ -51,9 +53,10 @@ const login = async (req, res, next) => {
 
     const token = user.generateAuthToken();
 
-    res
-      .status(200)
-      .send({ data: { ..._.pick(user, ["name", "email"]) }, token });
+    res.status(200).send({
+      data: { ..._.pick(user, ["_id", "name", "username", "email"]) },
+      token,
+    });
   } catch (error) {
     console.log(error);
   }

@@ -1,6 +1,6 @@
 import axios from "axios";
 import authHeader from "./auth-header";
-const BASE_URL = "http://localhost:5678/api";
+const BASE_URL = process.env.REACT_APP_URL;
 
 export const getNoteApi = async (data) => {
   try {
