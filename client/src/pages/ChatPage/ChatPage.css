@@ -53,6 +53,7 @@
   width: 100%;
   border-top: 1px solid wheat;
   cursor: pointer;
+  position: relative;
 }
 .BG-chatHighlit {
   background: #2a3942;
@@ -76,6 +77,16 @@
 .chatData h1 {
   color: #fff;
   font-size: 1.2rem;
+}
+.msgNotif {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  background: red;
+  color: #fff;
+  font-size: 0.7rem;
+  border-radius: 1rem;
+  padding: 0.1rem 0.5rem;
 }
 .chatData p {
   color: #fff;

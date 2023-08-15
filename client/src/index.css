@@ -312,6 +312,19 @@
   width: 1.2rem;
   height: 1.2rem;
 } */
+.msgIcon {
+  position: relative;
+}
+.msgIcon h1 {
+  position: absolute;
+  top: -0.3rem;
+  right: -0.5rem;
+  background: red;
+  color: #fff;
+  font-size: 0.7rem;
+  border-radius: 1rem;
+  padding: 0.1rem 0.5rem;
+}
 .lds-ring div:nth-child(1) {
   animation-delay: -0.45s;
 }

@@ -12,6 +12,7 @@ const createMessage = async (req, res, next) => {
     const newMessage = new Message({
       sender: req.user_token_details._id,
       chat: chatId,
+      seenBy: [req.user_token_details._id],
       msg,
     });
     await newMessage.save();
@@ -35,7 +36,38 @@ const getMessages = async (req, res, next) => {
   return res.status(200).send(allMessages);
 };
 
+const getUnseenMessages = async (req, res, next) => {
+  const allChats = await Chat.find({
+    users: { $elemMatch: { $eq: req.user_token_details._id } },
+  }).lean();
+
+  const response = [];
+  for (const chat of allChats) {
+    const message = await Message.find({
+      chat: chat._id,
+      seenBy: { $nin: [req.user_token_details._id] },
+    });
+
+    response.push(...message);
+  }
+
+  return res.status(200).send(response);
+};
+
+const seenMessages = async (req, res, next) => {
+  const { messages_id } = req.body;
+
+  await Message.updateMany(
+    { _id: { $in: messages_id } },
+    { $push: { seenBy: req.user_token_details._id } }
+  );
+
+  return res.status(200).send("message seen by your receiver");
+};
+
 module.exports = {
   createMessage,
   getMessages,
+  getUnseenMessages,
+  seenMessages,
 };

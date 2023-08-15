@@ -8,7 +8,7 @@ import {
 } from "../Constants/chatConstant";
 
 const initialState = {
-  chat: [],
+  chats: [],
   chatLoading: false,
   createChatLoading: false,
 };
@@ -19,7 +19,7 @@ export const chatReducer = (state = initialState, action) => {
       return { ...state, chatLoading: true };
 
     case GET_ALL_CHAT_SUCCESS:
-      return { ...state, chat: [...action.payload], chatLoading: false };
+      return { ...state, chats: [...action.payload], chatLoading: false };
 
     case GET_ALL_CHAT_FAILED:
       return { ...state, chatLoading: false };
@@ -31,7 +31,7 @@ export const chatReducer = (state = initialState, action) => {
       action.payload.setSelectedChat(action.payload.res);
       return {
         ...state,
-        chat: [action.payload.res, ...state.chat],
+        chats: [action.payload.res, ...state.chat],
         createChatLoading: false,
       };
 
