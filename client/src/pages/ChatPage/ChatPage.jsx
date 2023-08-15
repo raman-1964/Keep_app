@@ -9,6 +9,7 @@ import Spinner from "../../components/Spinner";
 import {
   createMessageRequest,
   getAllMessageRequest,
+  seenedMessageRequest,
 } from "../../store/Actions/messageAction";
 
 const ChatPage = () => {
@@ -18,10 +19,10 @@ const ChatPage = () => {
   const [sendMessage, setSendMessage] = useState({
     message: "",
   });
-  const { chat, chatLoading, createChatLoading } = useSelector(
+  const { chats, chatLoading, createChatLoading } = useSelector(
     (state) => state.chatReducer
   );
-  const { Message, MessageLoading, createMessageLoading } = useSelector(
+  const { Message, unseenMessage, MessageLoading } = useSelector(
     (state) => state.messageReducer
   );
   const loggedInUser = localStorage.getItem("Raman-Keep-Username");
@@ -40,45 +41,74 @@ const ChatPage = () => {
     // setError(errors);
   };
 
+  const msgNotif = (chat) => {
+    return unseenMessage
+      .map((msg) => {
+        if (msg.chat === chat._id) return 1;
+        return 0;
+      })
+      .reduce((accum, ele) => accum + ele, 0);
+  };
+
   useEffect(() => {
     dispatch(getAllChatRequest());
   }, []);
 
   useEffect(() => {
-    if (selectedChat._id)
+    if (selectedChat._id) {
       dispatch(getAllMessageRequest({ chatId: selectedChat._id }));
+
+      const willSeen = unseenMessage
+        .map((msg) => {
+          if (msg.chat === selectedChat._id) return msg._id;
+        })
+        .filter((id) => {
+          if (id) return id;
+        });
+      if (willSeen.length)
+        dispatch(seenedMessageRequest({ messages_id: willSeen }));
+    }
   }, [JSON.stringify(selectedChat)]);
+
+  console.log(MessageLoading);
 
   return !chatLoading ? (
     <div className="pageContainer">
       <div className="chatHighlitcontNDsearch">
         <Search setSelectedChat={setSelectedChat} />
         <div className="chatHighlitcont">
-          {chat.map((msg, ind) => {
+          {chats.map((chat, ind) => {
             return (
               <div
                 key={ind}
                 className={`chatHighlit ${
-                  selectedChat._id === msg._id ? "BG-chatHighlit" : ""
+                  selectedChat._id === chat._id ? "BG-chatHighlit" : ""
                 }`}
-                onClick={() => setSelectedChat(msg)}
+                onClick={() => setSelectedChat(chat)}
               >
                 <div className="img"></div>
                 <div className="chatData">
                   <h1>
-                    {loggedInUser === msg?.users?.[0]?.username
-                      ? msg?.users?.[1]?.username
-                      : msg?.users?.[0]?.username}
+                    {loggedInUser === chat?.users?.[0]?.username
+                      ? chat?.users?.[1]?.username
+                      : chat?.users?.[0]?.username}
                   </h1>
-                  <p>{msg?.latestMessage?.msg}</p>
+                  <p>{chat?.latestMessage?.msg}</p>
                 </div>
+                {unseenMessage.length && msgNotif(chat) ? (
+                  <h1 className="msgNotif">{msgNotif(chat)}</h1>
+                ) : null}
               </div>
             );
           })}
         </div>
       </div>
       <div className="msgCont">
-        {Object.keys(selectedChat).length ? (
+        {MessageLoading ? (
+          <div className="spinnerCont">
+            <Spinner />
+          </div>
+        ) : Object.keys(selectedChat).length ? (
           <>
             <div className={`chatHighlit `}>
               <div className="img"></div>

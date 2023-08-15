@@ -4,14 +4,22 @@ import {
   createMessageSuccess,
   getAllMessageFailed,
   getAllMessageSuccess,
+  getAllUnseenMessageFailed,
+  getAllUnseenMessageSuccess,
+  seenedMessageFailed,
+  seenedMessageSuccess,
 } from "../Actions/messageAction";
 import {
   CREATE_MESSAGE_REQUEST,
   GET_ALL_MESSAGE_REQUEST,
+  GET_ALL_UNSEEN_MESSAGE_REQUEST,
+  SEENED_MESSAGE_REQUEST,
 } from "../Constants/messageConstant";
 import {
   createMessageRequestApi,
   getAllMessageRequestApi,
+  getAllUnseenMessageRequestApi,
+  seenedMessageRequestApi,
 } from "../../services/message.services";
 
 function* getAllMessageRequest(action) {
@@ -32,9 +40,29 @@ function* createMessageRequest(action) {
   }
 }
 
+function* getAllUnseenMessageRequest(action) {
+  try {
+    const res = yield call(getAllUnseenMessageRequestApi, action.payload);
+    yield put(getAllUnseenMessageSuccess(res));
+  } catch (e) {
+    yield put(getAllUnseenMessageFailed(e));
+  }
+}
+
+function* seenedMessageRequest(action) {
+  try {
+    const res = yield call(seenedMessageRequestApi, action.payload);
+    yield put(seenedMessageSuccess(action.payload));
+  } catch (e) {
+    yield put(seenedMessageFailed(e));
+  }
+}
+
 function* messageSaga() {
   yield takeEvery(GET_ALL_MESSAGE_REQUEST, getAllMessageRequest);
   yield takeEvery(CREATE_MESSAGE_REQUEST, createMessageRequest);
+  yield takeEvery(GET_ALL_UNSEEN_MESSAGE_REQUEST, getAllUnseenMessageRequest);
+  yield takeEvery(SEENED_MESSAGE_REQUEST, seenedMessageRequest);
 }
 
 export default messageSaga;
