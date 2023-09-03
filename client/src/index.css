@@ -130,7 +130,7 @@
 }
 
 .login {
-  width: 28%;
+  max-width: 30rem;
   padding: 0.2rem 1rem;
   padding-bottom: 1rem;
   background-color: rgb(250, 252, 250);
@@ -342,3 +342,43 @@
     transform: rotate(360deg);
   }
 }
+
+
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 450px) {
+  .login{
+    width: 90%;
+  }
+  .log-input h1{
+    font-size: 0.8rem;
+  }
+  .log-input input {
+    font-size: 0.8rem;
+  }
+  .log-input .seeOrHidePassword{
+    top: 1.8rem;
+  }
+  .login-to-signup p {
+    font-size: 0.8rem;
+  }
+}
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 450px) {
+  .login{
+    width: 80%;
+  }  
+}
+@media only screen and (min-width: 576px) {
+  .login{
+    width: 65%;
+  }  
+}
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  .login{
+    width: 50%;
+  }  
+}
+
+
