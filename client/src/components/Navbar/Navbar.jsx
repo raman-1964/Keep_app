@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { ReactComponent as Dark } from "../assets/dark.svg";
-import { ReactComponent as Day } from "../assets/day.svg";
-import { ReactComponent as Logout } from "../assets/logout.svg";
-import ChatIcon from "../assets/chatIcon.png";
-import { logoutRequest } from "../store/Actions/loginAction";
-import Logo from "./Logo";
-import { getAllUnseenMessageRequest } from "../store/Actions/messageAction";
+import { ReactComponent as Dark } from "../../assets/svg/dark.svg";
+import { ReactComponent as Day } from "../../assets/svg/day.svg";
+import { ReactComponent as Logout } from "../../assets/svg/logout.svg";
+import ChatIcon from "../../assets/img/chatIcon.png";
+import { logoutRequest } from "../../store/Actions/loginAction";
+import Logo from "../Logo/Logo";
+import { getAllUnseenMessageRequest } from "../../store/Actions/messageAction";
 import { useNavigate } from "react-router-dom";
+import "./Navbar.css";
+
 
 function Navbar() {
   const navigate = useNavigate();

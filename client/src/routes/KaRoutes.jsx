@@ -1,9 +1,9 @@
 import React from "react";
 import { Navigate, Routes, Route } from "react-router-dom";
 import { useSelector } from "react-redux";
-import Home from "../pages/Home";
+import Home from "../pages/Home/Home";
 import ChatPage from "../pages/ChatPage/ChatPage";
-import Navbar from "../components/Navbar";
+import Navbar from "../components/Navbar/Navbar";
 
 function KaRoutes() {
   const { userToken } = useSelector((state) => state.loginReducer);

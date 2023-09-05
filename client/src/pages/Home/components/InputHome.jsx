@@ -1,11 +1,11 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { ReactComponent as Edit } from "../assets/edit.svg";
-import { ReactComponent as Plus } from "../assets/plus.svg";
-import { addNoteRequest, updateNoteRequest } from "../store/Actions/noteAction";
-import { noteAllValidation } from "../utils/validation";
-import Input from "../widgets/Input";
-import Button from "../widgets/Button";
+import { ReactComponent as Edit } from "../../../assets/svg/edit.svg";
+import { ReactComponent as Plus } from "../../../assets/svg/plus.svg";
+import { addNoteRequest, updateNoteRequest } from "../../../store/Actions/noteAction";
+import { noteAllValidation } from "../../../utils/validation";
+import Input from "../../../widgets/Input";
+import Button from "../../../widgets/Button";
 
 function InputHome({
   note,
