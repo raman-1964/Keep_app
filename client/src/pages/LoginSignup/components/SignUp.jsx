@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { signupRequest } from "../store/Actions/loginAction";
-import { signUpAllValidation } from "../utils/validation";
-import Button from "../widgets/Button";
-import Input from "../widgets/Input";
-import Logo from "./Logo";
-import hidePassword from "../assets/hidePassword.png";
-import showPassword from "../assets/showPassword.png";
+import { signupRequest } from "../../../store/Actions/loginAction";
+import { signUpAllValidation } from "../../../utils/validation";
+import Button from "../../../widgets/Button";
+import Input from "../../../widgets/Input";
+import Logo from "../../../components/Logo/Logo";
+import hidePassword from "../../../assets/img/hidePassword.png";
+import showPassword from "../../../assets/img/showPassword.png";
 
 function SignUp({ setLoginToggle }) {
   const dispatch = useDispatch();

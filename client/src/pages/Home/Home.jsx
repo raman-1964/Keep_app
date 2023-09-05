@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import Navbar from "../components/Navbar";
-import Output from "../components/Output";
-import InputHome from "../components/InputHome";
+import Navbar from "../../components/Navbar/Navbar";
+import Output from "./components/Output";
+import InputHome from "./components/InputHome";
 import { useDispatch, useSelector } from "react-redux";
-import { getNoteRequest } from "../store/Actions/noteAction";
+import { getNoteRequest } from "../../store/Actions/noteAction";
+import "./Home.css";
 
 function Home() {
   const { notes, addnoteLoading, updateNoteLoading } = useSelector(

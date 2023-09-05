@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
 import AsyncSelect from "react-select/async";
-import authHeader from "../../services/auth-header";
+import authHeader from "../../../services/auth-header";
 import { useDispatch } from "react-redux";
-import { createChatRequest } from "../../store/Actions/chatAction";
+import { createChatRequest } from "../../../store/Actions/chatAction";
 const BASE_URL = process.env.REACT_APP_URL;
 
 const Search = ({ setSelectedChat }) => {

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import SignUp from "../components/SignUp";
-import Login from "../components/Login";
+import SignUp from "./components/SignUp";
+import Login from "./components/Login";
+import "./LoginSignup.css";
 
 function LoginSignup() {
   const [toggle, setToggle] = useState(true);

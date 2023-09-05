@@ -1,14 +1,14 @@
 import React, { forwardRef } from "react";
-import { ReactComponent as Delete } from "../assets/delete.svg";
-import { ReactComponent as Edit } from "../assets/edit.svg";
-import { ReactComponent as Favourite } from "../assets/heart.svg";
+import { ReactComponent as Delete } from "../../../assets/svg/delete.svg";
+import { ReactComponent as Edit } from "../../../assets/svg/edit.svg";
+import { ReactComponent as Favourite } from "../../../assets/svg/heart.svg";
 import { useDispatch, useSelector } from "react-redux";
 import {
   deleteNoteRequest,
   likeNoteRequest,
   unlikeNoteRequest,
-} from "../store/Actions/noteAction";
-import Button from "../widgets/Button";
+} from "../../../store/Actions/noteAction";
+import Button from "../../../widgets/Button";
 
 const Output = forwardRef(
   (

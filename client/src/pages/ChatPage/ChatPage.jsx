@@ -3,9 +3,9 @@ import "./ChatPage.css";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Input from "../../widgets/Input";
-import Search from "./Search";
+import Search from "./components/Search";
 import { getAllChatRequest } from "../../store/Actions/chatAction";
-import Spinner from "../../components/Spinner";
+import Spinner from "../../components/Spinner/Spinner";
 import {
   createMessageRequest,
   getAllMessageRequest,
