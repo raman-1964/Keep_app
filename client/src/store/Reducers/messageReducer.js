@@ -48,10 +48,14 @@ export const messageReducer = (state = initialState, action) => {
       return { ...state };
 
     case GET_ALL_UNSEEN_MESSAGE_SUCCESS:
-      return { ...state, unseenMessage: [...action.payload] };
+      return {
+        ...state,
+        unseenMessage: [...state.unseenMessage, ...action.payload],
+      };
 
     case GET_ALL_UNSEEN_MESSAGE_FAILED:
       return { ...state };
+
     case SEENED_MESSAGE_REQUEST:
       return { ...state };
 

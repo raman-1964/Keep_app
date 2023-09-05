@@ -5,6 +5,7 @@ import {
   GET_ALL_CHAT_FAILED,
   GET_ALL_CHAT_REQUEST,
   GET_ALL_CHAT_SUCCESS,
+  UPDATE_CHAT_LATEST_MESSAGE,
 } from "../Constants/chatConstant";
 
 export const getAllChatRequest = (data) => {
@@ -25,4 +26,8 @@ export const createChatSuccess = (data) => {
 };
 export const createChatFailed = (data) => {
   return { type: CREATE_CHAT_FAILED, payload: data };
+};
+
+export const updateChatLatestMessage = (data) => {
+  return { type: UPDATE_CHAT_LATEST_MESSAGE, payload: data };
 };

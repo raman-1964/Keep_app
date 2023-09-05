@@ -39,13 +39,13 @@ const register = async (req, res, next) => {
 const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    console.log(email, password);
 
     const valUser = { email, password };
     const { error } = validateLoginUser(valUser);
     if (error) return res.status(400).send(error.details[0].message);
 
     const user = await Users.findOne({ email });
+
     if (!user) res.status(400).send({ msg: "user not found" });
 
     const isCorrect = await bcrypt.compare(password, user.password);

@@ -17,6 +17,8 @@ const createMessage = async (req, res, next) => {
     });
     await newMessage.save();
     await newMessage.populate("sender", "-password");
+    await newMessage.populate("chat", "-password");
+    await newMessage.populate("chat.users", "username");
 
     await Chat.updateOne({ _id: chatId }, { latestMessage: newMessage._id });
 
@@ -30,7 +32,7 @@ const getMessages = async (req, res, next) => {
   const { chatId } = req.query;
   const allMessages = await Message.find({ chat: chatId })
     .populate("sender", "-password")
-    .sort({ updatedAt: 1 })
+    .sort({ createdAt: 1 })
     .lean();
 
   return res.status(200).send(allMessages);
@@ -46,8 +48,7 @@ const getUnseenMessages = async (req, res, next) => {
     const message = await Message.find({
       chat: chat._id,
       seenBy: { $nin: [req.user_token_details._id] },
-    });
-
+    }).populate("chat", "_id");
     response.push(...message);
   }
 
@@ -55,11 +56,12 @@ const getUnseenMessages = async (req, res, next) => {
 };
 
 const seenMessages = async (req, res, next) => {
-  const { messages_id } = req.body;
+  let { messages_id, seenBy } = req.body;
+  if (!seenBy) seenBy = req.user_token_details._id;
 
   await Message.updateMany(
     { _id: { $in: messages_id } },
-    { $push: { seenBy: req.user_token_details._id } }
+    { $push: { seenBy: seenBy } }
   );
 
   return res.status(200).send("message seen by your receiver");
