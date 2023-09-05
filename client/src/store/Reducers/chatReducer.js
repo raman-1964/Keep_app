@@ -5,6 +5,7 @@ import {
   GET_ALL_CHAT_FAILED,
   GET_ALL_CHAT_REQUEST,
   GET_ALL_CHAT_SUCCESS,
+  UPDATE_CHAT_LATEST_MESSAGE,
 } from "../Constants/chatConstant";
 
 const initialState = {
@@ -37,6 +38,19 @@ export const chatReducer = (state = initialState, action) => {
 
     case CREATE_CHAT_FAILED:
       return { ...state, createChatLoading: false };
+
+    case UPDATE_CHAT_LATEST_MESSAGE:
+      const { chatId, latestMessage } = action.payload;
+      const updatedChats = state.chats.map((chat) => {
+        if (chat._id === chatId)
+          return {
+            ...chat,
+            latestMessage,
+          };
+        return chat;
+      });
+
+      return { ...state, chats: updatedChats };
 
     default:
       return state;

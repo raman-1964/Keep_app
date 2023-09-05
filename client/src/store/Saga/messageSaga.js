@@ -21,6 +21,7 @@ import {
   getAllUnseenMessageRequestApi,
   seenedMessageRequestApi,
 } from "../../services/message.services";
+import { updateChatLatestMessage } from "../Actions/chatAction";
 
 function* getAllMessageRequest(action) {
   try {
@@ -33,8 +34,17 @@ function* getAllMessageRequest(action) {
 
 function* createMessageRequest(action) {
   try {
-    const res = yield call(createMessageRequestApi, action.payload);
-    yield put(createMessageSuccess(res));
+    if (action.payload.data) {
+      const res = yield call(createMessageRequestApi, action.payload.data);
+      action.payload.socket.emit("new-message", res);
+      yield put(createMessageSuccess(res));
+      yield put(
+        updateChatLatestMessage({
+          chatId: action.payload.data.chatId,
+          latestMessage: res,
+        })
+      );
+    } else yield put(createMessageSuccess(action.payload));
   } catch (e) {
     yield put(createMessageFailed(e));
   }
@@ -42,7 +52,9 @@ function* createMessageRequest(action) {
 
 function* getAllUnseenMessageRequest(action) {
   try {
-    const res = yield call(getAllUnseenMessageRequestApi, action.payload);
+    let res;
+    if (!action.payload) res = yield call(getAllUnseenMessageRequestApi);
+    else res = [action.payload];
     yield put(getAllUnseenMessageSuccess(res));
   } catch (e) {
     yield put(getAllUnseenMessageFailed(e));

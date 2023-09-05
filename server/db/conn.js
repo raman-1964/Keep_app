@@ -1,6 +1,13 @@
 const mongoose = require("mongoose");
 
-mongoose
-  .connect("mongodb://127.0.0.1:27017/Keep")
-  .then(() => console.log("connection succesfull"))
-  .catch((e) => console.log(e));
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_URI);
+    console.log(`Database connected `);
+  } catch (error) {
+    console.log(`Error in connecting Database ${error.message}`);
+    process.exit();
+  }
+};
+
+module.exports = connectDB;

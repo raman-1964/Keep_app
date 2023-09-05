@@ -1,57 +1,107 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import "./ChatPage.css";
-import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Input from "../../widgets/Input";
 import Search from "./Search";
-import { getAllChatRequest } from "../../store/Actions/chatAction";
+import {
+  getAllChatRequest,
+  updateChatLatestMessage,
+} from "../../store/Actions/chatAction";
 import Spinner from "../../components/Spinner";
 import {
   createMessageRequest,
   getAllMessageRequest,
+  getAllUnseenMessageRequest,
   seenedMessageRequest,
 } from "../../store/Actions/messageAction";
+import io from "socket.io-client";
+
+let socket;
+let selectedChatCompare = {};
 
 const ChatPage = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const bottomRef = useRef(null);
+  const [isTyping, setIsTyping] = useState(null);
   const [selectedChat, setSelectedChat] = useState({});
   const [sendMessage, setSendMessage] = useState({
     message: "",
   });
-  const { chats, chatLoading, createChatLoading } = useSelector(
-    (state) => state.chatReducer
-  );
+
+  const loggedInUser = localStorage.getItem("Raman-Keep-Username");
+  const { chats, chatLoading } = useSelector((state) => state.chatReducer);
   const { Message, unseenMessage, MessageLoading } = useSelector(
     (state) => state.messageReducer
   );
-  const loggedInUser = localStorage.getItem("Raman-Keep-Username");
+
+  const giveUserparams = (chat, params) => {
+    return params === "username"
+      ? loggedInUser === chat?.users?.[0]?.username
+        ? chat?.users?.[1]?.[params]
+        : chat?.users?.[0]?.[params]
+      : loggedInUser === chat?.users?.[0]?.username
+      ? chat?.users?.[0]?.[params]
+      : chat?.users?.[1]?.[params];
+  };
 
   const createMessage = (e) => {
     e.preventDefault();
-    // const { isValid, errors } = loginAllValidation(loginData);
-    // if (isValid)
     dispatch(
       createMessageRequest({
-        msg: sendMessage.message,
-        chatId: selectedChat._id,
+        data: {
+          msg: sendMessage.message,
+          chatId: selectedChat._id,
+        },
+        socket,
       })
     );
+    socket.emit("stop-typing", {
+      room: giveUserparams(selectedChat, "username"),
+      chatId: selectedChat._id,
+    });
     setSendMessage({ message: "" });
-    // setError(errors);
   };
 
-  const msgNotif = (chat) => {
-    return unseenMessage
-      .map((msg) => {
-        if (msg.chat === chat._id) return 1;
-        return 0;
-      })
-      .reduce((accum, ele) => accum + ele, 0);
+  const msgNotif = useCallback(
+    (chat) => {
+      return unseenMessage
+        .map((msg) => {
+          if (msg.chat._id === chat._id) return 1;
+          return 0;
+        })
+        .reduce((accum, ele) => accum + ele, 0);
+    },
+    [JSON.stringify(unseenMessage)]
+  );
+
+  const typingfn = (e) => {
+    setSendMessage((prevState) => {
+      return {
+        ...prevState,
+        [e.target.name]: e.target.value,
+      };
+    });
+
+    if (!socket) return;
+
+    socket.emit("typing", {
+      room: giveUserparams(selectedChat, "username"),
+      chatId: selectedChat._id,
+    });
+
+    setTimeout(() => {
+      socket.emit("stop-typing", {
+        room: giveUserparams(selectedChat, "username"),
+        chatId: selectedChat._id,
+      });
+    }, 3000);
   };
 
   useEffect(() => {
     dispatch(getAllChatRequest());
+    socket = io(process.env.REACT_APP_ENDPOINT);
+    socket.emit("setup", loggedInUser);
   }, []);
 
   useEffect(() => {
@@ -60,17 +110,72 @@ const ChatPage = () => {
 
       const willSeen = unseenMessage
         .map((msg) => {
-          if (msg.chat === selectedChat._id) return msg._id;
+          if (msg.chat._id === selectedChat._id) return msg._id;
         })
         .filter((id) => {
           if (id) return id;
         });
       if (willSeen.length)
         dispatch(seenedMessageRequest({ messages_id: willSeen }));
+
+      selectedChatCompare = selectedChat;
+      socket.emit("join-chat", selectedChat._id);
     }
   }, [JSON.stringify(selectedChat)]);
 
-  console.log(MessageLoading);
+  useEffect(() => {
+    if (bottomRef.current)
+      bottomRef.current.scrollIntoView({ behavior: "smooth" });
+  }, [JSON.stringify(Message[Message.length - 1])]);
+
+  useEffect(() => {
+    function handleNewMessage(msg) {
+      if (
+        !selectedChatCompare._id ||
+        selectedChatCompare._id !== msg.chat._id
+      ) {
+        // for giving notification
+        dispatch(getAllUnseenMessageRequest(msg));
+        dispatch(
+          updateChatLatestMessage({
+            chatId: msg.chat._id,
+            latestMessage: msg,
+          })
+        );
+      } else {
+        if (selectedChatCompare._id === msg.chat._id)
+          dispatch(
+            seenedMessageRequest({
+              messages_id: [msg._id],
+              seenBy: giveUserparams(selectedChat, "_id"),
+            })
+          );
+        dispatch(
+          updateChatLatestMessage({
+            chatId: selectedChat._id,
+            latestMessage: msg,
+          })
+        );
+        dispatch(createMessageRequest(msg));
+      }
+    }
+    function typing(room) {
+      setIsTyping(room);
+    }
+    function stopTyping() {
+      setIsTyping(null);
+    }
+
+    socket.on("new-msg-received", handleNewMessage);
+    socket.on("Typing", typing);
+    socket.on("stopTyping", stopTyping);
+
+    return () => {
+      socket.off("new-msg-received", handleNewMessage);
+      socket.off("Typing", typing);
+      socket.off("stopTyping", stopTyping);
+    };
+  });
 
   return !chatLoading ? (
     <div className="pageContainer">
@@ -88,12 +193,12 @@ const ChatPage = () => {
               >
                 <div className="img"></div>
                 <div className="chatData">
-                  <h1>
-                    {loggedInUser === chat?.users?.[0]?.username
-                      ? chat?.users?.[1]?.username
-                      : chat?.users?.[0]?.username}
-                  </h1>
-                  <p>{chat?.latestMessage?.msg}</p>
+                  <h1>{giveUserparams(chat, "username")}</h1>
+                  {isTyping && isTyping === chat._id ? (
+                    <p>typing...</p>
+                  ) : (
+                    <p>{chat?.latestMessage?.msg}</p>
+                  )}
                 </div>
                 {unseenMessage.length && msgNotif(chat) ? (
                   <h1 className="msgNotif">{msgNotif(chat)}</h1>
@@ -113,22 +218,26 @@ const ChatPage = () => {
             <div className={`chatHighlit `}>
               <div className="img"></div>
               <div className="chatData">
-                <h1>
-                  {loggedInUser === selectedChat?.users?.[0]?.username
-                    ? selectedChat?.users?.[1]?.name
-                    : selectedChat?.users?.[0]?.name}
-                </h1>
+                <h1>{giveUserparams(selectedChat, "username")}</h1>
+                {isTyping && isTyping === selectedChat._id ? (
+                  <p>typing...</p>
+                ) : null}
               </div>
             </div>
             <div className="allMsg">
               {Message.map((msg, ind) => (
                 <div
-                  key={msg._id}
+                  key={`${msg._id}-${ind}`}
                   className="singlemsg"
                   style={{
                     ...(msg.sender.username === loggedInUser && {
                       alignSelf: "flex-end",
                     }),
+                  }}
+                  ref={(el) => {
+                    if (ind === Message.length - 1) {
+                      bottomRef.current = el;
+                    }
                   }}
                 >
                   <p>{msg?.msg}</p>
@@ -146,6 +255,7 @@ const ChatPage = () => {
                 value={sendMessage}
                 setValue={setSendMessage}
                 onKeyDown={(e) => e.key === "Enter" && createMessage(e)}
+                onChange={(e) => typingfn(e)}
               />
             </div>
           </>
