@@ -8,6 +8,7 @@ import Input from "../../../widgets/Input";
 import Logo from "../../../components/Logo/Logo";
 import hidePassword from "../../../assets/img/hidePassword.png";
 import showPassword from "../../../assets/img/showPassword.png";
+import { ReactComponent as LoginSideImg } from "../../../assets/svg/LoginSideImg.svg";
 
 function SignUp({ setLoginToggle }) {
   const dispatch = useDispatch();
@@ -31,9 +32,7 @@ function SignUp({ setLoginToggle }) {
   );
 
   const signup = (e) => {
-    console.log("====================================");
     console.log(signUp);
-    console.log("====================================");
     // e.preventDefault();
     const { isValid, errors } = signUpAllValidation(signUp);
     if (isValid) dispatch(signupRequest(signUp));
@@ -47,95 +46,100 @@ function SignUp({ setLoginToggle }) {
   return (
     <>
       <div className="log-container">
-        <div className="login">
-          <Logo />
-          <div className="log-input">
-            <h1>userName</h1>
-            <Input
-              type="text"
-              placeholder="Enter your name"
-              autoComplete="off"
-              name="username"
-              value={signUp}
-              setValue={setsignUp}
-            />
-            <p className="error text-elipsis">
-              {error && error["name"] ? error["name"][0] : ""}
-            </p>
+        <div className="sideimgandformContainer">
+          <div className="side-img">
+            <LoginSideImg className="svgimg" />
           </div>
-          <div className="log-input">
-            <h1>Name</h1>
-            <Input
-              type="text"
-              placeholder="Enter your name"
-              autoComplete="off"
-              name="name"
-              value={signUp}
-              setValue={setsignUp}
-            />
-            <p className="error text-elipsis">
-              {error && error["name"] ? error["name"][0] : ""}
-            </p>
-          </div>
-          <div className="log-input">
-            <h1>Email</h1>
-            <Input
-              type="text"
-              placeholder="Enter your email"
-              autoComplete="off"
-              name="email"
-              value={signUp}
-              setValue={setsignUp}
-            />
-            <p className="error text-elipsis">
-              {error && error["email"] ? error["email"][0] : ""}
-            </p>
-          </div>
-          <div className="log-input">
-            <h1>Password</h1>
-            <Input
-              type={seePassword ? "text" : "password"}
-              placeholder="Enter your password"
-              autoComplete="off"
-              name="password"
-              value={signUp}
-              setValue={setsignUp}
-              onKeyDown={(e) => e.key === "Enter" && signup(e)}
-            />
-            {seePassword ? (
-              <img
-                src={hidePassword}
-                alt="hideEye"
-                onClick={() => setSeePassword(!seePassword)}
-                className="seeOrHidePassword"
+          <div className="login-container">
+            <Logo />
+            <div className="log-input">
+              <h1>User name</h1>
+              <Input
+                type="text"
+                placeholder="Choose unique username"
+                autoComplete="off"
+                name="username"
+                value={signUp}
+                setValue={setsignUp}
               />
-            ) : (
-              <img
-                src={showPassword}
-                alt="hideEye"
-                onClick={() => setSeePassword(!seePassword)}
-                className="seeOrHidePassword"
+              <p className="error">
+                {error && error["name"] ? error["name"][0] : ""}
+              </p>
+            </div>
+            <div className="log-input">
+              <h1>Name</h1>
+              <Input
+                type="text"
+                placeholder="Enter your name"
+                autoComplete="off"
+                name="name"
+                value={signUp}
+                setValue={setsignUp}
               />
-            )}
-            <p className="error text-elipsis">
-              {error && error["password"] ? error["password"][0] : ""}
-            </p>
-          </div>
+              <p className="error">
+                {error && error["name"] ? error["name"][0] : ""}
+              </p>
+            </div>
+            <div className="log-input">
+              <h1>Email</h1>
+              <Input
+                type="text"
+                placeholder="Enter your email"
+                autoComplete="off"
+                name="email"
+                value={signUp}
+                setValue={setsignUp}
+              />
+              <p className="error">
+                {error && error["email"] ? error["email"][0] : ""}
+              </p>
+            </div>
+            <div className="log-input">
+              <h1>Password</h1>
+              <Input
+                type={seePassword ? "text" : "password"}
+                placeholder="Enter your password"
+                autoComplete="off"
+                name="password"
+                value={signUp}
+                setValue={setsignUp}
+                onKeyDown={(e) => e.key === "Enter" && signup(e)}
+              />
+              {seePassword ? (
+                <img
+                  src={hidePassword}
+                  alt="hideEye"
+                  onClick={() => setSeePassword(!seePassword)}
+                  className="seeOrHidePassword"
+                />
+              ) : (
+                <img
+                  src={showPassword}
+                  alt="hideEye"
+                  onClick={() => setSeePassword(!seePassword)}
+                  className="seeOrHidePassword"
+                />
+              )}
+              <p className="error">
+                {error && error["password"] ? error["password"][0] : ""}
+              </p>
+            </div>
 
-          <div className="login-to-signup">
-            <p>
-              Have an account?
-              <span onClick={() => setLoginToggle(true)}> Login</span>
-            </p>
-          </div>
+            <div className="login-to-signup">
+              <p>
+                Have an account?
+                <span onClick={() => setLoginToggle(true)}> Login</span>
+              </p>
+            </div>
 
-          <Button
-            className="loginButton"
-            loading={signupLoading}
-            onClick={(e) => signup(e)}
-          >
-            SignUp
-          </Button>
+            <Button
+              className="loginButton"
+              loading={signupLoading}
+              onClick={(e) => signup(e)}
+            >
+              SignUp
+            </Button>
+          </div>
         </div>
       </div>
     </>
