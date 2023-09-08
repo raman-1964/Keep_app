@@ -39,19 +39,27 @@ export const chatReducer = (state = initialState, action) => {
     case CREATE_CHAT_FAILED:
       return { ...state, createChatLoading: false };
 
-    case UPDATE_CHAT_LATEST_MESSAGE:
+    case UPDATE_CHAT_LATEST_MESSAGE: {
       const { chatId, latestMessage } = action.payload;
-      const updatedChats = state.chats.map((chat) => {
-        if (chat._id === chatId)
+      let index = -1;
+      const updatedChats = state.chats.map((chat, ind) => {
+        if (chat._id === chatId) {
+          index = ind;
           return {
             ...chat,
             latestMessage,
           };
+        }
         return chat;
       });
 
-      return { ...state, chats: updatedChats };
+      if (index !== -1) {
+        const [newestChat] = updatedChats.splice(index, 1);
+        updatedChats.unshift(newestChat);
+      }
 
+      return { ...state, chats: updatedChats };
+    }
     default:
       return state;
   }

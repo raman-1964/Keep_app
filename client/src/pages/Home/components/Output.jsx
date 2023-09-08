@@ -32,7 +32,7 @@ const Output = forwardRef(
     return (
       <>
         <div className="card-cont" ref={ref}>
-          <div className="cards">
+          <div className="cards scrollbar">
             <h3>{titleContent}</h3>
             <p>{textContent}</p>
           </div>

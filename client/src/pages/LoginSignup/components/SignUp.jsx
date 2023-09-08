@@ -59,7 +59,7 @@ function SignUp({ setLoginToggle }) {
               value={signUp}
               setValue={setsignUp}
             />
-            <p className="error">
+            <p className="error text-elipsis">
               {error && error["name"] ? error["name"][0] : ""}
             </p>
           </div>
@@ -73,7 +73,7 @@ function SignUp({ setLoginToggle }) {
               value={signUp}
               setValue={setsignUp}
             />
-            <p className="error">
+            <p className="error text-elipsis">
               {error && error["name"] ? error["name"][0] : ""}
             </p>
           </div>
@@ -87,7 +87,7 @@ function SignUp({ setLoginToggle }) {
               value={signUp}
               setValue={setsignUp}
             />
-            <p className="error">
+            <p className="error text-elipsis">
               {error && error["email"] ? error["email"][0] : ""}
             </p>
           </div>
@@ -117,7 +117,7 @@ function SignUp({ setLoginToggle }) {
                 className="seeOrHidePassword"
               />
             )}
-            <p className="error">
+            <p className="error text-elipsis">
               {error && error["password"] ? error["password"][0] : ""}
             </p>
           </div>

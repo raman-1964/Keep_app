@@ -3,7 +3,10 @@ import "./ChatPage.css";
 import { useDispatch, useSelector } from "react-redux";
 import Input from "../../widgets/Input";
 import Search from "./components/Search";
-import { getAllChatRequest } from "../../store/Actions/chatAction";
+import {
+  getAllChatRequest,
+  updateChatLatestMessage,
+} from "../../store/Actions/chatAction";
 import Spinner from "../../components/Spinner/Spinner";
 import {
   createMessageRequest,
@@ -14,12 +17,12 @@ import {
 import io from "socket.io-client";
 
 let socket;
-let selectedChatCompare = {};
 
 const ChatPage = () => {
   const dispatch = useDispatch();
 
   const bottomRef = useRef(null);
+  const [rows, setRows] = useState();
   const [isTyping, setIsTyping] = useState(null);
   const [selectedChat, setSelectedChat] = useState({});
   const [sendMessage, setSendMessage] = useState({
@@ -43,21 +46,43 @@ const ChatPage = () => {
   };
 
   const createMessage = (e) => {
-    e.preventDefault();
-    dispatch(
-      createMessageRequest({
-        data: {
-          msg: sendMessage.message,
+    if (e.keyCode === 8) {
+      if (sendMessage.message.endsWith("\n")) {
+        e.preventDefault();
+        setRows((prv) => prv - 1);
+        setSendMessage((prv) => {
+          return { message: prv.message.slice(0, -1) };
+        });
+      }
+    }
+    if (e.key === "Enter") {
+      if (e.shiftKey) {
+        setSendMessage((prevState) => {
+          return {
+            ...prevState,
+            [e.target.name]: e.target.value,
+          };
+        });
+        setRows((prv) => prv + 1);
+      } else {
+        dispatch(
+          createMessageRequest({
+            data: {
+              msg: sendMessage.message,
+              chatId: selectedChat._id,
+            },
+            socket,
+          })
+        );
+        setRows(1);
+        socket.emit("stop-typing", {
+          room: giveUserparams(selectedChat, "username"),
           chatId: selectedChat._id,
-        },
-        socket,
-      })
-    );
-    socket.emit("stop-typing", {
-      room: giveUserparams(selectedChat, "username"),
-      chatId: selectedChat._id,
-    });
-    setSendMessage({ message: "" });
+        });
+        setSendMessage({ message: "" });
+        e.preventDefault();
+      }
+    }
   };
 
   const msgNotif = useCallback(
@@ -87,11 +112,14 @@ const ChatPage = () => {
       chatId: selectedChat._id,
     });
 
+    const time = new Date().getTime();
     setTimeout(() => {
-      socket.emit("stop-typing", {
-        room: giveUserparams(selectedChat, "username"),
-        chatId: selectedChat._id,
-      });
+      const now = new Date().getTime();
+      if (now - time > 3000)
+        socket.emit("stop-typing", {
+          room: giveUserparams(selectedChat, "username"),
+          chatId: selectedChat._id,
+        });
     }, 3000);
   };
 
@@ -99,6 +127,9 @@ const ChatPage = () => {
     dispatch(getAllChatRequest());
     socket = io(process.env.REACT_APP_ENDPOINT);
     socket.emit("setup", loggedInUser);
+
+    const row = sendMessage.message.match(/\n/g)?.length || 1;
+    setRows(row);
   }, []);
 
   useEffect(() => {
@@ -115,9 +146,10 @@ const ChatPage = () => {
       if (willSeen.length)
         dispatch(seenedMessageRequest({ messages_id: willSeen }));
 
-      selectedChatCompare = selectedChat;
       socket.emit("join-chat", selectedChat._id);
     }
+
+    setSendMessage({ message: "" });
   }, [JSON.stringify(selectedChat)]);
 
   useEffect(() => {
@@ -127,10 +159,7 @@ const ChatPage = () => {
 
   useEffect(() => {
     function handleNewMessage(msg) {
-      if (
-        !selectedChatCompare._id ||
-        selectedChatCompare._id !== msg.chat._id
-      ) {
+      if (!selectedChat._id || selectedChat._id !== msg.chat._id) {
         // for giving notification
         dispatch(getAllUnseenMessageRequest(msg));
         dispatch(
@@ -140,7 +169,7 @@ const ChatPage = () => {
           })
         );
       } else {
-        if (selectedChatCompare._id === msg.chat._id)
+        if (selectedChat._id === msg.chat._id)
           dispatch(
             seenedMessageRequest({
               messages_id: [msg._id],
@@ -189,12 +218,12 @@ const ChatPage = () => {
                 onClick={() => setSelectedChat(chat)}
               >
                 <div className="img"></div>
-                <div className="chatData">
+                <div className="chatData text-elipsis">
                   <h1>{giveUserparams(chat, "username")}</h1>
                   {isTyping && isTyping === chat._id ? (
-                    <p>typing...</p>
+                    <p className="typing">typing...</p>
                   ) : (
-                    <p>{chat?.latestMessage?.msg}</p>
+                    <p className="text-elipsis ">{chat?.latestMessage?.msg}</p>
                   )}
                 </div>
                 {unseenMessage.length && msgNotif(chat) ? (
@@ -243,15 +272,19 @@ const ChatPage = () => {
             </div>
             <div className="msgInputCont">
               <Input
-                type="text"
+                type="textarea"
+                rows={rows}
                 placeholder="Type a message"
-                className="msgInput"
+                className="msgInput scrollbar"
                 autoComplete="off"
                 width="80%"
                 name="message"
                 value={sendMessage}
                 setValue={setSendMessage}
-                onKeyDown={(e) => e.key === "Enter" && createMessage(e)}
+                onKeyDown={(e) =>
+                  (e.key === "Enter" || e.key === "Backspace") &&
+                  createMessage(e)
+                }
                 onChange={(e) => typingfn(e)}
               />
             </div>

@@ -13,136 +13,123 @@
   background-color: whitesmoke;
 }
 .input {
-    height: 1.5rem;
-    width: 100%;
-    text-transform: capitalize;
-    font-weight: bolder;
-    padding: 0.6rem 1.42rem;
-    border: none;
-    outline: none;
-    border-radius: 0.81rem 0.81rem 0 0;
-    margin-bottom: 0.21rem;
-    background-color: whitesmoke;
-    padding-top: 1rem;
-  }
-  
-  .textarea {
-    width: 100%;
-    font-weight: lighter;
-    border: none;
-    padding: 0.7rem;
-    outline: none;
-    border-radius: 0 0 0.81rem 0.81rem;
-    background-color: whitesmoke;
-  }
+  height: 1.5rem;
+  width: 100%;
+  text-transform: capitalize;
+  font-weight: bolder;
+  padding: 0.6rem 1.42rem;
+  border: none;
+  outline: none;
+  border-radius: 0.81rem 0.81rem 0 0;
+  margin-bottom: 0.21rem;
+  background-color: whitesmoke;
+  padding-top: 1rem;
+}
+
+.textarea {
+  width: 100%;
+  font-weight: lighter;
+  border: none;
+  padding: 0.7rem;
+  outline: none;
+  border-radius: 0 0 0.81rem 0.81rem;
+  background-color: whitesmoke;
+}
 
 .inputContainer button {
-    background-color: yellow;
-    color: purple;
-    fill: purple;
-    border-radius: 50%;
-    height: 3rem;
-    width: 3rem;
-    display: grid;
-    place-items: center;
-    border: none;
-    outline: none;
-    position: absolute;
-    bottom: -0.71rem;
-    right: -0.71rem;
-    font-size: 1.5rem;
-    cursor: pointer;
-  }
-  
-  .error {
-    color: red;
-    font-size: 0.7rem;
-    font-weight: 600;
-    position: absolute;
-    bottom: -0.4rem;
-    right: 0.6rem;
-    background: white;
-    padding: 0 0.2rem;
-  }
-  .homeError {
-    right: 2rem;
-  }
-  
+  background-color: yellow;
+  color: purple;
+  fill: purple;
+  border-radius: 50%;
+  height: 3rem;
+  width: 3rem;
+  display: grid;
+  place-items: center;
+  border: none;
+  outline: none;
+  position: absolute;
+  bottom: -0.71rem;
+  right: -0.71rem;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.homeError {
+  right: 2rem;
+}
+
 /* output started */
 .output {
-    display: grid;
-    place-items: center;
-    max-width: 98%;
-    grid-template-columns: repeat(5, 2fr);
-    grid-gap: 3rem;
-    padding: 1rem;
-    padding-left: 2.4rem;
-    margin-top: 2rem;
-    position: relative;
-  }
-  
-  .card-cont {
-    position: relative;
-    box-shadow: 2.5px 2.5px 9px rgb(231, 231, 47);
-    width: 16.5vw;
-    border-radius: 0.91rem;
-  }
-  
-  .cards {
-    padding: 1rem;
-    max-height: 27vh;
-    overflow-x: hidden;
-    overflow-y: auto;
-    text-align: center;
-    background-color: whitesmoke;
-    border-top-right-radius: 0.91rem;
-    border-top-left-radius: 0.91rem;
-  }
-  
-  .cards h3 {
-    text-transform: capitalize;
-    font-weight: bolder;
-    letter-spacing: 1px;
-    margin-bottom: 1rem;
-  }
-  
-  .cards p {
-    font-weight: lighter;
-    font-size: 1rem;
-    text-align: start;
-  }
-  
-  .button_cnt {
-    padding: 0 1rem;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 0.2rem;
-  }
-  
-  .button_cnt button {
-    padding: 0.41rem;
-    border-radius: 0.2rem;
-    border: none;
-    outline: none;
-    font-size: 1.2rem;
-    cursor: pointer;
-    background: none;
-    transition: all 0.3s ease-in-out;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .button_cnt button:first-child {
-    color: red;
-  }
-  
-  .button_cnt button:nth-child(2) {
-    color: rgb(10, 10, 10);
-  }
-  
-  .cards::-webkit-scrollbar {
-    display: none;
-  }
-  
+  display: grid;
+  place-items: center;
+  max-width: 98%;
+  grid-template-columns: repeat(5, 2fr);
+  grid-gap: 3rem;
+  padding: 1rem;
+  padding-left: 2.4rem;
+  margin-top: 2rem;
+  position: relative;
+}
+
+.card-cont {
+  position: relative;
+  box-shadow: 0 2px 3px rgb(231, 231, 47);
+  width: 16.5vw;
+  border-radius: 0.9rem;
+}
+
+.cards {
+  padding: 1rem;
+  max-height: 27vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  text-align: center;
+  background-color: whitesmoke;
+  /* border-top-right-radius: 0.91rem; */
+  border-top-left-radius: 0.9rem;
+}
+
+.cards h3 {
+  text-transform: capitalize;
+  font-weight: bolder;
+  letter-spacing: 1px;
+  margin-bottom: 1rem;
+}
+
+.cards p {
+  font-weight: lighter;
+  font-size: 1rem;
+  text-align: start;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.button_cnt {
+  padding: 0 1rem;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.button_cnt button {
+  padding: 0.41rem;
+  border-radius: 0.2rem;
+  border: none;
+  outline: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  background: none;
+  transition: all 0.3s ease-in-out;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.button_cnt button:first-child {
+  color: red;
+}
+
+.button_cnt button:nth-child(2) {
+  color: rgb(10, 10, 10);
+}
