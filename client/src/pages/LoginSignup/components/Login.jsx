@@ -8,6 +8,7 @@ import Input from "../../../widgets/Input";
 import Logo from "../../../components/Logo/Logo";
 import hidePassword from "../../../assets/img/hidePassword.png";
 import showPassword from "../../../assets/img/showPassword.png";
+import { ReactComponent as LoginSideImg } from "../../../assets/svg/LoginSideImg.svg";
 
 function Login({ setLoginToggle }) {
   const dispatch = useDispatch();
@@ -42,66 +43,71 @@ function Login({ setLoginToggle }) {
   return (
     <>
       <div className="log-container">
-        <div className="login">
-          <Logo />
-          <div className="log-input">
-            <h1>Email</h1>
-            <Input
-              type="text"
-              placeholder="Enter your email"
-              autoComplete="off"
-              name="email"
-              value={loginData}
-              setValue={setLoginData}
-            />
-            <p className="error text-elipsis">
-              {error && error["email"] ? error["email"][0] : ""}
-            </p>
+        <div className="sideimgandformContainer">
+          <div className="side-img">
+            <LoginSideImg className="svgimg" />
           </div>
-          <div className="log-input">
-            <h1>Password</h1>
-            <Input
-              type={seePassword ? "text" : "password"}
-              placeholder="Enter your password"
-              autoComplete="off"
-              name="password"
-              value={loginData}
-              setValue={setLoginData}
-              onKeyDown={(e) => e.key === "Enter" && login(e)}
-            />
-            {seePassword ? (
-              <img
-                src={hidePassword}
-                alt="hideEye"
-                onClick={() => setSeePassword(!seePassword)}
-                className="seeOrHidePassword"
+          <div className="login-container">
+            <Logo />
+            <div className="log-input">
+              <h1>Email ID</h1>
+              <Input
+                type="text"
+                placeholder="Enter your email"
+                autoComplete="off"
+                name="email"
+                value={loginData}
+                setValue={setLoginData}
               />
-            ) : (
-              <img
-                src={showPassword}
-                alt="hideEye"
-                onClick={() => setSeePassword(!seePassword)}
-                className="seeOrHidePassword"
+              <p className="error">
+                {error && error["email"] ? error["email"][0] : ""}
+              </p>
+            </div>
+            <div className="log-input">
+              <h1>Password</h1>
+              <Input
+                type={seePassword ? "text" : "password"}
+                placeholder="Enter your password"
+                autoComplete="off"
+                name="password"
+                value={loginData}
+                setValue={setLoginData}
+                onKeyDown={(e) => e.key === "Enter" && login(e)}
               />
-            )}
-            <p className="error text-elipsis">
-              {error && error["password"] ? error["password"][0] : ""}
-            </p>
-          </div>
-          <div className="login-to-signup">
-            <p>
-              Don't have an account?
-              <span onClick={() => setLoginToggle(false)}> Sign up</span>
-            </p>
-          </div>
+              {seePassword ? (
+                <img
+                  src={hidePassword}
+                  alt="hideEye"
+                  onClick={() => setSeePassword(!seePassword)}
+                  className="seeOrHidePassword"
+                />
+              ) : (
+                <img
+                  src={showPassword}
+                  alt="hideEye"
+                  onClick={() => setSeePassword(!seePassword)}
+                  className="seeOrHidePassword"
+                />
+              )}
+              <p className="error">
+                {error && error["password"] ? error["password"][0] : ""}
+              </p>
+            </div>
+            <div className="login-to-signup">
+              <p>
+                Don't have an account?
+                <span onClick={() => setLoginToggle(false)}> Sign up</span>
+              </p>
+            </div>
 
-          <Button
-            className="loginButton"
-            loading={loginLoading}
-            onClick={(e) => login(e)}
-          >
-            Login
-          </Button>
+            <Button
+              className="loginButton"
+              loading={loginLoading}
+              onClick={(e) => login(e)}
+            >
+              Log In
+            </Button>
+          </div>
         </div>
       </div>
     </>
