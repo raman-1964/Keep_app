@@ -6,3 +6,39 @@
   font-family: "Montserrat", sans-serif;
 }
 
+.text-elipsis {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.error {
+  color: red;
+  font-size: 0.7rem;
+  font-weight: 600;
+  position: absolute;
+  bottom: -0.4rem;
+  right: 0.6rem;
+  background: white;
+  padding: 0 0.2rem;
+}
+
+.scrollbar::-webkit-scrollbar {
+  height: 0.3rem;
+  width: 0.3rem;
+}
+.scrollbar::-webkit-scrollbar-thumb {
+  background: #919191;
+  border-radius: 1rem;
+}
+.scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #919191;
+}
+.scrollbar::-webkit-scrollbar-track {
+  background: none;
+  border-radius: 10px;
+}
+.scrollbar::-webkit-scrollbar-track:hover,
+.scrollbar::-webkit-scrollbar-track:active {
+  background: none;
+}

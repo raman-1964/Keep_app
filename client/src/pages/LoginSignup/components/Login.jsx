@@ -54,7 +54,7 @@ function Login({ setLoginToggle }) {
               value={loginData}
               setValue={setLoginData}
             />
-            <p className="error">
+            <p className="error text-elipsis">
               {error && error["email"] ? error["email"][0] : ""}
             </p>
           </div>
@@ -84,7 +84,7 @@ function Login({ setLoginToggle }) {
                 className="seeOrHidePassword"
               />
             )}
-            <p className="error">
+            <p className="error text-elipsis">
               {error && error["password"] ? error["password"][0] : ""}
             </p>
           </div>

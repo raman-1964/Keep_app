@@ -91,6 +91,11 @@
 .chatData p {
   color: #fff;
   font-size: 0.9rem;
+  padding-right: 0.5rem;
+  width: 13rem;
+}
+.typing {
+  color: #05ca01 !important;
 }
 
 .msgCont {
@@ -127,13 +132,17 @@
   margin-bottom: 0.8rem;
 }
 .singlemsg {
-  width: auto;
+  /* width: auto; */
   background: #005c4b;
-  max-width: 55%;
+  max-width: 30rem;
   align-self: flex-start;
   padding: 0.3rem 1rem;
   color: #fff;
   border-radius: 0.4rem;
+}
+.singlemsg p {
+  white-space: pre-wrap;
+  word-wrap: break-word;
 }
 .msgInputCont {
   background: #202c33;
@@ -153,6 +162,9 @@
   border-radius: 0.2rem;
   background: #2a3942;
   color: #e6ebea;
+  height: auto;
+  overflow-y: auto;
+  max-height: 6rem;
 }
 .selectChat {
   width: 100%;
@@ -162,4 +174,3 @@
   align-items: center;
   color: #fff;
 }
-/* #2a3942  #202c33 */
