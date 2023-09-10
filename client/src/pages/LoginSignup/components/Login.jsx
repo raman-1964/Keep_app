@@ -16,12 +16,12 @@ function Login({ setLoginToggle }) {
   const [seePassword, setSeePassword] = useState(false);
 
   const [loginData, setLoginData] = useState({
-    email: "",
+    identifier: "",
     password: "",
   });
 
   const [error, setError] = useState({
-    email: "",
+    identifier: "",
     password: "",
   });
 
@@ -32,6 +32,7 @@ function Login({ setLoginToggle }) {
   const login = (e) => {
     e.preventDefault();
     const { isValid, errors } = loginAllValidation(loginData);
+    console.log("hello", isValid);
     if (isValid) dispatch(loginRequest(loginData));
     setError(errors);
   };
@@ -50,17 +51,17 @@ function Login({ setLoginToggle }) {
           <div className="login-container">
             <Logo />
             <div className="log-input">
-              <h1>Email ID</h1>
+              <h1>Email or UserName</h1>
               <Input
                 type="text"
-                placeholder="Enter your email"
+                placeholder="Enter your email or username"
                 autoComplete="off"
-                name="email"
+                name="identifier"
                 value={loginData}
                 setValue={setLoginData}
               />
               <p className="error">
-                {error && error["email"] ? error["email"][0] : ""}
+                {error && error["identifier"] ? error["identifier"][0] : ""}
               </p>
             </div>
             <div className="log-input">

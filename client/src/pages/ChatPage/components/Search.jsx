@@ -4,6 +4,7 @@ import AsyncSelect from "react-select/async";
 import authHeader from "../../../services/auth-header";
 import { useDispatch } from "react-redux";
 import { createChatRequest } from "../../../store/Actions/chatAction";
+import { debounceSearch } from "../../../utils/debounce";
 const BASE_URL = process.env.REACT_APP_URL;
 
 const Search = ({ setSelectedChat }) => {
@@ -24,17 +25,6 @@ const Search = ({ setSelectedChat }) => {
       .catch((err) => {
         console.log(err);
       });
-  };
-
-  const debounceSearch = (f, interval) => {
-    let timer = null;
-
-    return (...args) => {
-      clearTimeout(timer);
-      return new Promise((resolve) => {
-        timer = setTimeout(() => resolve(f(...args)), interval);
-      });
-    };
   };
 
   const handleSearch = (e) => {

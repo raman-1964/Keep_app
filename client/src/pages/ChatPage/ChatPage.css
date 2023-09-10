@@ -35,9 +35,9 @@
   overflow-y: scroll;
   padding-top: 0.3rem;
 }
-.chatHighlitcont::-webkit-scrollbar {
+/* .chatHighlitcont::-webkit-scrollbar {
   display: none;
-}
+} */
 .chatHighlitcont > div:last-child {
   border-bottom: 1px solid wheat;
 }
@@ -122,9 +122,9 @@
   gap: 0.6rem;
   flex-direction: column;
 }
-.allMsg::-webkit-scrollbar {
+/* .allMsg::-webkit-scrollbar {
   display: none;
-}
+} */
 .allMsg > div:first-child {
   margin-top: 0.8rem;
 }

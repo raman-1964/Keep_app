@@ -207,7 +207,7 @@ const ChatPage = () => {
     <div className="pageContainer">
       <div className="chatHighlitcontNDsearch">
         <Search setSelectedChat={setSelectedChat} />
-        <div className="chatHighlitcont">
+        <div className="chatHighlitcont noScrollbar">
           {chats.map((chat, ind) => {
             return (
               <div
@@ -250,7 +250,7 @@ const ChatPage = () => {
                 ) : null}
               </div>
             </div>
-            <div className="allMsg">
+            <div className="allMsg noScrollbar">
               {Message.map((msg, ind) => (
                 <div
                   key={`${msg._id}-${ind}`}
