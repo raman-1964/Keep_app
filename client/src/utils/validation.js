@@ -1,7 +1,7 @@
 import Validator from "validatorjs";
 
 const loginRule = {
-  email: "required|email",
+  identifier: "required|string",
   password: "required|string",
 };
 
