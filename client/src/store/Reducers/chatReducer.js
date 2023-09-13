@@ -10,32 +10,47 @@ import {
 
 const initialState = {
   chats: [],
+  isNextPage: true,
+  isNextPageLoading: false,
   chatLoading: false,
   createChatLoading: false,
 };
 
 export const chatReducer = (state = initialState, action) => {
   switch (action.type) {
-    case GET_ALL_CHAT_REQUEST:
-      return { ...state, chatLoading: true };
-
-    case GET_ALL_CHAT_SUCCESS:
-      return { ...state, chats: [...action.payload], chatLoading: false };
-
+    case GET_ALL_CHAT_REQUEST: {
+      let obj = {};
+      if (action.payload.page === 1) obj.chatLoading = true;
+      else obj.isNextPageLoading = true;
+      return { ...state, ...obj };
+    }
+    case GET_ALL_CHAT_SUCCESS: {
+      let obj = {};
+      if (action.payload.currentPage === 1) {
+        obj.chatLoading = false;
+        obj.chats = [...action.payload.allChats];
+      } else {
+        obj.isNextPageLoading = false;
+        obj.chats = [...state.chats, ...action.payload.allChats];
+      }
+      return {
+        ...state,
+        ...obj,
+        isNextPage: action.payload.next,
+      };
+    }
     case GET_ALL_CHAT_FAILED:
-      return { ...state, chatLoading: false };
+      return { ...state, chatLoading: false, isNextPageLoading: false };
 
     case CREATE_CHAT_REQUEST:
       return { ...state, createChatLoading: true };
-
     case CREATE_CHAT_SUCCESS:
       action.payload.setSelectedChat(action.payload.res);
       return {
         ...state,
-        chats: [action.payload.res, ...state.chat],
+        chats: [action.payload.res, ...state.chats],
         createChatLoading: false,
       };
-
     case CREATE_CHAT_FAILED:
       return { ...state, createChatLoading: false };
 
@@ -60,6 +75,7 @@ export const chatReducer = (state = initialState, action) => {
 
       return { ...state, chats: updatedChats };
     }
+
     default:
       return state;
   }

@@ -59,12 +59,19 @@
 }
 
 /* output started */
+.spinner-cont {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 10rem;
+}
 .output {
   display: grid;
   place-items: center;
-  max-width: 98%;
   grid-template-columns: repeat(5, 2fr);
   grid-gap: 3rem;
+  max-width: 98%;
   padding: 1rem;
   padding-left: 2.4rem;
   margin-top: 2rem;

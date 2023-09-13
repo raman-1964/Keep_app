@@ -2,10 +2,11 @@ import axios from "axios";
 import authHeader from "./auth-header";
 const BASE_URL = process.env.REACT_APP_URL;
 
-export const getAllChatRequestApi = async () => {
+export const getAllChatRequestApi = async (data) => {
   try {
     const res = await axios.get(BASE_URL + "/chat", {
       headers: { ...authHeader() },
+      params: { ...data },
     });
     return res.data;
   } catch (e) {
