@@ -15,21 +15,40 @@ import {
 
 const initialState = {
   Message: [],
+  isNextPage: true,
+  isNextPageLoading: false,
   MessageLoading: false,
+
   createMessageLoading: false,
   unseenMessage: [],
 };
 
 export const messageReducer = (state = initialState, action) => {
   switch (action.type) {
-    case GET_ALL_MESSAGE_REQUEST:
-      return { ...state, MessageLoading: true };
-
-    case GET_ALL_MESSAGE_SUCCESS:
-      return { ...state, Message: [...action.payload], MessageLoading: false };
+    case GET_ALL_MESSAGE_REQUEST: {
+      let obj = {};
+      if (action.payload.page === 1) obj.MessageLoading = true;
+      else obj.isNextPageLoading = true;
+      return { ...state, ...obj };
+    }
+    case GET_ALL_MESSAGE_SUCCESS: {
+      let obj = {};
+      if (action.payload.currentPage === 1) {
+        obj.MessageLoading = false;
+        obj.Message = [...action.payload.allMessages];
+      } else {
+        obj.isNextPageLoading = false;
+        obj.Message = [...action.payload.allMessages, ...state.Message];
+      }
+      return {
+        ...state,
+        ...obj,
+        isNextPage: action.payload.next,
+      };
+    }
 
     case GET_ALL_MESSAGE_FAILED:
-      return { ...state, MessageLoading: false };
+      return { ...state, MessageLoading: false, isNextPageLoading: false };
 
     case CREATE_MESSAGE_REQUEST:
       return { ...state, createMessageLoading: true };

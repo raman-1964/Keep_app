@@ -30,12 +30,41 @@ const createMessage = async (req, res, next) => {
 
 const getMessages = async (req, res, next) => {
   const { chatId } = req.query;
+  const count = await Message.find({ chat: chatId }).countDocuments();
+
+  let totalPages = 1,
+    currentPage = 1,
+    skip = 0,
+    limit = 0;
+  if (req.query.limit) limit = parseInt(req.query.limit);
+  if (limit > 0) totalPages = parseInt(Math.ceil(count / limit));
+  if (req.query.page) {
+    currentPage = parseInt(req.query.page);
+    skip = (currentPage - 1) * limit;
+    if (skip > count)
+      return res.status(400).send({ msg: "page number too high" });
+  }
+
   const allMessages = await Message.find({ chat: chatId })
+    .sort({ createdAt: -1 })
+    .skip(skip)
+    .limit(limit)
     .populate("sender", "-password")
-    .sort({ createdAt: 1 })
     .lean();
 
-  return res.status(200).send(allMessages);
+  const resp_data = {
+    prev: true,
+    next: true,
+    totalPages,
+    currentPage,
+    limit,
+  };
+  if (currentPage === 1) resp_data.prev = false;
+  if (currentPage >= totalPages) resp_data.next = false;
+
+  return res
+    .status(200)
+    .send({ allMessages: allMessages.reverse(), ...resp_data });
 };
 
 const getUnseenMessages = async (req, res, next) => {
