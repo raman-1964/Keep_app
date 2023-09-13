@@ -12,7 +12,8 @@ const register = async (req, res, next) => {
     if (error) return res.status(400).send(error.details[0].message);
 
     let newUser = await Users.findOne({ email });
-    if (newUser) res.status(400).send({ msg: "This email is already in used" });
+    if (newUser)
+      return res.status(400).send({ msg: "This email is already in used" });
 
     const salt = bcrypt.genSaltSync(10);
     const hashPassword = bcrypt.hashSync(password, salt);
@@ -38,15 +39,17 @@ const register = async (req, res, next) => {
 
 const login = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
+    const { identifier, password } = req.body;
 
-    const valUser = { email, password };
+    const valUser = { identifier, password };
     const { error } = validateLoginUser(valUser);
     if (error) return res.status(400).send(error.details[0].message);
 
-    const user = await Users.findOne({ email });
+    const user = await Users.findOne({
+      $or: [{ email: identifier }, { username: identifier }],
+    });
 
-    if (!user) res.status(400).send({ msg: "user not found" });
+    if (!user) return res.status(400).send({ msg: "user not found" });
 
     const isCorrect = await bcrypt.compare(password, user.password);
     if (!isCorrect)
@@ -63,4 +66,46 @@ const login = async (req, res, next) => {
   }
 };
 
-module.exports = { register, login };
+const suggestUserName = async (req, res, next) => {
+  try {
+    const { username } = req.body;
+
+    const user = await Users.findOne({ username });
+    if (!user) return res.send({ available: "success", suggestedUserName: [] });
+
+    const characters = ["_", ".", "-", "#", "!", "$", "@"];
+    const numbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
+    const suggestedUserName = [];
+    while (suggestedUserName.length < 3) {
+      let usrname = username;
+      if (Math.floor(Math.random() * 7) % 3 === 0)
+        usrname =
+          characters[Math.floor(Math.random() * 7)] +
+          usrname +
+          numbers[Math.floor(Math.random() * 10)];
+      else if (Math.floor(Math.random() * 7) % 3 === 1)
+        usrname =
+          characters[Math.floor(Math.random() * 7)] +
+          characters[Math.floor(Math.random() * 7)] +
+          usrname +
+          characters[Math.floor(Math.random() * 7)] +
+          numbers[Math.floor(Math.random() * 10)];
+      else
+        usrname =
+          characters[Math.floor(Math.random() * 7)] +
+          usrname +
+          numbers[Math.floor(Math.random() * 7)] +
+          numbers[Math.floor(Math.random() * 10)];
+
+      const usrnamePresentOrNot = await Users.findOne({ username: usrname });
+      if (!usrnamePresentOrNot && !suggestedUserName.includes(usrname))
+        suggestedUserName.push(usrname);
+    }
+
+    res.send({ available: "rejected", suggestedUserName });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+module.exports = { register, login, suggestUserName };
