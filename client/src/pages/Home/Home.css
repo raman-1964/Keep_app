@@ -1,14 +1,160 @@
 /* input container started */
+.notesContainer {
+  height: calc(100vh - 3.5rem);
+  border-top: 0.2rem solid white;
+  background: linear-gradient(
+    to right,
+    #b1a2eb 0%,
+    #b1a2eb 50%,
+    #fff 50%,
+    #fff 100%
+  );
+  display: grid;
+  place-items: center;
+}
+
+.centerNoteContainer {
+  background-color: aqua;
+  width: 93%;
+  height: 94%;
+  border-radius: 0.3rem;
+  background: #f5f5f5;
+  box-shadow: 0px 4px 26px 0px rgba(0, 0, 0, 0.25);
+  display: grid;
+  grid-template-columns: 21.3% 78.7%;
+  grid-template-rows: 3rem calc(100% - 3rem);
+  overflow-y: hidden;
+}
+
+.centerNotesNavbar {
+  display: flex;
+  align-items: center;
+  background: rgb(255, 255, 255);
+  height: 3rem;
+  grid-column-start: 1;
+  grid-column-end: 3;
+  grid-gap: 0 0;
+}
+.blankSpace {
+  width: 27%;
+  height: 100%;
+  background: #826cdd;
+}
+.searchAndProfilrContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.SearchContainer {
+  display: flex;
+  align-items: center;
+  margin: 0rem 2rem;
+  position: relative;
+  width: 50%;
+}
+
+.SearchContainer img {
+  height: 2rem;
+  position: absolute;
+  top: 4px;
+  left: 10px;
+}
+
+.SearchContainer input {
+  height: 2.5rem;
+  background: #f5f5f5;
+  border-style: none;
+  outline: none;
+  border-radius: 0.25rem;
+  width: 100%;
+}
+
+.SearchContainer input:valid {
+  padding-left: 3rem;
+}
+
+.user-profile {
+  margin-right: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.user-profile img {
+  height: 2rem;
+  width: 2rem;
+  border-radius: 50%;
+  background: red;
+}
+.user-profile span {
+  color: #826cdd;
+}
+
+.FolderNavigationContainer {
+  height: 100%;
+  width: 100%;
+  background: #b1a2eb;
+  border-top: 2px solid white;
+  padding: 0.5rem;
+  font-size: 1rem;
+  color: white;
+  display: flex;
+  flex-direction: column;
+}
+
+.FolderNavigationContainer button {
+  margin-bottom: 1rem;
+  outline: none;
+  border-style: none;
+  background: none;
+  font-size: 1rem;
+  color: white;
+}
+.FolderNavigationContainer ul {
+  padding-left: 1rem;
+}
+
+.FolderNavigationContainer ul li {
+  list-style: none;
+  margin-bottom: 1rem;
+}
+
+.InputOutputNotes {
+  border-top: 2px solid white;
+  overflow-y: scroll;
+}
+
+.addnewnotebtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  color: #826cdd;
+  background: none;
+  outline: none;
+  border-style: none;
+  cursor: pointer;
+  margin: 1rem 0rem 0.2rem 1rem;
+  font-size: 1rem;
+  font-weight: bolder;
+}
+
+.addnewnotebtn img {
+  height: 2rem;
+}
+
 .inputContainer {
   margin: auto;
-  margin-top: 2rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 25%;
-  border-radius: 0.81rem;
-  box-shadow: 2.5px 2.5px 8px rgb(231, 231, 47);
+  width: 35%;
+  border-radius: 0.3rem;
+  box-shadow: 0px 0px 4px rgb(157 133 229);
   position: relative;
   background-color: whitesmoke;
 }
@@ -17,13 +163,16 @@
   width: 100%;
   text-transform: capitalize;
   font-weight: bolder;
-  padding: 0.6rem 1.42rem;
+  padding: 1.2rem 0.7rem;
   border: none;
   outline: none;
-  border-radius: 0.81rem 0.81rem 0 0;
-  margin-bottom: 0.21rem;
-  background-color: whitesmoke;
-  padding-top: 1rem;
+  border-radius: 0.3rem 0.3rem 0 0;
+  background-color: antiquewhite;
+  text-align: center;
+}
+.input::placeholder {
+  font-style: italic;
+  text-align: center;
 }
 
 .textarea {
@@ -32,14 +181,19 @@
   border: none;
   padding: 0.7rem;
   outline: none;
-  border-radius: 0 0 0.81rem 0.81rem;
+  border-radius: 0 0 0.3rem 0.3rem;
   background-color: whitesmoke;
+}
+.textarea::placeholder {
+  font-style: italic;
+}
+
+.textarea:valid {
+  color: slategray;
 }
 
 .inputContainer button {
-  background-color: yellow;
-  color: purple;
-  fill: purple;
+  background-color: #e1b9f3;
   border-radius: 50%;
   height: 3rem;
   width: 3rem;
@@ -48,52 +202,55 @@
   border: none;
   outline: none;
   position: absolute;
-  bottom: -0.71rem;
-  right: -0.71rem;
-  font-size: 1.5rem;
+  bottom: -0.7rem;
+  right: -0.7rem;
   cursor: pointer;
 }
 
 .homeError {
-  right: 2rem;
+  right: 2rem !important;
 }
 
 /* output started */
 .output {
   display: grid;
   place-items: center;
-  max-width: 98%;
-  grid-template-columns: repeat(5, 2fr);
-  grid-gap: 3rem;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 1.3rem;
   padding: 1rem;
-  padding-left: 2.4rem;
   margin-top: 2rem;
   position: relative;
 }
 
 .card-cont {
   position: relative;
-  box-shadow: 0 2px 3px rgb(231, 231, 47);
-  width: 16.5vw;
-  border-radius: 0.9rem;
+  width: 100%;
+  height: 14rem;
+  border-radius: 0.3rem;
+  background: rgba(232, 232, 232, 0.8);
+  transition: all 0.3s ease-in-out;
+  border: 1px solid #ccc;
+}
+
+.card-cont:hover {
+  box-shadow: 0 0 16px rgba(33, 33, 33, 0.2);
 }
 
 .cards {
-  padding: 1rem;
-  max-height: 27vh;
+  padding: 0.5rem;
   overflow-x: hidden;
   overflow-y: auto;
   text-align: center;
-  background-color: whitesmoke;
-  /* border-top-right-radius: 0.91rem; */
-  border-top-left-radius: 0.9rem;
+  border-radius: 0.3rem 0.3rem 0 0;
+  height: 84%;
 }
 
 .cards h3 {
   text-transform: capitalize;
-  font-weight: bolder;
+  font-weight: bold;
   letter-spacing: 1px;
   margin-bottom: 1rem;
+  font-family: none;
 }
 
 .cards p {
@@ -102,14 +259,19 @@
   text-align: start;
   white-space: pre-wrap;
   word-wrap: break-word;
+  color: slategray;
 }
 
 .button_cnt {
   padding: 0 1rem;
-  display: flex;
   justify-content: space-evenly;
   align-items: center;
   gap: 0.2rem;
+  display: none;
+}
+
+.card-cont:hover .button_cnt{
+  display: flex;
 }
 
 .button_cnt button {
@@ -120,11 +282,12 @@
   font-size: 1.2rem;
   cursor: pointer;
   background: none;
-  transition: all 0.3s ease-in-out;
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
+
 
 .button_cnt button:first-child {
   color: red;
@@ -132,4 +295,55 @@
 
 .button_cnt button:nth-child(2) {
   color: rgb(10, 10, 10);
+}
+
+@media only screen and (max-width: 1024px) {
+  .inputContainer {
+    width: 50%;
+  }
+  .output {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .inputContainer {
+    width: 70%;
+  }
+  .centerNoteContainer {
+    grid-template-rows: 3rem auto calc(100% - 3rem);
+    overflow-y: hidden;
+  }
+
+  .blankSpace {
+    display: none;
+  }
+  .FolderNavigationContainer {
+    grid-column-start: 1;
+    grid-column-end: 3;
+  }
+  .FolderNavigationContainer ul {
+    display: flex;
+    gap: 1rem;
+  }
+  .InputOutputNotes {
+    grid-column-start: 1;
+    grid-column-end: 3;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .inputContainer {
+    width: 90%;
+  }
+  .output {
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  .input::placeholder {
+    font-size: 0.7rem;
+  }
+  .cards h3 {
+    font-size: 1rem;
+  }
 }

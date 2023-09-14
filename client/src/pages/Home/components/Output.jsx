@@ -36,7 +36,7 @@ const Output = forwardRef(
             <h3>{titleContent}</h3>
             <p>{textContent}</p>
           </div>
-          <hr />
+          {/* <hr /> */}
           <div className="button_cnt">
             <Button
               spinnerClassName="spinnerClassName"

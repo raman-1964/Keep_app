@@ -5,7 +5,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  /* background:linear-gradient(0.25turn,#e0dfe0,#ddc3ff,#d9dbff); */
+  background:linear-gradient(0.25turn,#e0dfe0,#ddc3ff,#d9dbff);
 }
 .sideimgandformContainer {
   width: 70%;
@@ -42,7 +42,7 @@
   align-items: flex-start;
   background-color: rgba(250, 250, 250, 0.2);
   border-radius: 1rem 1rem 1rem 1rem;
-  padding: 0rem 1rem;
+  padding: 1rem 1rem;
   margin: 0px 0px 1rem;
 }
 

@@ -1,6 +1,6 @@
 .navbar {
-  background-color: yellow;
-  height: 3rem;
+  background-color: #b1a2eb;
+  height: 3.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -30,4 +30,25 @@
   font-size: 0.7rem;
   border-radius: 1rem;
   padding: 0.1rem 0.5rem;
+}
+
+.icons button {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+.icons button span {
+  font-size: 1rem;
+  font-weight: bolder;
+}
+
+@media only screen and (max-width:768px) {
+  .icons button span{
+    display: none;
+  }
+}
+@media only screen and (max-width:425px) {
+  .navbar{
+    padding: 0rem 0.8rem;
+  }
 }
