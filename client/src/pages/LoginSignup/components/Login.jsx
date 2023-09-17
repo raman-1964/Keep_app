@@ -31,7 +31,6 @@ function Login({ setLoginToggle }) {
   const login = (e) => {
     e.preventDefault();
     const { isValid, errors } = loginAllValidation(loginData);
-    console.log("hello", isValid);
     if (isValid) dispatch(loginRequest(loginData));
     setError(errors);
   };
@@ -42,16 +41,15 @@ function Login({ setLoginToggle }) {
 
   return (
     <>
-
       <div className="login-container">
         <Logo />
         <div className="log-input">
-              <h1>Email or UserName</h1>
-              <Input
-                type="text"
-                placeholder="Enter your email or username"
+          <h1>Email or UserName</h1>
+          <Input
+            type="text"
+            placeholder="Enter your email or username"
             autoComplete="off"
-            name="email"
+            name="identifier"
             value={loginData}
             setValue={setLoginData}
           />
