@@ -152,7 +152,7 @@ function SignUp({ setLoginToggle }) {
             autoComplete="off"
             name="name"
             value={signUp}
-            setValue={setsignUp}
+            setValue={setSignUp}
           />
           <p className="error">
             {error && error["name"] ? error["name"][0] : ""}
@@ -166,7 +166,7 @@ function SignUp({ setLoginToggle }) {
             autoComplete="off"
             name="email"
             value={signUp}
-            setValue={setsignUp}
+            setValue={setSignUp}
           />
           <p className="error">
             {error && error["email"] ? error["email"][0] : ""}
@@ -180,7 +180,7 @@ function SignUp({ setLoginToggle }) {
             autoComplete="off"
             name="password"
             value={signUp}
-            setValue={setsignUp}
+            setValue={setSignUp}
             onKeyDown={(e) => e.key === "Enter" && signup(e)}
           />
           <img
