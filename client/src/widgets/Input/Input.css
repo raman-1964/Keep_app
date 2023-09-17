@@ -1,0 +1,13 @@
+.input {
+  width: 100%;
+  height: 2.4rem;
+  padding: 0.6rem 1.2rem;
+  outline: none;
+  border: none;
+  whitespace: pre-wrap;
+  border-radius: 0.3rem;
+}
+
+.textarea {
+  resize: none;
+}

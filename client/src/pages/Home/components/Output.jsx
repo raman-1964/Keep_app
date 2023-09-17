@@ -8,7 +8,7 @@ import {
   likeNoteRequest,
   unlikeNoteRequest,
 } from "../../../store/Actions/noteAction";
-import Button from "../../../widgets/Button";
+import Button from "../../../widgets/Button/Button";
 
 const Output = forwardRef(
   (
@@ -19,7 +19,11 @@ const Output = forwardRef(
       isFavorite = false,
       setNote,
       setToggle,
-      toggle,
+      selectedColor = {
+        bg: " #e8e8e899",
+        txt: " #708090",
+      },
+      setColorCode,
     },
     ref
   ) => {
@@ -32,30 +36,32 @@ const Output = forwardRef(
     return (
       <>
         <div className="card-cont" ref={ref}>
-          <div className="cards scrollbar">
+          <div
+            className="cards scrollbar"
+            style={{
+              background: `${selectedColor.bg}`,
+              color: `${selectedColor.txt}`,
+            }}
+          >
             <h3>{titleContent}</h3>
             <p>{textContent}</p>
           </div>
-          {/* <hr /> */}
           <div className="button_cnt">
             <Button
-              spinnerClassName="spinnerClassName"
+              spinnerClassName="deleteSpinnerClassName"
               loading={deleteNoteLoading.includes(id)}
               onClick={deletei}
             >
               <Delete />
             </Button>
             <Button
-              style={{
-                backgroundColor: `${toggle === id ? "yellow" : ""}`,
-                color: `${toggle === id ? "purple" : ""}`,
-              }}
               onClick={() => {
                 setNote({
                   title: titleContent,
                   text: textContent,
                 });
                 setToggle(id);
+                setColorCode(selectedColor);
               }}
             >
               <Edit />

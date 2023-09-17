@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { loginRequest } from "../../../store/Actions/loginAction";
 import { loginAllValidation } from "../../../utils/validation";
-import Button from "../../../widgets/Button";
-import Input from "../../../widgets/Input";
+import Button from "../../../widgets/Button/Button";
+import Input from "../../../widgets/Input/Input";
 import Logo from "../../../components/Logo/Logo";
 import hidePassword from "../../../assets/img/hidePassword.png";
 import showPassword from "../../../assets/img/showPassword.png";
@@ -46,6 +46,7 @@ function Login({ setLoginToggle }) {
         <div className="log-input">
           <h1>Email ID</h1>
           <Input
+            className="input"
             type="text"
             placeholder="Enter your email"
             autoComplete="off"
@@ -60,6 +61,7 @@ function Login({ setLoginToggle }) {
         <div className="log-input">
           <h1>Password</h1>
           <Input
+            className="input"
             type={seePassword ? "text" : "password"}
             placeholder="Enter your password"
             autoComplete="off"
@@ -91,6 +93,7 @@ function Login({ setLoginToggle }) {
           className="loginButton"
           loading={loginLoading}
           onClick={(e) => login(e)}
+          spinnerTheme="light"
         >
           Log In
         </Button>

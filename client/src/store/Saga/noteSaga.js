@@ -43,22 +43,29 @@ function* getNote(action) {
 
 function* addNote(action) {
   try {
-    const res = yield call(addNoteApi, action.payload);
+    const res = yield call(addNoteApi, { ...action.payload.data });
+    action.payload.setInputModal(false);
     toast.success("note added successfully", defaultToastSetting);
     yield put(addNoteSuccess(res));
   } catch (error) {
     toast.error(`${error}`, defaultToastSetting);
+    action.payload.setInputModal(false);
     yield put(addNoteFailed(error));
   }
 }
 
 function* updateNote(action) {
   try {
-    const res = yield call(updateNoteApi, action.payload);
+    const res = yield call(updateNoteApi, {
+      note: action.payload.data,
+      id: action.payload.id,
+    });
+    action.payload.setToggle(null);
     toast.success("note updated successfully", defaultToastSetting);
     yield put(updateNoteSuccess(res));
   } catch (error) {
     toast.error(`${error}`, defaultToastSetting);
+    action.payload.setToggle(null);
     yield put(updateNoteFailed(error));
   }
 }

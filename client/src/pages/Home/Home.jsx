@@ -1,22 +1,29 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import Navbar from "../../components/Navbar/Navbar";
 import Output from "./components/Output";
 import InputHome from "./components/InputHome";
 import { useDispatch, useSelector } from "react-redux";
 import { getNoteRequest } from "../../store/Actions/noteAction";
 import "./Home.css";
 import SearchIcon from "../../assets/img/searchIcon.png";
-import AddBtn from "../../assets/img/addBtn.png";
+import Modal from "../../widgets/Modal/Modal";
+import Input from "../../widgets/Input/Input";
+import Button from "../../widgets/Button/Button";
+import NoteDropdown from "../../components/NoteDropdown/NoteDropdown";
 
 function Home() {
   const { notes, addnoteLoading, updateNoteLoading } = useSelector(
     (state) => state.noteReducer
   );
   const dispatch = useDispatch();
+  const [search, setSearch] = useState({ searchValue: "" });
 
+  const [inputModal, setInputModal] = useState(false);
+  const [newFolderModal, setNewFolderModal] = useState(false);
+  const [newFolderName, setNewFolderName] = useState({ folder: "" });
   const [note, setNote] = useState({ title: "", text: "" });
+  const [colorCode, setColorCode] = useState({});
   const [error, setError] = useState({ title: "", text: "" });
-  const [toggleId, setToggleId] = useState("");
+  const [toggleId, setToggleId] = useState(null);
   const [page, setPage] = useState(1);
   const observer = useRef();
 
@@ -53,34 +60,42 @@ function Home() {
             <div className="searchAndProfilrContainer">
               <div className="SearchContainer">
                 <img src={SearchIcon} />
-                <input type="text" placeholder="Search" />
-              </div>
-              <div className="user-profile">
-                <img src="" />
-                <span>Hello, Sumit! </span>
+                <Input
+                  type="text"
+                  className="search"
+                  placeholder="Search"
+                  name="searchValue"
+                  value={search.searchValue}
+                  setValue={setSearch}
+                />
               </div>
             </div>
           </div>
-          <div className="FolderNavigationContainer">
-            <button>+ Add New</button>
-            <ul>
-              <li>Personal</li>
-              <li>Shared</li>
-              <li>Liked</li>
-            </ul>
+          <div className="FolderNavigationContainer noscrollbar">
+            <Button
+              className="addnewfolderbtn"
+              onClick={() => setNewFolderModal(true)}
+            >
+              + Add New
+            </Button>
+            {[...Array(2).keys()].map((_, ind) => (
+              <NoteDropdown key={`noteDropdown-${ind}`} />
+            ))}
           </div>
-          <div className="InputOutputNotes">
-            <button className="addnewnotebtn"><img src={AddBtn}/>Add New Note</button>
-            <InputHome
-              note={note}
-              setNote={setNote}
-              toggle={toggleId}
-              setToggle={setToggleId}
-              error={error}
-              setError={setError}
-              addnoteLoading={addnoteLoading}
-              updateNoteLoading={updateNoteLoading}
-            />
+          <div className="InputOutputNotes scrollbar">
+            <Button
+              className="addnewnotebtn"
+              onClick={() => {
+                setInputModal(true);
+                setColorCode({
+                  bg: " #e8e8e899",
+                  txt: " #708090",
+                });
+              }}
+            >
+              + Add New Note
+            </Button>
+
             <div className="output">
               {notes?.map((cur, ind) => {
                 return (
@@ -89,11 +104,12 @@ function Home() {
                     ref={ind == notes.length - 1 ? lastElementRef : undefined}
                     id={cur._id}
                     titleContent={cur.title}
+                    selectedColor={cur?.colorCode}
+                    setColorCode={setColorCode}
                     textContent={cur.text}
                     isFavorite={cur?.isFavorite}
                     setNote={setNote}
                     setToggle={setToggleId}
-                    toggle={toggleId}
                   />
                 );
               })}
@@ -101,6 +117,54 @@ function Home() {
           </div>
         </div>
       </div>
+
+      <Modal
+        onClose={() => {
+          setColorCode({});
+          setNote({ title: "", text: "" });
+          setError({ title: "", text: "" });
+          setInputModal(false);
+          setToggleId(null);
+        }}
+        isModal={inputModal || toggleId}
+        showCloseButton
+        className="modal"
+      >
+        <InputHome
+          note={note}
+          setNote={setNote}
+          toggle={toggleId}
+          setToggle={setToggleId}
+          error={error}
+          setError={setError}
+          setInputModal={setInputModal}
+          setColorCode={setColorCode}
+          selectedColor={colorCode}
+          addnoteLoading={addnoteLoading}
+          updateNoteLoading={updateNoteLoading}
+        />
+      </Modal>
+
+      <Modal
+        isModal={newFolderModal}
+        showCloseButton
+        onClose={() => setNewFolderModal(false)}
+        className="modal"
+      >
+        <div className="addFolder">
+          <h1 className="modalHeading">Add New Folder</h1>
+          <Input
+            type="text"
+            placeholder="Enter your folder name"
+            className="input"
+            autoComplete="off"
+            name="folder"
+            value={newFolderName}
+            setValue={setNewFolderName}
+          />
+          <Button>Create</Button>
+        </div>
+      </Modal>
     </>
   );
 }

@@ -56,41 +56,14 @@
 }
 
 .SearchContainer img {
-  height: 2rem;
+  height: 1.5rem;
   position: absolute;
-  top: 4px;
-  left: 10px;
+  top: 0.4rem;
+  left: 0.2rem;
 }
-
-.SearchContainer input {
-  height: 2.5rem;
+.SearchContainer .search {
   background: #f5f5f5;
-  border-style: none;
-  outline: none;
-  border-radius: 0.25rem;
-  width: 100%;
-}
-
-.SearchContainer input:valid {
-  padding-left: 3rem;
-}
-
-.user-profile {
-  margin-right: 2rem;
-  height: 2rem;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-}
-.user-profile img {
-  height: 2rem;
-  width: 2rem;
-  border-radius: 50%;
-  background: red;
-}
-.user-profile span {
-  color: #826cdd;
+  padding-left: 2.5rem;
 }
 
 .FolderNavigationContainer {
@@ -98,113 +71,69 @@
   width: 100%;
   background: #b1a2eb;
   border-top: 2px solid white;
-  padding: 0.5rem;
   font-size: 1rem;
   color: white;
   display: flex;
+  padding: 0 0.3rem;
+  overflow-y: auto;
   flex-direction: column;
 }
 
 .FolderNavigationContainer button {
-  margin-bottom: 1rem;
-  outline: none;
-  border-style: none;
   background: none;
-  font-size: 1rem;
-  color: white;
-}
-.FolderNavigationContainer ul {
-  padding-left: 1rem;
-}
-
-.FolderNavigationContainer ul li {
-  list-style: none;
-  margin-bottom: 1rem;
 }
 
 .InputOutputNotes {
   border-top: 2px solid white;
   overflow-y: scroll;
 }
-
+.addnewfolderbtn {
+  width: fit-content;
+  margin: 0.5rem auto;
+}
 .addnewnotebtn {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 0.3rem;
+  justify-content: flex-start;
   color: #826cdd;
+  width: auto;
   background: none;
-  outline: none;
-  border-style: none;
-  cursor: pointer;
-  margin: 1rem 0rem 0.2rem 1rem;
-  font-size: 1rem;
+  filter: drop-shadow(5px 5px 5px rgba(183, 82, 230, 0.3));
+  font-size: 1.1rem;
+  margin-left: 2rem;
   font-weight: bolder;
-}
-
-.addnewnotebtn img {
-  height: 2rem;
 }
 
 .inputContainer {
-  margin: auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  width: 35%;
-  border-radius: 0.3rem;
-  box-shadow: 0px 0px 4px rgb(157 133 229);
+  align-items: flex-start;
+  width: 100%;
+}
+.inputCont {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
   position: relative;
-  background-color: whitesmoke;
-}
-.input {
-  height: 1.5rem;
   width: 100%;
-  text-transform: capitalize;
-  font-weight: bolder;
-  padding: 1.2rem 0.7rem;
-  border: none;
-  outline: none;
-  border-radius: 0.3rem 0.3rem 0 0;
-  background-color: antiquewhite;
-  text-align: center;
 }
-.input::placeholder {
-  font-style: italic;
-  text-align: center;
+.inputCont h1 {
+  font-size: 0.8rem;
+  margin-bottom: 0.2rem;
+  padding-left: 0.2rem;
 }
-
+.inputCont .input,
+.addFolder .input {
+  border: 0.1rem solid rgb(202 197 233);
+}
 .textarea {
-  width: 100%;
-  font-weight: lighter;
-  border: none;
-  padding: 0.7rem;
-  outline: none;
-  border-radius: 0 0 0.3rem 0.3rem;
-  background-color: whitesmoke;
-}
-.textarea::placeholder {
-  font-style: italic;
+  height: 10rem;
 }
 
-.textarea:valid {
-  color: slategray;
-}
-
-.inputContainer button {
-  background-color: #e1b9f3;
-  border-radius: 50%;
-  height: 3rem;
-  width: 3rem;
-  display: grid;
-  place-items: center;
-  border: none;
-  outline: none;
-  position: absolute;
-  bottom: -0.7rem;
-  right: -0.7rem;
-  cursor: pointer;
+.inputContainer button,
+.addFolder button {
+  background: #826cdd;
 }
 
 .homeError {
@@ -215,7 +144,7 @@
 .output {
   display: grid;
   place-items: center;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   grid-gap: 1.3rem;
   padding: 1rem;
   margin-top: 2rem;
@@ -227,7 +156,6 @@
   width: 100%;
   height: 14rem;
   border-radius: 0.3rem;
-  background: rgba(232, 232, 232, 0.8);
   transition: all 0.3s ease-in-out;
   border: 1px solid #ccc;
 }
@@ -242,15 +170,19 @@
   overflow-y: auto;
   text-align: center;
   border-radius: 0.3rem 0.3rem 0 0;
-  height: 84%;
+  height: 100%;
 }
-
+.card-cont:hover .cards {
+  height: 85%;
+}
 .cards h3 {
   text-transform: capitalize;
-  font-weight: bold;
+  font-weight: 700;
+  font-size: 1rem;
   letter-spacing: 1px;
   margin-bottom: 1rem;
-  font-family: none;
+  white-space: pre-wrap;
+  word-wrap: break-word;
 }
 
 .cards p {
@@ -259,35 +191,35 @@
   text-align: start;
   white-space: pre-wrap;
   word-wrap: break-word;
-  color: slategray;
 }
 
 .button_cnt {
   padding: 0 1rem;
+  border-radius: 0 0 0.3rem 0.3rem;
+  background: #f6f6f6;
   justify-content: space-evenly;
   align-items: center;
   gap: 0.2rem;
+  height: 0%;
   display: none;
 }
 
-.card-cont:hover .button_cnt{
+.card-cont:hover .button_cnt {
+  height: 15%;
   display: flex;
 }
 
 .button_cnt button {
-  padding: 0.41rem;
-  border-radius: 0.2rem;
-  border: none;
-  outline: none;
+  display: grid;
+  place-items: center;
   font-size: 1.2rem;
-  cursor: pointer;
   background: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  color: black;
 }
-
-
+.deleteSpinnerClassName div {
+  width: 1.3rem;
+  height: 1.3rem;
+}
 
 .button_cnt button:first-child {
   color: red;
@@ -297,21 +229,72 @@
   color: rgb(10, 10, 10);
 }
 
+/* Modal */
+.heading {
+  text-align: center;
+  width: 100%;
+}
+.addFolder {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* dropdown */
+.dropDown {
+  position: absolute;
+  top: 0.4rem;
+  left: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.3rem;
+}
+.menuCont {
+  background: rgba(130, 108, 221, 0.8);
+  filter: drop-shadow(5px 5px 5px rgba(0, 0, 0, 0.3));
+}
+.colorDropDownTxt {
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+.colorDropDown {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+}
+.colorDropDownCont {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+.selectedColorDropDownCont {
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.2rem;
+}
+
 @media only screen and (max-width: 1024px) {
-  .inputContainer {
-    width: 50%;
+  .centerNoteContainer {
+    width: 97%;
+    grid-template-columns: 27% 73%;
+  }
+  .blankSpace {
+    width: 37%;
   }
   .output {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 @media only screen and (max-width: 768px) {
-  .inputContainer {
-    width: 70%;
-  }
   .centerNoteContainer {
-    grid-template-rows: 3rem auto calc(100% - 3rem);
+    width: 90%;
+    grid-template-rows: 3rem 12.5rem calc(100% - 15rem);
     overflow-y: hidden;
   }
 
@@ -333,14 +316,14 @@
 }
 
 @media only screen and (max-width: 500px) {
-  .inputContainer {
-    width: 90%;
+  .centerNoteContainer {
+    width: 95%;
   }
   .output {
-    grid-template-columns: repeat(1, 1fr);
+    grid-template-columns: repeat(1, minmax(0, 1fr));
   }
 
-  .input::placeholder {
+  .inputCont .input::placeholder {
     font-size: 0.7rem;
   }
   .cards h3 {

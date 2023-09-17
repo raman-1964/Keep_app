@@ -1,0 +1,120 @@
+.container .week {
+  background: #f9fbfe;
+  border-top: 1px solid #dadce0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 0.6rem 1rem;
+  border-radius: 0.1rem;
+}
+.container .week h1 {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: rgb(1, 1, 1);
+}
+
+.contentShow {
+  height: 100% !important;
+  padding: 1rem 0 !important;
+  overflow-y: auto !important;
+}
+
+.contentHide {
+  height: 0;
+  overflow: hidden;
+  transition: 0.25s ease-in;
+  padding: 0 2rem;
+}
+
+.content {
+  display: grid;
+}
+.single {
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+  justify-content: space-between;
+  background: rgb(153, 68, 192, 0.1);
+  border-radius: 0.3rem;
+  padding: 0.5rem 0.3rem;
+  padding-left: 0.8rem;
+  margin-bottom: 0.3rem;
+}
+
+.single .singleContent {
+  cursor: pointer;
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+  justify-content: flex-start;
+}
+.single .singleContent span {
+  width: 0.8rem;
+  height: 0.8rem;
+  background: white;
+  box-shadow: inset 0px 2px 4px rgb(153, 68, 192, 0.4);
+  border-radius: 3px;
+}
+
+.dropDownContent {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.8rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  color: black;
+}
+.dropDownContent img {
+  width: 1rem;
+}
+.dropDownContent:hover {
+  cursor: pointer;
+  background: #f1ffe2;
+}
+
+.dropDownContentheading {
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.single .nowSeeing {
+  background: rgb(8, 247, 8) !important;
+}
+
+.single h2 {
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: rgb(255, 255, 255);
+}
+
+/* Modal */
+
+.modalContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.heading {
+  color: rgb(5, 5, 5) !important;
+}
+.btnCnt {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+}
+.ysBtn {
+  background: none;
+  border: 1px solid red;
+  color: black;
+  padding: 0.4rem 1.5rem;
+}
+.noBtn {
+  background: none;
+  border: 1px solid rgb(13, 183, 30);
+  color: black;
+  padding: 0.4rem 1.5rem;
+}

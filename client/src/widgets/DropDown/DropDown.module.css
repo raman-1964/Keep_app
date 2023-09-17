@@ -1,0 +1,56 @@
+.dropdown {
+  position: relative;
+}
+.dropdown .dropdownbutton {
+  width: 100%;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.dropdown .dropdownbutton > svg {
+  height: 1rem;
+}
+.dropdown .dropdownbutton img {
+  height: 1.3rem;
+}
+
+.dropDownMenu {
+  max-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 10px;
+  visibility: hidden;
+  position: absolute;
+  opacity: 0;
+  z-index: 100;
+  transition: 0.25s ease-in-out;
+  padding: 10px 5px;
+}
+.isActive {
+  visibility: visible;
+  opacity: 1;
+  max-height: 30rem;
+}
+
+.dropDownMenu button {
+  background: none;
+  border: none;
+  padding: 10px 15px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  border-radius: 15px;
+  justify-content: flex-start;
+  color: #394759;
+  box-shadow: none;
+}
+.dropDownMenu button > div {
+  display: flex;
+  align-self: center;
+}
+.dropDownMenu button div:hover {
+  background: #f1ffe2;
+}

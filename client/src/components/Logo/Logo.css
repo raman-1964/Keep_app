@@ -12,9 +12,8 @@
 }
 
 .logo h2 {
-  font-family: cursive;
-  font-size: 1.8rem;
-  font-weight: bolder;
+  font-size: 1.5rem;
+  font-weight: 700;
 }
 
 @media only screen and (max-width: 500px) {

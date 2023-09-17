@@ -1,4 +1,5 @@
 import React, { forwardRef } from "react";
+import "./Input.css";
 
 const Input = forwardRef(
   (
@@ -22,8 +23,7 @@ const Input = forwardRef(
               value={value[name]}
               onChange={onChange}
               name={name}
-              style={{ resize: "none", whiteSpace: "pre-wrap" }}
-              className={className ?? ""}
+              className={`input textarea ${className ?? ""}`}
               {...rest}
               ref={ref}
             />
@@ -38,8 +38,7 @@ const Input = forwardRef(
               onChange={onChange}
               name={name}
               type={type}
-              style={{ whiteSpace: "pre-wrap" }}
-              className={className ?? ""}
+              className={`input ${className ?? ""}`}
               {...rest}
             />
           </div>

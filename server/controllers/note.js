@@ -20,15 +20,19 @@ const getNotes = async (req, res, next) => {
 
 const createNote = async (req, res, next) => {
   try {
-    const note = { ...req.body };
+    const { title, text, selectedColor } = req.body;
 
-    const { error } = validateNote(note);
+    const { error } = validateNote({ title, text });
     if (error) return res.status(400).send(error.details[0].message);
 
     const _id = req.user_token_details._id;
-    note.user = _id;
 
-    const savedNote = await new Notes(note);
+    const savedNote = await new Notes({
+      title,
+      text,
+      user: _id,
+      colorCode: { ...selectedColor },
+    });
     await savedNote.save();
 
     res.status(201).send(savedNote);
@@ -40,19 +44,22 @@ const createNote = async (req, res, next) => {
 const updateNote = async (req, res, next) => {
   try {
     const _id = req.params.id;
-    const note = { ...req.body };
+    const { title, text, selectedColor } = req.body;
 
-    const { error } = validateNote(note);
+    const { error } = validateNote({ title, text });
     if (error) res.status(400).send(error.details[0].message);
 
     const foundNote = await Notes.findOne({ _id });
     if (!foundNote)
       res.status(400).send({ msg: "There is no note of this id" });
 
-    const id = req.user_token_details._id;
-    note.user = id;
+    // const id = req.user_token_details._id;
 
-    const ans = await Notes.findByIdAndUpdate(_id, note, { new: true });
+    const ans = await Notes.findByIdAndUpdate(
+      _id,
+      { title, text, colorCode: { ...selectedColor } },
+      { new: true }
+    );
 
     // await foundNote.updateOne(note, { new: true });
     // await foundNote.set({

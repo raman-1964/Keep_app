@@ -17,6 +17,10 @@ const noteSchema = mongoose.Schema({
   isFavorite: {
     type: Boolean,
   },
+  colorCode: {
+    bg: String,
+    txt: String,
+  },
 });
 
 const Notes = mongoose.model("Notes", noteSchema);

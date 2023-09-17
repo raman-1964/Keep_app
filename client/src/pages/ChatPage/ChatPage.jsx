@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import "./ChatPage.css";
 import { useDispatch, useSelector } from "react-redux";
-import Input from "../../widgets/Input";
+import Input from "../../widgets/Input/Input";
 import Search from "./components/Search";
 import {
   getAllChatRequest,

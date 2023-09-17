@@ -12,19 +12,19 @@
   align-items: center;
   gap: 1.8rem;
 }
-.icons .dark-light {
+.icons .btn {
   background: none;
-  outline: none;
-  cursor: pointer;
-  border: none;
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
 }
 .msgIcon {
   position: relative;
 }
 .msgIcon h1 {
   position: absolute;
-  top: -0.3rem;
-  right: -0.5rem;
+  top: 0;
+  right: -1rem;
   background: red;
   color: #fff;
   font-size: 0.7rem;
@@ -32,23 +32,18 @@
   padding: 0.1rem 0.5rem;
 }
 
-.icons button {
-  display: flex;
-  align-items: center;
-  gap: 0.2rem;
-}
-.icons button span {
-  font-size: 1rem;
-  font-weight: bolder;
+.icons .btn span {
+  font-size: 0.8rem;
+  font-weight: 600;
 }
 
-@media only screen and (max-width:768px) {
-  .icons button span{
+@media only screen and (max-width: 768px) {
+  .icons .btn span {
     display: none;
   }
 }
-@media only screen and (max-width:425px) {
-  .navbar{
+@media only screen and (max-width: 425px) {
+  .navbar {
     padding: 0rem 0.8rem;
   }
 }
