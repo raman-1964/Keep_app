@@ -35,15 +35,48 @@ const createChat = async (req, res, next) => {
 };
 
 const getChats = async (req, res, next) => {
-  const allChats = await Chat.find({
-    users: { $elemMatch: { $eq: req.user_token_details._id } },
-  })
-    .populate("users", "-password")
-    .populate("latestMessage")
-    .sort({ updatedAt: -1 })
-    .lean();
+  try {
+    const count = await Chat.find({
+      users: { $elemMatch: { $eq: req.user_token_details._id } },
+    }).countDocuments();
 
-  return res.status(200).send(allChats);
+    let totalPages = 1,
+      currentPage = 1,
+      skip = 0,
+      limit = 0;
+    if (req.query.limit) limit = parseInt(req.query.limit);
+    if (limit > 0) totalPages = parseInt(Math.ceil(count / limit));
+    if (req.query.page) {
+      currentPage = parseInt(req.query.page);
+      skip = (currentPage - 1) * limit;
+      if (skip > count)
+        return res.status(400).send({ msg: "page number too high" });
+    }
+
+    const allChats = await Chat.find({
+      users: { $elemMatch: { $eq: req.user_token_details._id } },
+    })
+      .sort({ updatedAt: -1 })
+      .skip(skip)
+      .limit(limit)
+      .populate("users", "-password")
+      .populate("latestMessage")
+      .lean();
+
+    const resp_data = {
+      prev: true,
+      next: true,
+      totalPages,
+      currentPage,
+      limit,
+    };
+    if (currentPage === 1) resp_data.prev = false;
+    if (currentPage >= totalPages) resp_data.next = false;
+
+    return res.status(200).send({ allChats, ...resp_data });
+  } catch (error) {
+    return res.status(400).send(error.message);
+  }
 };
 
 module.exports = {

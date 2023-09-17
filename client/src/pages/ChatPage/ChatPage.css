@@ -18,6 +18,15 @@
   overflow: hidden;
 }
 
+.spinner-chat-cont {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 5rem;
+  padding-top: 2rem;
+  align-items: center;
+  border: none !important;
+}
 .chatHighlitcontNDsearch {
   flex: 2;
   height: 100%;
@@ -28,15 +37,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: start;
+  justify-content: flex-start;
   width: 100%;
   height: 92%;
   min-height: 12%;
-  overflow-y: scroll;
+  overflow-y: auto;
   padding-top: 0.3rem;
-}
-.chatHighlitcont::-webkit-scrollbar {
-  display: none;
 }
 .chatHighlitcont > div:last-child {
   border-bottom: 1px solid wheat;
@@ -54,6 +60,7 @@
   border-top: 1px solid wheat;
   cursor: pointer;
   position: relative;
+  flex-shrink: 0;
 }
 .BG-chatHighlit {
   background: #2a3942;
@@ -122,9 +129,9 @@
   gap: 0.6rem;
   flex-direction: column;
 }
-.allMsg::-webkit-scrollbar {
+/* .allMsg::-webkit-scrollbar {
   display: none;
-}
+} */
 .allMsg > div:first-child {
   margin-top: 0.8rem;
 }
@@ -151,6 +158,7 @@
   align-items: center;
   padding: 0.6rem 0;
   flex: 1;
+  position: relative;
 }
 .msgInput {
   font-weight: 500;
@@ -168,4 +176,21 @@
   justify-content: center;
   align-items: center;
   color: #fff;
+}
+
+.downArrow {
+  cursor: pointer;
+  padding: 0.3rem;
+  width: fit-content;
+  border-radius: 50%;
+  display: grid;
+  background: #717171;
+  place-items: center;
+  position: absolute;
+  right: 0.2rem;
+  opacity: 0.5;
+  top: -2rem;
+}
+.downArrow img {
+  width: 1rem;
 }

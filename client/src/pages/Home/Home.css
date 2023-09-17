@@ -141,6 +141,13 @@
 }
 
 /* output started */
+.spinner-cont {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 10rem;
+}
 .output {
   display: grid;
   place-items: center;

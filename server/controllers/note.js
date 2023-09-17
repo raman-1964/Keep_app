@@ -3,16 +3,42 @@ const validateNote = require("../validate/note");
 
 const getNotes = async (req, res, next) => {
   try {
-    const { page, limit } = req.query;
     const count = await Notes.find({
       user: req.user_token_details,
     }).countDocuments();
 
+    let totalPages = 1,
+      skip = 0,
+      limit = 0,
+      currentPage = 1;
+
+    if (req.query.limit) limit = parseInt(req.query.limit);
+    if (limit > 0) totalPages = parseInt(Math.ceil(count / limit));
+    if (req.query.page) {
+      currentPage = parseInt(req.query.page);
+      skip = (currentPage - 1) * limit;
+      if (skip > count)
+        return res.status(400).send({ msg: "page number too high" });
+    }
+
     const notes = await Notes.find({ user: req.user_token_details })
+      .sort({ updatedAt: -1 })
+      .skip(skip)
+      .limit(limit)
       .select("-user")
       .lean();
 
-    res.status(200).send(notes);
+    const resp_data = {
+      prev: true,
+      next: true,
+      totalPages,
+      currentPage,
+      limit,
+    };
+    if (currentPage === 1) resp_data.prev = false;
+    if (currentPage >= totalPages) resp_data.next = false;
+
+    res.status(200).send({ notes, ...resp_data });
   } catch (error) {
     console.log(error);
   }

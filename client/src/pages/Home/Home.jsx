@@ -9,46 +9,48 @@ import Modal from "../../widgets/Modal/Modal";
 import Input from "../../widgets/Input/Input";
 import Button from "../../widgets/Button/Button";
 import NoteDropdown from "../../components/NoteDropdown/NoteDropdown";
+import Spinner from "../../components/Spinner/Spinner";
+import { pagination } from "../../utils/pagination";
 
 function Home() {
-  const { notes, addnoteLoading, updateNoteLoading } = useSelector(
-    (state) => state.noteReducer
-  );
   const dispatch = useDispatch();
   const [search, setSearch] = useState({ searchValue: "" });
-
   const [inputModal, setInputModal] = useState(false);
   const [newFolderModal, setNewFolderModal] = useState(false);
   const [newFolderName, setNewFolderName] = useState({ folder: "" });
+
+  const observer = useRef();
+
   const [note, setNote] = useState({ title: "", text: "" });
   const [colorCode, setColorCode] = useState({});
   const [error, setError] = useState({ title: "", text: "" });
   const [toggleId, setToggleId] = useState(null);
   const [page, setPage] = useState(1);
-  const observer = useRef();
 
-  const lastElementRef = useCallback((element) => {
-    if (!element) return;
-    if (observer.current) observer.current.disconnect();
+  const {
+    notes,
+    notesLoading,
+    isNextPageLoading,
+    addnoteLoading,
+    updateNoteLoading,
+    isNextPage,
+  } = useSelector((state) => state.noteReducer);
 
-    let options = {
-      root: null,
-      rootMargin: "0px",
-      threshold: 1.0,
-    };
-    observer.current = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) setPage((prev) => prev + 1);
-    }, options);
-
-    observer.current.observe(element);
-  }, []);
+  const lastElementRef = useCallback(
+    (element) => pagination(element, observer, isNextPage, setPage),
+    [isNextPage]
+  );
 
   useEffect(() => {
     const paramsObj = {
       page,
-      limit: 15,
+      limit: 20,
     };
     dispatch(getNoteRequest(paramsObj));
+
+    return () => {
+      if (observer.current) observer.current.disconnect();
+    };
   }, [page]);
 
   return (
