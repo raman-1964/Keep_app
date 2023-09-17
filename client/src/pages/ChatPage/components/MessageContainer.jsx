@@ -7,7 +7,7 @@ import {
   seenedMessageRequest,
 } from "../../../store/Actions/messageAction";
 import { updateChatLatestMessage } from "../../../store/Actions/chatAction";
-import Input from "../../../widgets/Input";
+import Input from "../../../widgets/Input/Input";
 import Spinner from "../../../components/Spinner/Spinner";
 import downArrow from "../../../assets/img/downArrow.png";
 

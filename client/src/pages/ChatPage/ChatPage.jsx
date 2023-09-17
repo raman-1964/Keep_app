@@ -1,11 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import "./ChatPage.css";
 import { useDispatch, useSelector } from "react-redux";
-
-import Input from "../../widgets/Input/Input";
-
 import { getAllChatRequest } from "../../store/Actions/chatAction";
-
 import Search from "./components/Search";
 import { pagination } from "../../utils/pagination";
 import Spinner from "../../components/Spinner/Spinner";
