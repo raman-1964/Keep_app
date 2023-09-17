@@ -1,61 +1,143 @@
 /* input container started */
+.notesContainer {
+  height: calc(100vh - 3.5rem);
+  border-top: 0.2rem solid white;
+  background: linear-gradient(
+    to right,
+    #b1a2eb 0%,
+    #b1a2eb 50%,
+    #fff 50%,
+    #fff 100%
+  );
+  display: grid;
+  place-items: center;
+}
+
+.centerNoteContainer {
+  background-color: aqua;
+  width: 93%;
+  height: 94%;
+  border-radius: 0.3rem;
+  background: #f5f5f5;
+  box-shadow: 0px 4px 26px 0px rgba(0, 0, 0, 0.25);
+  display: grid;
+  grid-template-columns: 21.3% 78.7%;
+  grid-template-rows: 3rem calc(100% - 3rem);
+  overflow-y: hidden;
+}
+
+.centerNotesNavbar {
+  display: flex;
+  align-items: center;
+  background: rgb(255, 255, 255);
+  height: 3rem;
+  grid-column-start: 1;
+  grid-column-end: 3;
+  grid-gap: 0 0;
+}
+.blankSpace {
+  width: 27%;
+  height: 100%;
+  background: #826cdd;
+}
+.searchAndProfilrContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.SearchContainer {
+  display: flex;
+  align-items: center;
+  margin: 0rem 2rem;
+  position: relative;
+  width: 50%;
+}
+
+.SearchContainer img {
+  height: 1.5rem;
+  position: absolute;
+  top: 0.4rem;
+  left: 0.2rem;
+}
+.SearchContainer .search {
+  background: #f5f5f5;
+  padding-left: 2.5rem;
+}
+
+.FolderNavigationContainer {
+  height: 100%;
+  width: 100%;
+  background: #b1a2eb;
+  border-top: 2px solid white;
+  font-size: 1rem;
+  color: white;
+  display: flex;
+  padding: 0 0.3rem;
+  overflow-y: auto;
+  flex-direction: column;
+}
+
+.FolderNavigationContainer button {
+  background: none;
+}
+
+.InputOutputNotes {
+  border-top: 2px solid white;
+  overflow-y: scroll;
+}
+.addnewfolderbtn {
+  width: fit-content;
+  margin: 0.5rem auto;
+}
+.addnewnotebtn {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  color: #826cdd;
+  width: auto;
+  background: none;
+  filter: drop-shadow(5px 5px 5px rgba(183, 82, 230, 0.3));
+  font-size: 1.1rem;
+  margin-left: 2rem;
+  font-weight: bolder;
+}
+
 .inputContainer {
-  margin: auto;
-  margin-top: 2rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  width: 25%;
-  border-radius: 0.81rem;
-  box-shadow: 2.5px 2.5px 8px rgb(231, 231, 47);
+  align-items: flex-start;
+  width: 100%;
+}
+.inputCont {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
   position: relative;
-  background-color: whitesmoke;
-}
-.input {
-  height: 1.5rem;
   width: 100%;
-  text-transform: capitalize;
-  font-weight: bolder;
-  padding: 0.6rem 1.42rem;
-  border: none;
-  outline: none;
-  border-radius: 0.81rem 0.81rem 0 0;
-  margin-bottom: 0.21rem;
-  background-color: whitesmoke;
-  padding-top: 1rem;
 }
-
+.inputCont h1 {
+  font-size: 0.8rem;
+  margin-bottom: 0.2rem;
+  padding-left: 0.2rem;
+}
+.inputCont .input,
+.addFolder .input {
+  border: 0.1rem solid rgb(202 197 233);
+}
 .textarea {
-  width: 100%;
-  font-weight: lighter;
-  border: none;
-  padding: 0.7rem;
-  outline: none;
-  border-radius: 0 0 0.81rem 0.81rem;
-  background-color: whitesmoke;
+  height: 10rem;
 }
 
-.inputContainer button {
-  background-color: yellow;
-  color: purple;
-  fill: purple;
-  border-radius: 50%;
-  height: 3rem;
-  width: 3rem;
-  display: grid;
-  place-items: center;
-  border: none;
-  outline: none;
-  position: absolute;
-  bottom: -0.71rem;
-  right: -0.71rem;
-  font-size: 1.5rem;
-  cursor: pointer;
+.inputContainer button,
+.addFolder button {
+  background: #826cdd;
 }
 
 .homeError {
-  right: 2rem;
+  right: 2rem !important;
 }
 
 /* output started */
@@ -69,38 +151,45 @@
 .output {
   display: grid;
   place-items: center;
-  grid-template-columns: repeat(5, 2fr);
-  grid-gap: 3rem;
-  max-width: 98%;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-gap: 1.3rem;
   padding: 1rem;
-  padding-left: 2.4rem;
   margin-top: 2rem;
   position: relative;
 }
 
 .card-cont {
   position: relative;
-  box-shadow: 0 2px 3px rgb(231, 231, 47);
-  width: 16.5vw;
-  border-radius: 0.9rem;
+  width: 100%;
+  height: 14rem;
+  border-radius: 0.3rem;
+  transition: all 0.3s ease-in-out;
+  border: 1px solid #ccc;
+}
+
+.card-cont:hover {
+  box-shadow: 0 0 16px rgba(33, 33, 33, 0.2);
 }
 
 .cards {
-  padding: 1rem;
-  max-height: 27vh;
+  padding: 0.5rem;
   overflow-x: hidden;
   overflow-y: auto;
   text-align: center;
-  background-color: whitesmoke;
-  /* border-top-right-radius: 0.91rem; */
-  border-top-left-radius: 0.9rem;
+  border-radius: 0.3rem 0.3rem 0 0;
+  height: 100%;
 }
-
+.card-cont:hover .cards {
+  height: 85%;
+}
 .cards h3 {
   text-transform: capitalize;
-  font-weight: bolder;
+  font-weight: 700;
+  font-size: 1rem;
   letter-spacing: 1px;
   margin-bottom: 1rem;
+  white-space: pre-wrap;
+  word-wrap: break-word;
 }
 
 .cards p {
@@ -113,24 +202,30 @@
 
 .button_cnt {
   padding: 0 1rem;
-  display: flex;
+  border-radius: 0 0 0.3rem 0.3rem;
+  background: #f6f6f6;
   justify-content: space-evenly;
   align-items: center;
   gap: 0.2rem;
+  height: 0%;
+  display: none;
+}
+
+.card-cont:hover .button_cnt {
+  height: 15%;
+  display: flex;
 }
 
 .button_cnt button {
-  padding: 0.41rem;
-  border-radius: 0.2rem;
-  border: none;
-  outline: none;
+  display: grid;
+  place-items: center;
   font-size: 1.2rem;
-  cursor: pointer;
   background: none;
-  transition: all 0.3s ease-in-out;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  color: black;
+}
+.deleteSpinnerClassName div {
+  width: 1.3rem;
+  height: 1.3rem;
 }
 
 .button_cnt button:first-child {
@@ -139,4 +234,106 @@
 
 .button_cnt button:nth-child(2) {
   color: rgb(10, 10, 10);
+}
+
+/* Modal */
+.heading {
+  text-align: center;
+  width: 100%;
+}
+.addFolder {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* dropdown */
+.dropDown {
+  position: absolute;
+  top: 0.4rem;
+  left: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.3rem;
+}
+.menuCont {
+  background: rgba(130, 108, 221, 0.8);
+  filter: drop-shadow(5px 5px 5px rgba(0, 0, 0, 0.3));
+}
+.colorDropDownTxt {
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+.colorDropDown {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+}
+.colorDropDownCont {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+.selectedColorDropDownCont {
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.2rem;
+}
+
+@media only screen and (max-width: 1024px) {
+  .centerNoteContainer {
+    width: 97%;
+    grid-template-columns: 27% 73%;
+  }
+  .blankSpace {
+    width: 37%;
+  }
+  .output {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .centerNoteContainer {
+    width: 90%;
+    grid-template-rows: 3rem 12.5rem calc(100% - 15rem);
+    overflow-y: hidden;
+  }
+
+  .blankSpace {
+    display: none;
+  }
+  .FolderNavigationContainer {
+    grid-column-start: 1;
+    grid-column-end: 3;
+  }
+  .FolderNavigationContainer ul {
+    display: flex;
+    gap: 1rem;
+  }
+  .InputOutputNotes {
+    grid-column-start: 1;
+    grid-column-end: 3;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .centerNoteContainer {
+    width: 95%;
+  }
+  .output {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+
+  .inputCont .input::placeholder {
+    font-size: 0.7rem;
+  }
+  .cards h3 {
+    font-size: 1rem;
+  }
 }

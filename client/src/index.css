@@ -1,9 +1,9 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat&family=Source+Sans+Pro:wght@300&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800&display=swap");
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Nunito", sans-serif;
 }
 
 .text-elipsis {
@@ -23,6 +23,9 @@
   padding: 0 0.2rem;
 }
 
+.noscrollbar::-webkit-scrollbar {
+  display: none;
+}
 .scrollbar::-webkit-scrollbar {
   height: 0.3rem;
   width: 0.3rem;
@@ -43,6 +46,31 @@
   background: none;
 }
 
-.noScrollbar::-webkit-scrollbar {
-  display: none;
+
+.modal {
+  width: 30vw;
+}
+.modalHeading {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 1rem 0;
+  color: #826cdd;
+  filter: drop-shadow(5px 5px 5px rgba(183, 82, 230, 0.3));
+}
+
+@media only screen and (max-width: 1024px) {
+  .modal {
+    width: 55vw;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .modal {
+    width: 72vw;
+  }
+}
+@media only screen and (max-width: 500px) {
+  .modal {
+    width: 96vw;
+  }
 }
