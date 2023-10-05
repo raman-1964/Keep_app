@@ -7,6 +7,7 @@ const connectDB = require("./db/conn");
 
 const auth_routes = require("./routes/auth");
 const note_routes = require("./routes/note");
+const folder_routes = require("./routes/folder");
 const user_routes = require("./routes/user");
 const chat_routes = require("./routes/chat");
 const message_routes = require("./routes/message");
@@ -18,6 +19,7 @@ app.use(cors());
 connectDB();
 
 app.use("/api/auth", auth_routes);
+app.use("/api/folder", folder_routes);
 app.use("/api/note", note_routes);
 app.use("/api/user", user_routes);
 app.use("/api/chat", chat_routes);

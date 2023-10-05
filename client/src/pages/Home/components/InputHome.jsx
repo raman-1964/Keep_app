@@ -23,6 +23,7 @@ function InputHome({
   updateNoteLoading,
   setColorCode,
   selectedColor,
+  selectedFolder,
 }) {
   const dispatch = useDispatch();
   const id = toggle;
@@ -37,7 +38,10 @@ function InputHome({
         );
       else
         dispatch(
-          addNoteRequest({ setInputModal, data: { ...note, selectedColor } })
+          addNoteRequest({
+            setInputModal,
+            data: { ...note, selectedColor, folder: selectedFolder },
+          })
         );
     }
 

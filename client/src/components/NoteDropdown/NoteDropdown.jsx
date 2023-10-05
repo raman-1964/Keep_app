@@ -8,22 +8,34 @@ import styles from "./NoteDropdown.module.css";
 import DropDown from "../../widgets/DropDown/DropDown";
 import Modal from "../../widgets/Modal/Modal";
 import Button from "../../widgets/Button/Button";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  deleteFolderRequest,
+  getAllFolderRequest,
+} from "../../store/Actions/folderAction";
+import Spinner from "../Spinner/Spinner";
 
-const NoteDropdown = ({}) => {
+const NoteDropdown = ({ type, selectedFolder, setSelectedFolder }) => {
+  const dispatch = useDispatch();
+
+  const { folders, folderLoading, deleteFolderLoading } = useSelector(
+    (state) => state.folderReducer
+  );
+
   const [show, setShow] = useState(false);
-  const [index, setIndex] = useState(-1);
   const [deleteModal, setDeleteModal] = useState(false);
   const [shareModal, setShareModal] = useState(false);
 
   const showcontent = () => {
-    setShow(!show);
+    if (!show) dispatch(getAllFolderRequest({ type }));
+    setShow((prev) => !prev);
   };
 
   return (
     <>
       <div className={styles.container}>
         <div className={styles.week} onClick={showcontent}>
-          <h1>Personal</h1>
+          <h1>{type}</h1>
           <div className={styles.image}>
             <UpArrow
               style={{
@@ -37,38 +49,48 @@ const NoteDropdown = ({}) => {
         </div>
 
         <div className={`${styles.content}`}>
-          <div
-            className={`noscrollbar ${show && styles.contentShow}  ${
-              styles.contentHide
-            }`}
-          >
-            {[...Array(5).keys()].map((_, ind) => (
-              <div key={ind} className={`${styles.single} `}>
-                <div
-                  className={`${styles.singleContent} flex a-center`}
-                  onClick={() => setIndex(ind)}
-                >
-                  <span
-                    className={`${index === ind ? styles.nowSeeing : null}`}
-                  ></span>
-                  <h2>Hii Raman</h2>
-                </div>
-                <DropDown right="0" width="10rem" btn={<VerticalDot />}>
+          {folderLoading[type] && show ? (
+            <div className={styles.folderLoading}>
+              <Spinner theme="light" />
+            </div>
+          ) : (
+            <div
+              className={`noscrollbar ${show && styles.contentShow}  ${
+                styles.contentHide
+              }`}
+            >
+              {folders[type]?.map((folder, ind) => (
+                <div key={ind} className={`${styles.single} `}>
                   <div
-                    className={styles.dropDownContent}
-                    onClick={() => setDeleteModal(true)}
+                    className={`${styles.singleContent}`}
+                    onClick={() => setSelectedFolder(folder)}
                   >
-                    <Delete />
-                    <h1 className={styles.dropDownContentheading}>Delete</h1>
+                    <span
+                      className={`${
+                        selectedFolder?._id === folder._id
+                          ? styles.nowSeeing
+                          : null
+                      }`}
+                    ></span>
+                    <h2>{folder?.name}</h2>
                   </div>
-                  <div className={styles.dropDownContent}>
-                    <img src={Share} />
-                    <h1 className={styles.dropDownContentheading}>Share</h1>
-                  </div>
-                </DropDown>
-              </div>
-            ))}
-          </div>
+                  <DropDown right="0" width="10rem" btn={<VerticalDot />}>
+                    <div
+                      className={styles.dropDownContent}
+                      onClick={() => setDeleteModal(true)}
+                    >
+                      <Delete />
+                      <h1 className={styles.dropDownContentheading}>Delete</h1>
+                    </div>
+                    <div className={styles.dropDownContent}>
+                      <img src={Share} />
+                      <h1 className={styles.dropDownContentheading}>Share</h1>
+                    </div>
+                  </DropDown>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
@@ -79,7 +101,16 @@ const NoteDropdown = ({}) => {
             Are you sure you want to delete it?
           </h1>
           <div className={styles.btnCnt}>
-            <Button className={styles.ysBtn}>Yes</Button>
+            <Button
+              className={styles.ysBtn}
+              loading={deleteFolderLoading}
+              onClick={() => {
+                dispatch(deleteFolderRequest({ _id: selectedFolder._id }));
+                setDeleteModal(false);
+              }}
+            >
+              Yes
+            </Button>
             <Button
               className={styles.noBtn}
               onClick={() => setDeleteModal(false)}
