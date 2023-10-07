@@ -20,15 +20,12 @@ import {
   deleteFolderRequestApi,
   getAllFolderRequestApi,
 } from "../../services/folder.services";
+import { clearNote } from "../Actions/noteAction";
 
 function* getAllFolderRequest(action) {
   try {
-    const res = yield call(getAllFolderRequestApi, {
-      type: action.payload.type,
-    });
-    yield put(
-      getAllFolderSuccess({ folders: res.folders, type: action.payload.type })
-    );
+    const res = yield call(getAllFolderRequestApi, action.payload);
+    yield put(getAllFolderSuccess({ folders: res.folders, ...action.payload }));
   } catch (e) {
     yield put(getAllFolderFailed(e));
   }
@@ -36,11 +33,11 @@ function* getAllFolderRequest(action) {
 
 function* createFolderRequest(action) {
   try {
-    const res = yield call(createFolderRequestApi, {
-      name: action.payload.name,
-    });
+    const { name, setNewFolderModal, setNewFolderName } = action.payload;
+    const res = yield call(createFolderRequestApi, { name });
     yield put(createFolderSuccess(res));
-    action.payload.setNewFolderModal((prev) => !prev);
+    setNewFolderModal((prev) => !prev);
+    setNewFolderName({ folder: "" });
   } catch (e) {
     yield put(createFolderFailed(e));
   }
@@ -48,11 +45,15 @@ function* createFolderRequest(action) {
 
 function* deleteFolderRequest(action) {
   try {
-    const res = yield call(deleteFolderRequestApi, {
-      name: action.payload.name,
-    });
-    yield put(deleteFolderSuccess(res));
-    action.payload.setNewFolderModal((prev) => !prev);
+    const { _id, type, setDeleteModal, setSelectedFolder, selectedFolder } =
+      action.payload;
+    const res = yield call(deleteFolderRequestApi, _id);
+    yield put(deleteFolderSuccess({ _id, type }));
+    setDeleteModal(false);
+    if (selectedFolder) {
+      setSelectedFolder({});
+      yield put(clearNote());
+    }
   } catch (e) {
     yield put(deleteFolderFailed(e));
   }

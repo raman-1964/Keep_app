@@ -4,7 +4,9 @@ import InputHome from "./components/InputHome";
 import { useDispatch, useSelector } from "react-redux";
 import { getNoteRequest } from "../../store/Actions/noteAction";
 import "./Home.css";
-import SearchIcon from "../../assets/img/searchIcon.png";
+// import SearchIcon from "../../assets/img/searchIcon.png";
+import { ReactComponent as Close } from "../../assets/svg/close.svg";
+import { ReactComponent as EmptyNotes } from "../../assets/svg/EmptyNotes.svg";
 import Modal from "../../widgets/Modal/Modal";
 import Input from "../../widgets/Input/Input";
 import Button from "../../widgets/Button/Button";
@@ -46,7 +48,11 @@ function Home() {
 
   const createNewFolder = () => {
     dispatch(
-      createFolderRequest({ name: newFolderName.folder, setNewFolderModal })
+      createFolderRequest({
+        name: newFolderName.folder,
+        setNewFolderModal,
+        setNewFolderName,
+      })
     );
   };
 
@@ -55,7 +61,7 @@ function Home() {
       const paramsObj = {
         folder: selectedFolder._id,
         page,
-        limit: 5,
+        limit: 20,
       };
       dispatch(getNoteRequest(paramsObj));
     }
@@ -72,7 +78,7 @@ function Home() {
           <div className="centerNotesNavbar">
             <div className="blankSpace"></div>
             <div className="searchAndProfilrContainer">
-              <div className="SearchContainer">
+              {/* <div className="SearchContainer">
                 <img src={SearchIcon} />
                 <Input
                   type="text"
@@ -82,11 +88,21 @@ function Home() {
                   value={search.searchValue}
                   setValue={setSearch}
                 />
-              </div>
-              <div className="selectedFolderName">
-                <span></span>
-                <p>{selectedFolder?.name}</p>
-              </div>
+              </div> */}
+              {selectedFolder?._id ? (
+                <div className="selectedFolderCont">
+                  <div className="selectedFolderName">
+                    <span></span>
+                    <p>{selectedFolder?.name}</p>
+                  </div>
+                  <div
+                    className="selectedFolderClose"
+                    onClick={() => setSelectedFolder({})}
+                  >
+                    <Close />
+                  </div>
+                </div>
+              ) : null}
             </div>
           </div>
           <div className="FolderNavigationContainer noscrollbar">
@@ -156,7 +172,16 @@ function Home() {
                 </div>
               ) : null}
             </div>
-          ) : null}
+          ) : (
+            <div className="emptyNotes">
+              <EmptyNotes />
+              <p>
+                Kindly select an appropriate folder from the provided
+                alternatives, or create new one to initiate the drafting of your
+                documentation.
+              </p>
+            </div>
+          )}
         </div>
       </div>
 

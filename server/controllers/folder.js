@@ -50,7 +50,7 @@ const updateFolder = async (req, res, next) => {
 
 const deleteFolder = async (req, res, next) => {
   try {
-    const _id = req.body;
+    const _id = req.params.id;
 
     const foundFolder = await Folders.findOne({ _id });
     if (!foundFolder)

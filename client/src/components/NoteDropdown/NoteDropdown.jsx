@@ -14,6 +14,7 @@ import {
   getAllFolderRequest,
 } from "../../store/Actions/folderAction";
 import Spinner from "../Spinner/Spinner";
+import SharedWith from "./components/SharedWith";
 
 const NoteDropdown = ({ type, selectedFolder, setSelectedFolder }) => {
   const dispatch = useDispatch();
@@ -24,12 +25,15 @@ const NoteDropdown = ({ type, selectedFolder, setSelectedFolder }) => {
 
   const [show, setShow] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
+  const [deleteOrSharedFolder, setDeleteOrSharedFolder] = useState(null);
   const [shareModal, setShareModal] = useState(false);
 
   const showcontent = () => {
     if (!show) dispatch(getAllFolderRequest({ type }));
     setShow((prev) => !prev);
   };
+
+  console.log("folders", folders);
 
   return (
     <>
@@ -77,12 +81,18 @@ const NoteDropdown = ({ type, selectedFolder, setSelectedFolder }) => {
                   <DropDown right="0" width="10rem" btn={<VerticalDot />}>
                     <div
                       className={styles.dropDownContent}
-                      onClick={() => setDeleteModal(true)}
+                      onClick={() => {
+                        setDeleteModal(true);
+                        setDeleteOrSharedFolder(folder._id);
+                      }}
                     >
                       <Delete />
                       <h1 className={styles.dropDownContentheading}>Delete</h1>
                     </div>
-                    <div className={styles.dropDownContent}>
+                    <div
+                      className={styles.dropDownContent}
+                      onClick={() => setShareModal(true)}
+                    >
                       <img src={Share} />
                       <h1 className={styles.dropDownContentheading}>Share</h1>
                     </div>
@@ -104,21 +114,41 @@ const NoteDropdown = ({ type, selectedFolder, setSelectedFolder }) => {
             <Button
               className={styles.ysBtn}
               loading={deleteFolderLoading}
-              onClick={() => {
-                dispatch(deleteFolderRequest({ _id: selectedFolder._id }));
-                setDeleteModal(false);
-              }}
+              onClick={() =>
+                dispatch(
+                  deleteFolderRequest({
+                    _id: deleteOrSharedFolder,
+                    type,
+                    setDeleteModal,
+                    ...(deleteOrSharedFolder === selectedFolder?._id && {
+                      setSelectedFolder,
+                      selectedFolder,
+                    }),
+                  })
+                )
+              }
             >
               Yes
             </Button>
-            <Button
-              className={styles.noBtn}
-              onClick={() => setDeleteModal(false)}
-            >
-              NO
-            </Button>
+            {!deleteFolderLoading ? (
+              <Button
+                className={styles.noBtn}
+                onClick={() => setDeleteModal(false)}
+              >
+                NO
+              </Button>
+            ) : null}
           </div>
         </div>
+      </Modal>
+
+      <Modal
+        isModal={shareModal}
+        className="modal"
+        showCloseButton
+        onClose={() => setShareModal(false)}
+      >
+        <SharedWith />
       </Modal>
     </>
   );

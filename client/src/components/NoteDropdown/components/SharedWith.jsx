@@ -5,11 +5,14 @@ import authHeader from "../../../services/auth-header";
 import { useDispatch } from "react-redux";
 import { createChatRequest } from "../../../store/Actions/chatAction";
 import { debounceSearch } from "../../../utils/debounce";
+import styles from ".././NoteDropdown.module.css";
+import { ReactComponent as Close } from "../../../assets/svg/close.svg";
 const BASE_URL = process.env.REACT_APP_URL;
 
-const Search = ({ setSelectedChat }) => {
+const SharedWith = ({ setSelectedChat }) => {
   const dispatch = useDispatch();
   const [searchValue, setSearchValue] = useState("");
+  const [sharedTo, setSharedTo] = useState([]);
 
   const promiseOptions = async (inputValue) => {
     return await axios
@@ -28,27 +31,24 @@ const Search = ({ setSelectedChat }) => {
   };
 
   const handleSearch = (e) => {
-    dispatch(createChatRequest({ userId: e._id, setSelectedChat }));
+    setSharedTo((prev) => {
+      return [...prev, { name: e.label, _id: e._id }];
+    });
   };
 
   return (
-    <div
-      style={{
-        width: "100%",
-        marginBottom: "1rem",
-      }}
-    >
+    <div className={styles.sharedWithCont}>
       <AsyncSelect
         loadOptions={debounceSearch(promiseOptions, 1000)}
         value={searchValue}
         onChange={handleSearch}
-        placeholder="Search to chat"
+        placeholder="Search to share"
         styles={{
           control: (baseStyles) => ({
             ...baseStyles,
-            border: "2px solid #0ce72d",
-            paddingLeft: "2.5rem",
-            borderRadius: "15px",
+            border: "2px solid #b1a2eb",
+            paddingLeft: "1rem",
+            borderRadius: "0.5rem",
             fontSize: "1.1rem",
             fontWeight: "400",
           }),
@@ -61,12 +61,23 @@ const Search = ({ setSelectedChat }) => {
           !inputValue ? (
             "Please enter keyword to search"
           ) : (
-            <button>No results found!</button>
+            <p>No results found!</p>
           )
         }
       />
+
+      <div className={styles.sharedPersonCont}>
+        {[...Array(20).keys()].map(() => (
+          <div className={styles.sharedPerson}>
+            <p>_rohan_</p>
+            <div className={styles.sharedPersonClose}>
+              <Close />
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
 
-export default Search;
+export default SharedWith;

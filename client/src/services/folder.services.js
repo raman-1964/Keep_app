@@ -25,9 +25,9 @@ export const createFolderRequestApi = async (data) => {
   }
 };
 
-export const deleteFolderRequestApi = async (data) => {
+export const deleteFolderRequestApi = async (id) => {
   try {
-    const res = await axios.delete(BASE_URL + "/folder", data, {
+    const res = await axios.delete(BASE_URL + "/folder/" + id, {
       headers: { ...authHeader() },
     });
     return res.data;

@@ -4,7 +4,7 @@ const validateNote = require("../validate/note");
 const getNotes = async (req, res, next) => {
   try {
     const count = await Notes.find({
-      user: req.user_token_details,
+      folder: req.query.folder,
     }).countDocuments();
 
     let totalPages = 1,

@@ -46,7 +46,7 @@ export const folderReducer = (state = initialState, action) => {
         ...state,
         folders: {
           ...state.folders,
-          personal: [action.payload.folders, ...state.folders.personal],
+          personal: [action.payload, ...state.folders.personal],
         },
         createfolderLoading: false,
       };
@@ -58,8 +58,14 @@ export const folderReducer = (state = initialState, action) => {
       return { ...state, deleteFolderLoading: true };
 
     case DELETE_FOLDER_SUCCESS:
+      const { _id, type } = action.payload;
+      const updatedFolders = state.folders[type].filter((folder) => {
+        if (folder._id !== _id) return folder;
+      });
+
       return {
         ...state,
+        folders: { ...state.folders, [type]: updatedFolders },
         deleteFolderLoading: false,
       };
 

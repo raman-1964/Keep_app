@@ -2,6 +2,7 @@ import {
   ADD_NOTE_FAILED,
   ADD_NOTE_REQUEST,
   ADD_NOTE_SUCCESS,
+  CLEAR_NOTE,
   DELETE_NOTE_FAILED,
   DELETE_NOTE_REQUEST,
   DELETE_NOTE_SUCCESS,
@@ -166,6 +167,12 @@ export const noteReducer = (state = initialState, action) => {
       });
       return { ...state, likeNotesLoading: updatedLikeLoading };
     }
+
+    case CLEAR_NOTE:
+      return {
+        ...state,
+        notes: [],
+      };
 
     default:
       return state;
