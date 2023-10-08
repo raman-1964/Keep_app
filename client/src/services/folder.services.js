@@ -35,3 +35,15 @@ export const deleteFolderRequestApi = async (id) => {
     throw Error(e.response?.data?.msg ?? "Something went wrong");
   }
 };
+
+export const shareFolderRequestApi = async (data) => {
+  try {
+    console.log(data);
+    const res = await axios.put(BASE_URL + "/folder", data, {
+      headers: { ...authHeader() },
+    });
+    return res.data;
+  } catch (e) {
+    throw Error(e.response?.data?.msg ?? "Something went wrong");
+  }
+};

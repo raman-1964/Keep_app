@@ -8,6 +8,9 @@ import {
   GET_ALL_FOLDER_FAILED,
   GET_ALL_FOLDER_REQUEST,
   GET_ALL_FOLDER_SUCCESS,
+  SHARE_FOLDER_FAILED,
+  SHARE_FOLDER_REQUEST,
+  SHARE_FOLDER_SUCCESS,
 } from "../Constants/folderConstant";
 
 export const getAllFolderRequest = (data) => {
@@ -38,4 +41,14 @@ export const deleteFolderSuccess = (data) => {
 };
 export const deleteFolderFailed = (data) => {
   return { type: DELETE_FOLDER_FAILED, payload: data };
+};
+
+export const shareFolderRequest = (data) => {
+  return { type: SHARE_FOLDER_REQUEST, payload: data };
+};
+export const shareFolderSuccess = (data) => {
+  return { type: SHARE_FOLDER_SUCCESS, payload: data };
+};
+export const shareFolderFailed = (data) => {
+  return { type: SHARE_FOLDER_FAILED, payload: data };
 };

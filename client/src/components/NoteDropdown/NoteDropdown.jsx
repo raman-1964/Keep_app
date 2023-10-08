@@ -33,8 +33,6 @@ const NoteDropdown = ({ type, selectedFolder, setSelectedFolder }) => {
     setShow((prev) => !prev);
   };
 
-  console.log("folders", folders);
-
   return (
     <>
       <div className={styles.container}>
@@ -83,7 +81,7 @@ const NoteDropdown = ({ type, selectedFolder, setSelectedFolder }) => {
                       className={styles.dropDownContent}
                       onClick={() => {
                         setDeleteModal(true);
-                        setDeleteOrSharedFolder(folder._id);
+                        setDeleteOrSharedFolder(folder);
                       }}
                     >
                       <Delete />
@@ -91,7 +89,10 @@ const NoteDropdown = ({ type, selectedFolder, setSelectedFolder }) => {
                     </div>
                     <div
                       className={styles.dropDownContent}
-                      onClick={() => setShareModal(true)}
+                      onClick={() => {
+                        setShareModal(true);
+                        setDeleteOrSharedFolder(folder);
+                      }}
                     >
                       <img src={Share} />
                       <h1 className={styles.dropDownContentheading}>Share</h1>
@@ -114,19 +115,20 @@ const NoteDropdown = ({ type, selectedFolder, setSelectedFolder }) => {
             <Button
               className={styles.ysBtn}
               loading={deleteFolderLoading}
-              onClick={() =>
+              onClick={() => {
                 dispatch(
                   deleteFolderRequest({
                     _id: deleteOrSharedFolder,
                     type,
                     setDeleteModal,
-                    ...(deleteOrSharedFolder === selectedFolder?._id && {
+                    ...(deleteOrSharedFolder?._id === selectedFolder?._id && {
                       setSelectedFolder,
                       selectedFolder,
                     }),
                   })
-                )
-              }
+                );
+                setDeleteOrSharedFolder(null);
+              }}
             >
               Yes
             </Button>
@@ -148,7 +150,12 @@ const NoteDropdown = ({ type, selectedFolder, setSelectedFolder }) => {
         showCloseButton
         onClose={() => setShareModal(false)}
       >
-        <SharedWith />
+        <SharedWith
+          folder={deleteOrSharedFolder}
+          type={type}
+          setShareModal={setShareModal}
+          setDeleteOrSharedFolder={setDeleteOrSharedFolder}
+        />
       </Modal>
     </>
   );

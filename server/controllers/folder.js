@@ -4,10 +4,17 @@ const Notes = require("../models/note");
 const getFolders = async (req, res, next) => {
   try {
     const { type } = req.query;
-    const folders = await Folders.find({
+
+    const query = {
       admin: req.user_token_details,
       ...(type === "personal" ? { sharedTo: [] } : { sharedTo: { $ne: [] } }),
-    });
+    };
+
+    let folders;
+
+    if (type !== "personal")
+      folders = await Folders.find(query).populate("sharedTo", "username");
+    else folders = await Folders.find(query);
 
     res.status(200).send({ folders });
   } catch (e) {
@@ -31,21 +38,20 @@ const createFolder = async (req, res, next) => {
 
 const updateFolder = async (req, res, next) => {
   try {
-    const _id = req.params.id;
-    const { sharedTo } = req.body;
+    const { _id, sharedTo } = req.body;
 
     const foundFolder = await Folders.findOne({ _id });
     if (!foundFolder)
-      res.status(400).send({ msg: "There is no folder of this id" });
+      return res.status(400).send({ msg: "There is no folder of this id" });
 
-    const folder = await new findByIdAndUpdate(
-      _id,
-      { $set: { sharedTo } },
-      { new: true }
-    );
+    foundFolder.sharedTo = sharedTo;
+    await foundFolder.save();
+    await foundFolder.populate("sharedTo", "username");
 
-    res.status(201).send(folder);
-  } catch (e) {}
+    res.status(201).send(foundFolder);
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 const deleteFolder = async (req, res, next) => {
@@ -54,7 +60,7 @@ const deleteFolder = async (req, res, next) => {
 
     const foundFolder = await Folders.findOne({ _id });
     if (!foundFolder)
-      res.status(400).send({ msg: "There is no folder of this id" });
+      return res.status(400).send({ msg: "There is no folder of this id" });
 
     await Notes.deleteMany({ folder: _id });
     await foundFolder.deleteOne({ _id });

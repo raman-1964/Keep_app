@@ -4,6 +4,7 @@ import {
   CREATE_FOLDER_REQUEST,
   DELETE_FOLDER_REQUEST,
   GET_ALL_FOLDER_REQUEST,
+  SHARE_FOLDER_REQUEST,
 } from "../Constants/folderConstant";
 
 import {
@@ -13,12 +14,15 @@ import {
   deleteFolderSuccess,
   getAllFolderFailed,
   getAllFolderSuccess,
+  shareFolderFailed,
+  shareFolderSuccess,
 } from "../Actions/folderAction";
 
 import {
   createFolderRequestApi,
   deleteFolderRequestApi,
   getAllFolderRequestApi,
+  shareFolderRequestApi,
 } from "../../services/folder.services";
 import { clearNote } from "../Actions/noteAction";
 
@@ -59,10 +63,24 @@ function* deleteFolderRequest(action) {
   }
 }
 
+function* shareFolderRequest(action) {
+  try {
+    const { _id, type, arr, setShareModal, setDeleteOrSharedFolder } =
+      action.payload;
+    const res = yield call(shareFolderRequestApi, { _id, sharedTo: arr });
+    yield put(shareFolderSuccess({ _id, type, res }));
+    setShareModal(false);
+    setDeleteOrSharedFolder(null);
+  } catch (e) {
+    yield put(shareFolderFailed(e));
+  }
+}
+
 function* folderSaga() {
   yield takeEvery(GET_ALL_FOLDER_REQUEST, getAllFolderRequest);
   yield takeEvery(CREATE_FOLDER_REQUEST, createFolderRequest);
   yield takeEvery(DELETE_FOLDER_REQUEST, deleteFolderRequest);
+  yield takeEvery(SHARE_FOLDER_REQUEST, shareFolderRequest);
 }
 
 export default folderSaga;

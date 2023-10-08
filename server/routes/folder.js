@@ -13,7 +13,7 @@ router.get("/", auth, getFolders);
 
 router.post("/", auth, createFolder);
 
-router.put("/:id", auth, updateFolder);
+router.put("/", auth, updateFolder);
 
 router.delete("/:id", auth, deleteFolder);
 

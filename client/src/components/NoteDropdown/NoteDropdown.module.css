@@ -132,7 +132,7 @@
   margin-top: 2.5rem;
 }
 .sharedPersonCont {
-  margin-top: 1.5rem;
+  margin-top: 0.5rem;
   display: flex;
   padding-left: 1rem;
   gap: 0.8rem;
@@ -149,6 +149,9 @@
   font-weight: 500;
   padding: 0.3rem;
   border-radius: 0.2rem;
+}
+.sharedTitle {
+  margin-top: 1.2rem;
 }
 .sharedPersonClose {
   display: flex;
