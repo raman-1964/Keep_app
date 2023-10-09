@@ -3,18 +3,20 @@ const Notes = require("../models/note");
 
 const getFolders = async (req, res, next) => {
   try {
-    const { type } = req.query;
-
     const query = {
-      admin: req.user_token_details,
-      ...(type === "personal" ? { sharedTo: [] } : { sharedTo: { $ne: [] } }),
+      admin: req.user_token_details._id,
     };
 
-    let folders;
+    const PRS = await Folders.find({ ...query, sharedTo: [] });
+    const SBY = await Folders.find({
+      ...query,
+      sharedTo: { $ne: [] },
+    }).populate("sharedTo", "username");
+    const SBO = await Folders.find({
+      sharedTo: { $in: [query.admin] },
+    });
 
-    if (type !== "personal")
-      folders = await Folders.find(query).populate("sharedTo", "username");
-    else folders = await Folders.find(query);
+    const folders = { PRS, SBO, SBY };
 
     res.status(200).send({ folders });
   } catch (e) {
@@ -38,17 +40,22 @@ const createFolder = async (req, res, next) => {
 
 const updateFolder = async (req, res, next) => {
   try {
-    const { _id, sharedTo } = req.body;
+    let { _id, sharedTo } = req.body;
 
     const foundFolder = await Folders.findOne({ _id });
     if (!foundFolder)
       return res.status(400).send({ msg: "There is no folder of this id" });
 
+    if (!Array.isArray(sharedTo))
+      sharedTo = foundFolder.sharedTo.filter(
+        (id) => id != req.user_token_details._id
+      );
+
     foundFolder.sharedTo = sharedTo;
     await foundFolder.save();
     await foundFolder.populate("sharedTo", "username");
 
-    res.status(201).send(foundFolder);
+    res.status(200).send(foundFolder);
   } catch (e) {
     console.log(e);
   }

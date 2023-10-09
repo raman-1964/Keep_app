@@ -1,4 +1,14 @@
 /* input container started */
+.homeSpinnerCont {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.homeSpinnerCont p {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
 .notesContainer {
   height: calc(100vh - 3.5rem);
   border-top: 0.2rem solid white;

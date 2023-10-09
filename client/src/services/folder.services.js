@@ -38,7 +38,6 @@ export const deleteFolderRequestApi = async (id) => {
 
 export const shareFolderRequestApi = async (data) => {
   try {
-    console.log(data);
     const res = await axios.put(BASE_URL + "/folder", data, {
       headers: { ...authHeader() },
     });

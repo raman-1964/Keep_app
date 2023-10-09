@@ -17,8 +17,4 @@ router.put("/", auth, updateFolder);
 
 router.delete("/:id", auth, deleteFolder);
 
-// router.post("/add-like", auth, likeFolder);
-
-// router.post("/remove-like", auth, removeLikeFolder);
-
 module.exports = router;

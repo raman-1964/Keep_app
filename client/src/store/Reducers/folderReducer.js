@@ -8,14 +8,16 @@ import {
   GET_ALL_FOLDER_FAILED,
   GET_ALL_FOLDER_REQUEST,
   GET_ALL_FOLDER_SUCCESS,
+  REMOVE_SHARED_FOLDER_REQUEST,
   SHARE_FOLDER_FAILED,
   SHARE_FOLDER_REQUEST,
   SHARE_FOLDER_SUCCESS,
 } from "../Constants/folderConstant";
+import { folderType } from "../../utils/constants";
 
 const initialState = {
-  folders: { personal: [], shared: [] },
-  folderLoading: { personal: false, shared: false },
+  folders: { PRS: [], SBO: [], SBY: [] },
+  folderLoading: false,
   createfolderLoading: false,
   deleteFolderLoading: false,
   shareFolderLoading: false,
@@ -26,21 +28,21 @@ export const folderReducer = (state = initialState, action) => {
     case GET_ALL_FOLDER_REQUEST:
       return {
         ...state,
-        folderLoading: { ...state.folderLoading, [action.payload.type]: true },
+        folderLoading: true,
       };
 
     case GET_ALL_FOLDER_SUCCESS:
       return {
         ...state,
-        folderLoading: { personal: false, shared: false },
-        folders: {
-          ...state.folders,
-          [action.payload.type]: action.payload.folders,
-        },
+        folderLoading: false,
+        folders: action.payload.folders,
       };
 
     case GET_ALL_FOLDER_FAILED:
-      return { ...state, folderLoading: { personal: false, shared: false } };
+      return {
+        ...state,
+        folderLoading: false,
+      };
 
     case CREATE_FOLDER_REQUEST:
       return { ...state, createfolderLoading: true };
@@ -50,7 +52,7 @@ export const folderReducer = (state = initialState, action) => {
         ...state,
         folders: {
           ...state.folders,
-          personal: [action.payload, ...state.folders.personal],
+          [folderType.PRS]: [action.payload, ...state.folders[folderType.PRS]],
         },
         createfolderLoading: false,
       };
@@ -59,6 +61,9 @@ export const folderReducer = (state = initialState, action) => {
       return { ...state, createfolderLoading: false };
 
     case DELETE_FOLDER_REQUEST:
+      return { ...state, deleteFolderLoading: true };
+
+    case REMOVE_SHARED_FOLDER_REQUEST:
       return { ...state, deleteFolderLoading: true };
 
     case DELETE_FOLDER_SUCCESS: {
@@ -87,22 +92,37 @@ export const folderReducer = (state = initialState, action) => {
       const { _id, type, res } = action.payload;
       let updatedFolders = {};
 
-      if (type === "personal") {
-        updatedFolders.personal = state.folders.personal.filter(
+      if (type === folderType.PRS) {
+        updatedFolders[folderType.PRS] = state.folders[folderType.PRS].filter(
           (item) => item._id !== _id
         );
-        updatedFolders.shared = [...state.folders.shared, res];
-      } else {
-        updatedFolders.personal = state.folders.personal;
-        updatedFolders.shared = state.folders.shared.map((item) => {
-          if (item._id === _id) return res;
-          return item;
-        });
+        updatedFolders[folderType.SBY] = [
+          ...state.folders[folderType.SBY],
+          res,
+        ];
+      }
+      if (type === folderType.SBY) {
+        if (res.sharedTo.length)
+          updatedFolders[folderType.SBY] = state.folders[folderType.SBY].map(
+            (item) => {
+              if (item._id === _id) return res;
+              return item;
+            }
+          );
+        else {
+          updatedFolders[folderType.SBY] = state.folders[folderType.SBY].filter(
+            (item) => item._id !== _id
+          );
+          updatedFolders[folderType.PRS] = [
+            ...state.folders[folderType.PRS],
+            res,
+          ];
+        }
       }
 
       return {
         ...state,
-        folders: updatedFolders,
+        folders: { ...state.folders, ...updatedFolders },
         shareFolderLoading: false,
       };
     }

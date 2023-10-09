@@ -11,7 +11,7 @@ import {
 } from "../Actions/loginAction";
 import { LOGIN_REQUEST, SIGNUP_REQUEST } from "../Constants/loginConstants";
 import { toast } from "react-toastify";
-import { defaultToastSetting } from "../../utils/Toast";
+import { defaultToastSetting } from "../../utils/constants";
 
 function* loginRequest(action) {
   try {

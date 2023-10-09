@@ -9,7 +9,7 @@ import Input from "../../../widgets/Input/Input";
 import colorcode from "../../../assets/img/colorCode.png";
 import Button from "../../../widgets/Button/Button";
 import DropDown from "../../../widgets/DropDown/DropDown";
-import { colorCode } from "../../../utils/colorCode";
+import { colorCode } from "../../../utils/constants";
 
 function InputHome({
   note,
