@@ -46,7 +46,6 @@
   background: none;
 }
 
-
 .modal {
   width: 30vw;
 }
@@ -55,6 +54,7 @@
   font-weight: 600;
   margin: 1rem 0;
   color: #826cdd;
+  text-align: center;
   filter: drop-shadow(5px 5px 5px rgba(183, 82, 230, 0.3));
 }
 

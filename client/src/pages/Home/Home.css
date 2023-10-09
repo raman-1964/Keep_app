@@ -1,4 +1,14 @@
 /* input container started */
+.homeSpinnerCont {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.homeSpinnerCont p {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
 .notesContainer {
   height: calc(100vh - 3.5rem);
   border-top: 0.2rem solid white;
@@ -14,7 +24,6 @@
 }
 
 .centerNoteContainer {
-  background-color: aqua;
   width: 93%;
   height: 94%;
   border-radius: 0.3rem;
@@ -43,11 +52,29 @@
 .searchAndProfilrContainer {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   width: 100%;
 }
-
-.SearchContainer {
+.emptyNotes {
+  padding-top: 2rem;
+  height: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  flex-direction: column;
+}
+.emptyNotes svg {
+  height: 100%;
+}
+.emptyNotes p {
+  width: 70%;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #6451b3;
+}
+/* .SearchContainer {
   display: flex;
   align-items: center;
   margin: 0rem 2rem;
@@ -64,6 +91,34 @@
 .SearchContainer .search {
   background: #f5f5f5;
   padding-left: 2.5rem;
+} */
+.selectedFolderCont {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding-right: 1rem;
+}
+.selectedFolderName {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+}
+.selectedFolderName span {
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  background: rgb(8, 247, 8);
+}
+.selectedFolderClose {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgb(234, 3, 3);
+  cursor: pointer;
+  height: 0.8rem;
+  width: 0.8rem;
+  border-radius: 50%;
 }
 
 .FolderNavigationContainer {
@@ -75,6 +130,7 @@
   color: white;
   display: flex;
   padding: 0 0.3rem;
+  padding-bottom: 2rem;
   overflow-y: auto;
   flex-direction: column;
 }
@@ -320,6 +376,16 @@
     grid-column-start: 1;
     grid-column-end: 3;
   }
+  .emptyNotes {
+    padding-top: 0.9rem;
+    grid-column-start: 1;
+    grid-column-end: 3;
+    height: 95%;
+  }
+  .emptyNotes p {
+    font-size: 1.1rem;
+    width: 80%;
+  }
 }
 
 @media only screen and (max-width: 500px) {
@@ -335,5 +401,9 @@
   }
   .cards h3 {
     font-size: 1rem;
+  }
+  .emptyNotes p {
+    font-size: 1rem;
+    width: 92%;
   }
 }

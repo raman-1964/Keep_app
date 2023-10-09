@@ -30,7 +30,7 @@ import {
   UPDATE_NOTE_REQUEST,
 } from "../Constants/noteConstants";
 import { toast } from "react-toastify";
-import { defaultToastSetting } from "../../utils/Toast";
+import { defaultToastSetting } from "../../utils/constants";
 
 function* getNote(action) {
   try {

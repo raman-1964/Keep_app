@@ -48,11 +48,14 @@ const deleteUser = async (req, res, next) => {
 
 const searchUser = async (req, res, next) => {
   try {
-    const { user } = req.query;
+    let { user, allId } = req.query;
+
+    if (!Array.isArray(allId)) allId = [req.user_token_details._id];
+    else allId.push(req.user_token_details._id);
 
     const data = await Users.find({
       username: new RegExp("^" + user, "i"),
-      _id: { $ne: req.user_token_details._id },
+      _id: { $nin: allId },
     })
       .select("username")
       .limit(15)

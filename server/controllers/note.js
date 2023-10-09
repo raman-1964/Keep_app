@@ -4,7 +4,7 @@ const validateNote = require("../validate/note");
 const getNotes = async (req, res, next) => {
   try {
     const count = await Notes.find({
-      user: req.user_token_details,
+      folder: req.query.folder,
     }).countDocuments();
 
     let totalPages = 1,
@@ -21,7 +21,7 @@ const getNotes = async (req, res, next) => {
         return res.status(400).send({ msg: "page number too high" });
     }
 
-    const notes = await Notes.find({ user: req.user_token_details })
+    const notes = await Notes.find({ folder: req.query.folder })
       .sort({ updatedAt: -1 })
       .skip(skip)
       .limit(limit)
@@ -46,17 +46,15 @@ const getNotes = async (req, res, next) => {
 
 const createNote = async (req, res, next) => {
   try {
-    const { title, text, selectedColor } = req.body;
+    const { title, text, selectedColor, folder } = req.body;
 
     const { error } = validateNote({ title, text });
     if (error) return res.status(400).send(error.details[0].message);
 
-    const _id = req.user_token_details._id;
-
     const savedNote = await new Notes({
       title,
       text,
-      user: _id,
+      folder,
       colorCode: { ...selectedColor },
     });
     await savedNote.save();

@@ -2,6 +2,7 @@ import {
   ADD_NOTE_FAILED,
   ADD_NOTE_REQUEST,
   ADD_NOTE_SUCCESS,
+  CLEAR_NOTE,
   DELETE_NOTE_FAILED,
   DELETE_NOTE_REQUEST,
   DELETE_NOTE_SUCCESS,
@@ -89,4 +90,8 @@ export const unlikeNoteSuccess = (data) => {
 
 export const unlikeNoteFailed = (data) => {
   return { type: UNLIKE_NOTE_FAILED, payload: data };
+};
+
+export const clearNote = (data) => {
+  return { type: CLEAR_NOTE, payload: data };
 };

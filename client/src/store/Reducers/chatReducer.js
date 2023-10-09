@@ -24,6 +24,7 @@ export const chatReducer = (state = initialState, action) => {
       else obj.isNextPageLoading = true;
       return { ...state, ...obj };
     }
+
     case GET_ALL_CHAT_SUCCESS: {
       let obj = {};
       if (action.payload.currentPage === 1) {
@@ -39,18 +40,31 @@ export const chatReducer = (state = initialState, action) => {
         isNextPage: action.payload.next,
       };
     }
+
     case GET_ALL_CHAT_FAILED:
       return { ...state, chatLoading: false, isNextPageLoading: false };
 
     case CREATE_CHAT_REQUEST:
       return { ...state, createChatLoading: true };
-    case CREATE_CHAT_SUCCESS:
+
+    case CREATE_CHAT_SUCCESS: {
       action.payload.setSelectedChat(action.payload.res);
+
+      let updatedChats;
+      const chatExists = state.chats.some(
+        (chat) => chat._id === action.payload.res._id
+      );
+
+      if (!chatExists) updatedChats = [action.payload.res, ...state.chats];
+      else updatedChats = [...state.chats];
+
       return {
         ...state,
-        chats: [action.payload.res, ...state.chats],
+        chats: updatedChats,
         createChatLoading: false,
       };
+    }
+
     case CREATE_CHAT_FAILED:
       return { ...state, createChatLoading: false };
 

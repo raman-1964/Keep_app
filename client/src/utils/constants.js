@@ -1,3 +1,9 @@
+export const folderType = {
+  PRS: "PRS",
+  SBY: "SBY",
+  SBO: "SBO",
+};
+
 export const colorCode = [
   { bg: " #006D77", txt: " #FFD166" },
   { bg: " #26547C", txt: "#EF476F " },
@@ -9,3 +15,13 @@ export const colorCode = [
   { bg: " #4ECDC4", txt: " #011627" },
   { bg: " #FFE66D", txt: " #2E294E" },
 ];
+
+export const defaultToastSetting = {
+  position: "top-right",
+  autoClose: 2000,
+  hideProgressBar: false,
+  closeOnClick: true,
+  pauseOnHover: true,
+  draggable: true,
+  progress: undefined,
+};

@@ -8,22 +8,56 @@ import styles from "./NoteDropdown.module.css";
 import DropDown from "../../widgets/DropDown/DropDown";
 import Modal from "../../widgets/Modal/Modal";
 import Button from "../../widgets/Button/Button";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  deleteFolderRequest,
+  removeShareFolderRequest,
+} from "../../store/Actions/folderAction";
+import SharedWith from "./components/SharedWith";
+import { folderType } from "../../utils/constants";
 
-const NoteDropdown = ({}) => {
+const NoteDropdown = ({ type, selectedFolder, setSelectedFolder }) => {
+  const dispatch = useDispatch();
+
+  const { folders, deleteFolderLoading } = useSelector(
+    (state) => state.folderReducer
+  );
+
   const [show, setShow] = useState(false);
-  const [index, setIndex] = useState(-1);
   const [deleteModal, setDeleteModal] = useState(false);
+  const [deleteOrSharedFolder, setDeleteOrSharedFolder] = useState(null);
   const [shareModal, setShareModal] = useState(false);
 
   const showcontent = () => {
-    setShow(!show);
+    setShow((prev) => !prev);
+  };
+
+  const deleteYes = () => {
+    const query = {
+      _id: deleteOrSharedFolder._id,
+      type,
+      setDeleteModal,
+      ...(deleteOrSharedFolder?._id === selectedFolder?._id && {
+        setSelectedFolder,
+        selectedFolder,
+      }),
+    };
+    if (type === folderType.SBO) dispatch(removeShareFolderRequest(query));
+    else dispatch(deleteFolderRequest(query));
+    setDeleteOrSharedFolder(null);
   };
 
   return (
     <>
       <div className={styles.container}>
         <div className={styles.week} onClick={showcontent}>
-          <h1>Personal</h1>
+          <h1>
+            {type === folderType.PRS
+              ? "Personal"
+              : type === folderType.SBO
+              ? "Shared (by others)"
+              : "Shared (by you)"}
+          </h1>
           <div className={styles.image}>
             <UpArrow
               style={{
@@ -42,29 +76,46 @@ const NoteDropdown = ({}) => {
               styles.contentHide
             }`}
           >
-            {[...Array(5).keys()].map((_, ind) => (
+            {folders[type]?.map((folder, ind) => (
               <div key={ind} className={`${styles.single} `}>
                 <div
-                  className={`${styles.singleContent} flex a-center`}
-                  onClick={() => setIndex(ind)}
+                  className={`${styles.singleContent}`}
+                  onClick={() => setSelectedFolder(folder)}
                 >
                   <span
-                    className={`${index === ind ? styles.nowSeeing : null}`}
+                    className={`${
+                      selectedFolder?._id === folder._id
+                        ? styles.nowSeeing
+                        : null
+                    }`}
                   ></span>
-                  <h2>Hii Raman</h2>
+                  <h2>{folder?.name}</h2>
                 </div>
                 <DropDown right="0" width="10rem" btn={<VerticalDot />}>
                   <div
                     className={styles.dropDownContent}
-                    onClick={() => setDeleteModal(true)}
+                    onClick={() => {
+                      setDeleteModal(true);
+                      setDeleteOrSharedFolder(folder);
+                    }}
                   >
                     <Delete />
-                    <h1 className={styles.dropDownContentheading}>Delete</h1>
+                    <h1 className={styles.dropDownContentheading}>
+                      {type === folderType.SBO ? "Remove Out" : "Delete"}
+                    </h1>
                   </div>
-                  <div className={styles.dropDownContent}>
-                    <img src={Share} />
-                    <h1 className={styles.dropDownContentheading}>Share</h1>
-                  </div>
+                  {type !== folderType.SBO ? (
+                    <div
+                      className={styles.dropDownContent}
+                      onClick={() => {
+                        setShareModal(true);
+                        setDeleteOrSharedFolder(folder);
+                      }}
+                    >
+                      <img src={Share} />
+                      <h1 className={styles.dropDownContentheading}>Share</h1>
+                    </div>
+                  ) : null}
                 </DropDown>
               </div>
             ))}
@@ -76,18 +127,42 @@ const NoteDropdown = ({}) => {
         <div className={styles.modalContainer}>
           <Warning style={{ width: "4rem" }} />
           <h1 className={`modalHeading ${styles.heading}`}>
-            Are you sure you want to delete it?
+            {type === folderType.SBO
+              ? "Are you certain you wish to remove out from this folder?"
+              : "Are you sure you want to delete it?"}
           </h1>
           <div className={styles.btnCnt}>
-            <Button className={styles.ysBtn}>Yes</Button>
             <Button
-              className={styles.noBtn}
-              onClick={() => setDeleteModal(false)}
+              className={styles.ysBtn}
+              loading={deleteFolderLoading}
+              onClick={() => deleteYes()}
             >
-              NO
+              Yes
             </Button>
+            {!deleteFolderLoading ? (
+              <Button
+                className={styles.noBtn}
+                onClick={() => setDeleteModal(false)}
+              >
+                NO
+              </Button>
+            ) : null}
           </div>
         </div>
+      </Modal>
+
+      <Modal
+        isModal={shareModal}
+        className="modal"
+        showCloseButton
+        onClose={() => setShareModal(false)}
+      >
+        <SharedWith
+          folder={deleteOrSharedFolder}
+          type={type}
+          setShareModal={setShareModal}
+          setDeleteOrSharedFolder={setDeleteOrSharedFolder}
+        />
       </Modal>
     </>
   );

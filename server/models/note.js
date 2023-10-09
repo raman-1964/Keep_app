@@ -10,19 +10,19 @@ const noteSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    user: {
+    folder: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: "Folder",
       required: true,
     },
     isFavorite: {
       type: Boolean,
     },
-  colorCode: {
-    bg: String,
-    txt: String,
+    colorCode: {
+      bg: String,
+      txt: String,
+    },
   },
-},
   { timestamps: true }
 );
 
