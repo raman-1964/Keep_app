@@ -1,0 +1,37 @@
+.toggle {
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+  margin-top: 0.1rem;
+}
+.checkmark {
+  background: rgb(199, 199, 199);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 43px;
+  height: 21px;
+  border-radius: 3rem;
+  transition: 0.3s;
+}
+.checkmark:after {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 0.5px;
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  border-radius: 50%;
+  transition: 0.3s;
+}
+
+.toggle input {
+  display: none;
+}
+.toggle input:checked ~ .checkmark:after {
+  left: 22px;
+}
+.toggle input:checked ~ .checkmark {
+  background: #826cdd;
+}

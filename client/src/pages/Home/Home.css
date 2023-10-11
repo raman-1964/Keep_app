@@ -159,6 +159,22 @@
   margin-left: 2rem;
   font-weight: bolder;
 }
+.addFilterNoteCont {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-right: 1rem;
+}
+.FilterNoteCont {
+  display: flex;
+  align-items: flex-start;
+}
+.FilterNoteCont h1 {
+  margin-left: 3.2rem;
+  font-size: 1.1rem;
+  width: 3rem;
+  font-weight: 600;
+}
 
 .inputContainer {
   display: flex;
