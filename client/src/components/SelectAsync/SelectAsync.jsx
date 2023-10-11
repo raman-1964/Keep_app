@@ -36,7 +36,7 @@ const Search = ({ onChange, allId = null }) => {
         loadOptions={debounceSearch(promiseOptions, 1000)}
         value={searchValue}
         onChange={(e) => onChange(e)}
-        placeholder="Search to chat"
+        placeholder="Search"
         styles={{
           control: (baseStyles) => ({
             ...baseStyles,

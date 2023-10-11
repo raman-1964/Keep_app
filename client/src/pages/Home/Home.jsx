@@ -24,10 +24,12 @@ import {
 } from "../../store/Actions/folderAction";
 import Spinner from "../../components/Spinner/Spinner";
 import { folderType } from "../../utils/constants";
+import Toggle from "../../widgets/Toggle/Toggle";
 
 function Home() {
   const dispatch = useDispatch();
 
+  const loggedInUser = localStorage.getItem("Raman-Keep-Username");
   const observer = useRef();
 
   const [page, setPage] = useState(1);
@@ -36,6 +38,7 @@ function Home() {
   const [inputModal, setInputModal] = useState(false);
   const [newFolderModal, setNewFolderModal] = useState(false);
   const [selectedFolder, setSelectedFolder] = useState(null);
+  const [likedNote, setLikedNote] = useState(false);
   // const [search, setSearch] = useState({ searchValue: "" });
   const [newFolderName, setNewFolderName] = useState({ folder: "" });
   const [note, setNote] = useState({ title: "", text: "" });
@@ -68,8 +71,14 @@ function Home() {
     );
   };
 
+  const filteredNotes = () => {
+    return likedNote
+      ? notes.filter((note) => note?.isFavorite?.includes(loggedInUser))
+      : notes;
+  };
+
   useEffect(() => {
-    if (selectedFolder) {
+    if (selectedFolder?._id) {
       const paramsObj = {
         folder: selectedFolder._id,
         page,
@@ -82,6 +91,10 @@ function Home() {
       if (observer.current) observer.current.disconnect();
     };
   }, [page, selectedFolder?._id]);
+
+  useEffect(() => {
+    if (selectedFolder) setLikedNote(false);
+  }, [selectedFolder?._id]);
 
   useLayoutEffect(() => {
     dispatch(getAllFolderRequest());
@@ -149,18 +162,27 @@ function Home() {
 
             {selectedFolder?._id ? (
               <div className="InputOutputNotes scrollbar">
-                <Button
-                  className="addnewnotebtn"
-                  onClick={() => {
-                    setInputModal(true);
-                    setColorCode({
-                      bg: " #e8e8e899",
-                      txt: " #708090",
-                    });
-                  }}
-                >
-                  + Add New Note
-                </Button>
+                <div className="addFilterNoteCont">
+                  <Button
+                    className="addnewnotebtn"
+                    onClick={() => {
+                      setInputModal(true);
+                      setColorCode({
+                        bg: " #e8e8e899",
+                        txt: " #708090",
+                      });
+                    }}
+                  >
+                    + Add New Note
+                  </Button>
+                  <div className="FilterNoteCont">
+                    <Toggle
+                      checked={likedNote}
+                      onChange={() => setLikedNote(!likedNote)}
+                    />
+                    <h1>{likedNote ? "Liked" : "All"}</h1>
+                  </div>
+                </div>
 
                 {notesLoading ? (
                   <div className="spinner-cont">
@@ -168,7 +190,7 @@ function Home() {
                   </div>
                 ) : (
                   <div className="output">
-                    {notes?.map((cur, ind) => {
+                    {filteredNotes()?.map((cur, ind) => {
                       return (
                         <Output
                           key={ind}
