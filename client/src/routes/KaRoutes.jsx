@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import Home from "../pages/Home/Home";
 import ChatPage from "../pages/ChatPage/ChatPage";
 import Navbar from "../components/Navbar/Navbar";
+import Dashboard from "../pages/Dashboard/Dashboard";
 
 function KaRoutes() {
   const { userToken } = useSelector((state) => state.loginReducer);
@@ -19,6 +20,7 @@ function KaRoutes() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/chat" element={<ChatPage />} />
+          <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
       </div>
     </>
