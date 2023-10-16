@@ -10,6 +10,7 @@ import { updateChatLatestMessage } from "../../../store/Actions/chatAction";
 import {
   offerRecieved,
   makeRTCconnection,
+  getRemoteStream,
 } from "../../../store/Actions/socket-call";
 import Input from "../../../widgets/Input/Input";
 import Spinner from "../../../components/Spinner/Spinner";
@@ -143,13 +144,17 @@ const MessageContainer = ({
     const _call = new AudioVideo(
       socket,
       { audio: true, ...(type === "video" && { video: true }) },
-      selectedUser.name
+      selectedUser.name,
+      (streams) => {
+        console.log("remote stream", streams);
+        dispatch(getRemoteStream(streams));
+      }
     );
     await _call.startLocalStream();
     await _call.createOffer();
 
     dispatch(makeRTCconnection(_call));
-    if (socket) navigate("/call");
+    navigate("/call");
   };
 
   useEffect(() => {
@@ -234,7 +239,6 @@ const MessageContainer = ({
       }
 
       function handleCallDropDown({ from, offer, config }) {
-        console.log("offer received", { from, offer });
         dispatch(offerRecieved({ from, offer, config }));
       }
 

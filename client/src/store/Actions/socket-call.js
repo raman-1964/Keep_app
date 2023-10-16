@@ -1,12 +1,16 @@
 import {
   ANSWER_CALL,
   CREATE_SOCKET,
+  GET_REMOTE_STREAM,
   MAKE_RTC_CONNECTION,
   OFFER_RECEIVED,
 } from "../Constants/socket-call";
 
 export const createSocket = (data) => {
   return { type: CREATE_SOCKET, payload: data };
+};
+export const getRemoteStream = (data) => {
+  return { type: GET_REMOTE_STREAM, payload: data };
 };
 export const offerRecieved = (data) => {
   return { type: OFFER_RECEIVED, payload: data };

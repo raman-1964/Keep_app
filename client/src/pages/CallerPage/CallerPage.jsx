@@ -6,23 +6,18 @@ const CallerPage = () => {
   const localRef = useRef(null);
   const remoteRef = useRef(null);
 
-  const { socket, connection } = useSelector(
+  const { socket, connection, remoteStream } = useSelector(
     (state) => state.socketCallReducer
   );
 
   useEffect(() => {
     if (socket) {
       async function recieveAnswer(answer) {
-        console.log("received answer");
-        if (connection) {
-          await connection.answeRecieved(answer);
-          remoteRef.current.srcObject = connection.getRemoteStream();
-        }
+        if (connection) await connection.answeRecieved(answer);
       }
 
       async function iceCandidate(candidate) {
         try {
-          console.log("candidate recieved", candidate);
           if (candidate) await connection.addIceCandidate(candidate);
         } catch (error) {}
       }
@@ -38,11 +33,19 @@ const CallerPage = () => {
   }, [socket]);
 
   useEffect(() => {
-    if (connection) {
-      localRef.current.srcObject = connection.getLocalStream();
-      remoteRef.current.srcObject = connection.getRemoteStream();
-    }
+    if (connection) localRef.current.srcObject = connection.getLocalStream();
   }, []);
+
+  useEffect(() => {
+    if (remoteStream?.id && remoteRef.current)
+      remoteRef.current.srcObject = remoteStream;
+  }, [remoteRef.current, remoteStream?.id]);
+
+  console.log(
+    localRef.current?.srcObject,
+    remoteRef.current?.srcObject,
+    remoteStream
+  );
 
   return (
     <div className={styles.callerContainer}>

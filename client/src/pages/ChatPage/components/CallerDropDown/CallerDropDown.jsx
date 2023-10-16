@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Button from "../../../../widgets/Button/Button";
 import AudioVideo from "../../../../components/audioVideo/audioVideo";
 import {
+  getRemoteStream,
   handleAnswerCall,
   makeRTCconnection,
 } from "../../../../store/Actions/socket-call";
@@ -21,7 +22,11 @@ const CallerDropDown = () => {
     const _call = new AudioVideo(
       socket,
       callDropDown.config,
-      callDropDown.from
+      callDropDown.from,
+      (streams) => {
+        console.log("remote stream", streams);
+        dispatch(getRemoteStream(streams));
+      }
     );
     await _call.startLocalStream();
     await _call.createAnswer(callDropDown.offer);
@@ -34,7 +39,6 @@ const CallerDropDown = () => {
     if (socket) {
       async function iceCandidate(candidate) {
         try {
-          console.log("candidate recieved", candidate);
           if (candidate) await connection.addIceCandidate(candidate);
         } catch (error) {}
       }
@@ -45,7 +49,7 @@ const CallerDropDown = () => {
         socket.off("ice-candidate", iceCandidate);
       };
     }
-  }, []);
+  }, [socket]);
 
   useEffect(() => {
     if (socket && answerCall) createAnswer();
