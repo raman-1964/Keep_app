@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Input from "../../../widgets/Input/Input";
-import styles from "./DashboardModal.module.css";
 import Button from "../../../widgets/Button/Button";
 
 const DashboardEditModal = ({ userInfo, setUserInfo }) => {
