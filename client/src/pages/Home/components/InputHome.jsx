@@ -94,7 +94,7 @@ function InputHome({
           <Input
             type="text"
             placeholder="Enter title..."
-            className="input"
+            
             autoComplete="off"
             name="title"
             value={note}
@@ -111,7 +111,7 @@ function InputHome({
             cols=""
             rows="8"
             placeholder="Enter text..."
-            className="input textarea scrollbar"
+            className="textarea scrollbar"
             name="text"
             value={note}
             setValue={setNote}

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ReactComponent as Logout } from "../../assets/svg/logout.svg";
 import ChatIcon from "../../assets/img/chatIcon.png";
+import DashboardIcon from "../../assets/img/dashboardIcon.png";
 import { logoutRequest } from "../../store/Actions/loginAction";
 import Logo from "../Logo/Logo";
 import { getAllUnseenMessageRequest } from "../../store/Actions/messageAction";
@@ -49,15 +50,15 @@ function Navbar() {
               <Dark style={{ width: "1.3rem", height: "1.3rem" }} />
             )}
             <span>Mode</span>
-          </Button>
-          <Button className="btn" onClick={() => navigate("/")}>
+          </Button>*/}
+          <Button className="btn" onClick={() => navigate("/dashboard")}>
             <img
-              src={ProfileIcon}
+              src={DashboardIcon}
               alt="ProfileIcon"
               style={{ width: "1.5rem", height: "1.5rem" }}
             />
-            <span>Profile</span>
-          </Button> */}
+            <span>Dashboard</span>
+          </Button> 
           <Button className="btn" onClick={() => dispatch(logoutRequest())}>
             <Logout style={{ width: "1.3rem", height: "1.3rem" }} />
             <span>Logout</span>

@@ -5,7 +5,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(0.25turn, #e0dfe0, #ddc3ff, #d9dbff);
+  background: linear-gradient(0.25turn, #e0dfe0, #e5dfff, #d9dbff);
 }
 .sideimgandformContainer {
   width: 70%;
