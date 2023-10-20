@@ -1,12 +1,20 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import "./ChatPage.css";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllChatRequest } from "../../store/Actions/chatAction";
+import {
+  getAllChatRequest,
+  updateChatLatestMessage,
+} from "../../store/Actions/chatAction";
 import {
   createSocket,
   destroyConnection,
   offerRecieved,
 } from "../../store/Actions/socket-call";
+import {
+  createMessageRequest,
+  getAllUnseenMessageRequest,
+  seenedMessageRequest,
+} from "../../store/Actions/messageAction";
 import Search from "./components/Search";
 import { pagination } from "../../utils/pagination";
 import Spinner from "../../components/Spinner/Spinner";
@@ -19,6 +27,8 @@ import { defaultToastSetting } from "../../utils/constants";
 const ChatPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const selectedChatRef = useRef(null);
 
   const observer = useRef(null);
   const [page, setPage] = useState(1);
@@ -81,11 +91,16 @@ const ChatPage = () => {
                       ? chat?.users?.[1]?.username
                       : chat?.users?.[0]?.username}
                   </h1>
-                  {isTyping && isTyping === chat._id ? (
-                    <p className="typing">typing...</p>
-                  ) : (
-                    <p className="text-elipsis ">{chat?.latestMessage?.msg}</p>
-                  )}
+
+                  <p
+                    className={`${
+                      isTyping === chat._id && "typing"
+                    } text-elipsis`}
+                  >
+                    {isTyping && isTyping === chat._id
+                      ? "typing..."
+                      : chat?.latestMessage?.msg}
+                  </p>
                 </div>
                 {unseenMessage.length && msgNotif(chat) ? (
                   <h1 className="msgNotif">{msgNotif(chat)}</h1>
@@ -148,6 +163,7 @@ const ChatPage = () => {
           ? selectedChat?.users?.[0]?._id
           : selectedChat?.users?.[1]?._id;
       setSelectedUser({ id: selectedUserId, name: selectedUsername });
+      selectedChatRef.current = selectedChat;
     }
 
     return () => {
@@ -157,6 +173,43 @@ const ChatPage = () => {
 
   useEffect(() => {
     if (socket) {
+      function handleNewMessage(msg) {
+        console.log(msg, selectedChat);
+        if (
+          !selectedChatRef.current?._id ||
+          selectedChatRef.current?._id !== msg.chat._id
+        ) {
+          // for giving notification
+          dispatch(getAllUnseenMessageRequest(msg));
+          dispatch(
+            updateChatLatestMessage({
+              chatId: msg.chat._id,
+              latestMessage: msg,
+            })
+          );
+        } else {
+          if (selectedChatRef.current._id === msg.chat._id)
+            dispatch(
+              seenedMessageRequest({
+                messages_id: [msg._id],
+                seenBy: selectedUser.id,
+              })
+            );
+          dispatch(
+            updateChatLatestMessage({
+              chatId: selectedChatRef.current._id,
+              latestMessage: msg,
+            })
+          );
+          dispatch(createMessageRequest(msg));
+        }
+      }
+      function typing(room) {
+        setIsTyping(room);
+      }
+      function stopTyping() {
+        setIsTyping(null);
+      }
       function handleCallDropDown({ from, offer, config }) {
         dispatch(offerRecieved({ from, offer, config }));
       }
@@ -167,10 +220,18 @@ const ChatPage = () => {
         navigate("/chat");
       }
 
+      socket.on("Typing", typing);
+      socket.on("stopTyping", stopTyping);
+      socket.on("new-msg-received", handleNewMessage);
+
       socket.on("offer", handleCallDropDown);
       socket.on("cut-call", callCuted);
 
       return () => {
+        socket.off("Typing", typing);
+        socket.off("stopTyping", stopTyping);
+        socket.off("new-msg-received", handleNewMessage);
+
         socket.off("offer", handleCallDropDown);
         socket.off("cut-call", callCuted);
       };

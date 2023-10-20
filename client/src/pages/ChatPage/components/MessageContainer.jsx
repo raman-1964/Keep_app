@@ -3,10 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   createMessageRequest,
   getAllMessageRequest,
-  getAllUnseenMessageRequest,
   seenedMessageRequest,
 } from "../../../store/Actions/messageAction";
-import { updateChatLatestMessage } from "../../../store/Actions/chatAction";
 import {
   makeRTCconnection,
   getRemoteStream,
@@ -14,17 +12,17 @@ import {
 import Input from "../../../widgets/Input/Input";
 import Spinner from "../../../components/Spinner/Spinner";
 import downArrow from "../../../assets/img/downArrow.png";
-import AudioVideo from "../../../components/audioVideo/audioVideo";
-import { useNavigate } from "react-router-dom";
 import phone from "../../../assets/img/phone.png";
 import camera from "../../../assets/img/camera.png";
+import { ReactComponent as Send } from "../../../assets/svg/send.svg";
 import { ReactComponent as EmptyMsg } from "../../../assets/svg/empty_msg.svg";
+import AudioVideo from "../../../components/audioVideo/audioVideo";
+import { useNavigate } from "react-router-dom";
 
 const MessageContainer = ({
   loggedInUser,
   selectedChat,
   isTyping,
-  setIsTyping,
   selectedUser,
   dimensions,
   setSelectedChat,
@@ -51,8 +49,26 @@ const MessageContainer = ({
   } = useSelector((state) => state.messageReducer);
   const { socket } = useSelector((state) => state.socketCallReducer);
 
-  const createMessage = (e) => {
-    if (e.keyCode === 8) {
+  const createMessage = (str, e) => {
+    if (str === "send") {
+      dispatch(
+        createMessageRequest({
+          data: {
+            msg: sendMessage.message,
+            chatId: selectedChat._id,
+          },
+          socket,
+        })
+      );
+      setRows(1);
+      socket.emit("stop-typing", {
+        room: selectedUser.name,
+        chatId: selectedChat._id,
+      });
+      setSendMessage({ message: "" });
+      return;
+    }
+    if (e && e.keyCode === 8) {
       if (sendMessage.message.endsWith("\n")) {
         e.preventDefault();
         setRows((prv) => prv - 1);
@@ -61,8 +77,8 @@ const MessageContainer = ({
         });
       }
     }
-    if (e.key === "Enter") {
-      if (e.shiftKey) {
+    if (e && e.key === "Enter")
+      if (e && e.shiftKey) {
         setSendMessage((prevState) => {
           return {
             ...prevState,
@@ -88,7 +104,6 @@ const MessageContainer = ({
         setSendMessage({ message: "" });
         e.preventDefault();
       }
-    }
   };
 
   const typingfn = (e) => {
@@ -199,57 +214,6 @@ const MessageContainer = ({
     if (selectedChat._id && page > 1) fetchMessages();
   }, [page]);
 
-  useEffect(() => {
-    if (socket) {
-      function handleNewMessage(msg) {
-        if (
-          !selectedChatRef.current?._id ||
-          selectedChatRef.current?._id !== msg.chat._id
-        ) {
-          // for giving notification
-          dispatch(getAllUnseenMessageRequest(msg));
-          dispatch(
-            updateChatLatestMessage({
-              chatId: msg.chat._id,
-              latestMessage: msg,
-            })
-          );
-        } else {
-          if (selectedChatRef.current._id === msg.chat._id)
-            dispatch(
-              seenedMessageRequest({
-                messages_id: [msg._id],
-                seenBy: selectedUser.id,
-              })
-            );
-          dispatch(
-            updateChatLatestMessage({
-              chatId: selectedChatRef.current._id,
-              latestMessage: msg,
-            })
-          );
-          dispatch(createMessageRequest(msg));
-        }
-      }
-      function typing(room) {
-        setIsTyping(room);
-      }
-      function stopTyping() {
-        setIsTyping(null);
-      }
-
-      socket.on("new-msg-received", handleNewMessage);
-      socket.on("Typing", typing);
-      socket.on("stopTyping", stopTyping);
-
-      return () => {
-        socket.off("new-msg-received", handleNewMessage);
-        socket.off("Typing", typing);
-        socket.off("stopTyping", stopTyping);
-      };
-    }
-  }, [socket]);
-
   return (
     <>
       {MessageLoading ? (
@@ -271,7 +235,7 @@ const MessageContainer = ({
               <div className="chatData">
                 <h1>{selectedUser.name}</h1>
                 {isTyping && isTyping === selectedChat._id ? (
-                  <p>typing...</p>
+                  <h1 className="typing">typing...</h1>
                 ) : null}
               </div>
             </div>
@@ -307,6 +271,8 @@ const MessageContainer = ({
                 style={{
                   ...(msg.sender.username === loggedInUser && {
                     alignSelf: "flex-end",
+                    background: "#8558f1",
+                    color: "#fff",
                   }),
                 }}
                 ref={ind === Message.length - 1 ? bottomRef : undefined}
@@ -322,15 +288,19 @@ const MessageContainer = ({
               placeholder="Type a message"
               className="msgInput scrollbar"
               autoComplete="off"
-              width="80%"
+              width="90%"
               name="message"
               value={sendMessage}
               setValue={setSendMessage}
               onKeyDown={(e) =>
-                (e.key === "Enter" || e.key === "Backspace") && createMessage(e)
+                (e.key === "Enter" || e.key === "Backspace") &&
+                createMessage("keyDown", e)
               }
               onChange={(e) => typingfn(e)}
             />
+            <div className="sendIcon" onClick={() => createMessage("send")}>
+              <Send color="#826cdd" style={{ transform: "rotate(-30deg)" }} />
+            </div>
             {!showArrow ? (
               <div className="downArrow" onClick={() => scrollBottom()}>
                 <img src={downArrow} />

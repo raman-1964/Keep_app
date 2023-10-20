@@ -114,7 +114,6 @@
   top: 0.6rem;
   right: 0.6rem;
   background: red;
-  /* color: #fff; */
   font-size: 0.7rem;
   border-radius: 1rem;
   padding: 0.1rem 0.5rem;
@@ -125,7 +124,10 @@
   width: 13rem;
 }
 .typing {
-  color: #05ca01 !important;
+  width: auto;
+  font-weight: 500;
+  font-size: 0.9rem !important;
+  color: #fff;
 }
 .goBack {
   cursor: pointer;
@@ -174,11 +176,10 @@
   margin-bottom: 0.8rem;
 }
 .singlemsg {
-  background: #005c4b;
-  max-width: 30rem;
+  background: #f3f3f3;
+  max-width: 35rem;
   align-self: flex-start;
   padding: 0.3rem 1rem;
-  color: #fff;
   border-radius: 0.4rem;
 }
 .singlemsg p {
@@ -193,7 +194,7 @@
   padding-top: 0.4rem;
   border-bottom-left-radius: 0.3rem;
   border-bottom-right-radius: 0.3rem;
-  height: 3rem;
+  /* height: 3rem; */
   position: relative;
 }
 .msgInput {
@@ -202,6 +203,18 @@
   height: auto;
   overflow-y: auto;
   max-height: 6rem;
+}
+.sendIcon {
+  margin-bottom: 0.4rem;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 50%;
+  opacity: 0.7;
+  background: #fff;
 }
 .selectChat {
   width: 100%;
@@ -230,9 +243,17 @@
   width: 1rem;
 }
 
+@media only screen and (max-width: 1280px) {
+  .singlemsg {
+    max-width: 29rem;
+  }
+}
 @media only screen and (max-width: 1024px) {
   .pageContainer {
     padding: 1rem;
+  }
+  .singlemsg {
+    max-width: 24rem;
   }
 }
 
@@ -240,9 +261,17 @@
   .pageContainer {
     padding: 1rem 0.5rem;
   }
+  .singlemsg {
+    max-width: 20rem;
+  }
 }
 @media only screen and (max-width: 705px) {
   .pageContainer {
-    padding-bottom: 0.1rem;
+    padding-bottom: 0.3rem;
+  }
+}
+@media only screen and (max-width: 390px) {
+  .singlemsg {
+    max-width: 18rem;
   }
 }
