@@ -3,7 +3,9 @@ import styles from "./CallerPage.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import phone from "../../assets/img/phone.png";
 import mic from "../../assets/img/mic.png";
+import muteIcon from "../../assets/img/muteIcon.png";
 import camera from "../../assets/img/camera.png";
+import cameraClosed from "../../assets/img/VideoClosedIcon.png";
 import { ReactComponent as Close } from "../../assets/svg/close.svg";
 import { useNavigate, useParams } from "react-router-dom";
 import { destroyConnection } from "../../store/Actions/socket-call";
@@ -142,7 +144,7 @@ const CallerPage = () => {
           <>
             {connection?.callConfig?.video ? (
               <img
-                src={camera}
+                src={videoTrack ? camera : cameraClosed}
                 className={`${styles.camera} ${styles.icon} ${
                   !videoTrack && styles.offIcon
                 }`}
@@ -151,7 +153,7 @@ const CallerPage = () => {
             ) : null}
 
             <img
-              src={mic}
+              src={audioTrack ? mic : muteIcon}
               className={`${styles.mic} ${styles.icon} ${
                 !audioTrack && styles.offIcon
               }`}

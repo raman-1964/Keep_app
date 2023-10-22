@@ -299,7 +299,7 @@ const MessageContainer = ({
               onChange={(e) => typingfn(e)}
             />
             <div className="sendIcon" onClick={() => createMessage("send")}>
-              <Send color="#826cdd" style={{ transform: "rotate(-30deg)" }} />
+              <Send color="#826cdd" style={{ transform: "translateX(1px)" }} />
             </div>
             {!showArrow ? (
               <div className="downArrow" onClick={() => scrollBottom()}>
