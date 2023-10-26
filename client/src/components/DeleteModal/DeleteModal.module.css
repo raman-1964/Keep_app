@@ -1,0 +1,27 @@
+.modalContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.heading {
+  color: rgb(5, 5, 5) !important;
+}
+.btnCnt {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+}
+.ysBtn {
+  background: none;
+  border: 1px solid red;
+  color: black;
+  padding: 0.4rem 1.5rem;
+}
+.noBtn {
+  background: none;
+  border: 1px solid rgb(13, 183, 30);
+  color: black;
+  padding: 0.4rem 1.5rem;
+}

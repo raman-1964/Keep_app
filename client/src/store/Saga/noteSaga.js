@@ -60,13 +60,13 @@ function* updateNote(action) {
       note: action.payload.data,
       id: action.payload.id,
     });
-    action.payload.setToggle(null);
     toast.success("note updated successfully", defaultToastSetting);
     yield put(updateNoteSuccess(res));
   } catch (error) {
     toast.error(`${error}`, defaultToastSetting);
-    action.payload.setToggle(null);
     yield put(updateNoteFailed(error));
+  } finally {
+    action.payload.setToggle(null);
   }
 }
 

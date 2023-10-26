@@ -1,12 +1,14 @@
-const Notes = require("../models/note");
+const Folders = require("../models/folder");
+const { Chat } = require("../models/chat");
 const Users = require("../models/user");
-const { validateUpdateUser } = require("../validate/user");
+const bcrypt = require("bcryptjs");
 
 const getUser = async (req, res, next) => {
   try {
     const _id = req.user_token_details._id;
+
     const me = await Users.findOne({ _id }).select("-password").lean();
-    if (!me) res.status(400).send("User not found");
+    if (!me) return res.status(400).send("User not found");
 
     res.status(200).send(me);
   } catch (error) {
@@ -16,17 +18,21 @@ const getUser = async (req, res, next) => {
 
 const updateUser = async (req, res, next) => {
   try {
-    const me = await Users.findOne();
-    if (!me) res.status(400).send("User not found");
+    const { name, username, bio } = req.body;
 
-    const uUser = { ...req.body };
-    const { error } = validateUpdateUser(uUser);
-    if (error) res.send(error.details[0].message);
+    const me = await Users.findOne({ _id: req.user_token_details._id });
+    if (!me) return res.status(400).send("User not found");
 
-    me.set({ uUser });
+    me.name = name;
+    me.username = username;
+    me.bio = bio;
+
     await me.save();
 
-    res.status(200).send(me);
+    const response = me.toObject();
+    delete response.password;
+
+    res.status(200).send(response);
   } catch (error) {
     console.log(error);
   }
@@ -34,10 +40,11 @@ const updateUser = async (req, res, next) => {
 
 const deleteUser = async (req, res, next) => {
   try {
-    const me = await Users.findOne();
-    if (!me) res.status(400).send("User not found");
+    const me = await Users.findOne({ _id: req.user_token_details._id });
+    if (!me) return res.status(400).send("User not found");
 
-    await Notes.deleteMany({ user: me._id });
+    await Folders.deleteMany({ user: me._id });
+    await Chat.deleteMany({ users: { $elemMatch: { $eq: me._id } } });
     await me.delete();
 
     res.status(200).send(me);
@@ -67,4 +74,33 @@ const searchUser = async (req, res, next) => {
   }
 };
 
-module.exports = { getUser, updateUser, deleteUser, searchUser };
+const changePassword = async (req, res, next) => {
+  try {
+    const me = await Users.findOne({ _id: req.user_token_details._id });
+    if (!me) return res.status(400).send("User not found");
+
+    const { oldP, newP } = req.body;
+
+    const isCorrect = await bcrypt.compare(oldP, me.password);
+    if (!isCorrect)
+      return res.status(400).send({ msg: "your old password is not correct" });
+
+    const salt = bcrypt.genSaltSync(10);
+    const hashPassword = bcrypt.hashSync(newP, salt);
+
+    me.password = hashPassword;
+    await me.save();
+
+    res.status(200).send("your password changed Successfully");
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+module.exports = {
+  getUser,
+  updateUser,
+  changePassword,
+  deleteUser,
+  searchUser,
+};

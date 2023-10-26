@@ -1,0 +1,324 @@
+.dashboardContainer {
+  height: calc(100vh - 3.5rem);
+  width: 100%;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.leftContainer {
+  width: 30%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.rightContainer {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.userInfoContainer {
+  background-color: #ebe8f5;
+  border-radius: 0.3rem;
+  display: flex;
+  gap: 1rem;
+  height: 7rem;
+  padding: 0 1rem;
+  width: 100%;
+  align-items: center;
+}
+
+/* .userImage {
+  width: 30%;
+  display: grid;
+  place-items: center;
+  padding-left: 1rem;
+} */
+
+.userImage img {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  border: 2px solid green;
+  padding: 0.1rem;
+  object-fit: cover;
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0.2rem 0rem 0.2rem 0rem;
+  font-size: 0.9rem;
+  flex: 1;
+}
+
+.userName {
+  font-weight: 600;
+}
+
+.uniqueUserName {
+  color: rgb(255, 0, 0);
+  font-style: italic;
+}
+
+.userBio {
+  color: #6a58d9;
+  width: 95%;
+  max-height: 4rem;
+  overflow: hidden;
+}
+
+.followCountContainer {
+  display: flex;
+  height: 4rem;
+  width: 100%;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.followCard {
+  flex: 1;
+  background-color: #ebe8f5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.3rem;
+  filter: none;
+  padding: 1rem 0rem;
+}
+
+.followCard h3 {
+  color: #4caf50;
+  font-size: 1.2rem;
+}
+.followCard p {
+  color: black;
+  font-size: 1rem;
+}
+
+.followCard:hover {
+  background-color: #d4caf4;
+}
+
+.followersListContainer {
+  background-color: #ebe8f5;
+  padding: 1rem;
+  border-radius: 0.3rem;
+  height: 1rem;
+  flex: 1;
+}
+
+.followersListContainer p {
+  font-size: 1rem;
+  font-weight: 600;
+  font-style: italic;
+  margin-bottom: 0.8rem;
+}
+
+.followersList {
+  height: 93%;
+  overflow: auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.follower {
+  background-color: rgba(255, 255, 255, 0.63);
+  padding: 0.3rem 0.5rem;
+  border-radius: 0.2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.followerImg {
+  display: grid;
+  place-items: center;
+}
+
+.followerImg img {
+  border: 2px solid green;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+}
+
+.btnContainer {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.1rem;
+  width: 100%;
+  height: 2.5rem;
+}
+
+.btn {
+  width: auto;
+  padding: 0 0.6rem;
+  font-size: 1rem;
+  background-color: #ebe8f5;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  color: #000000;
+  filter: none;
+}
+
+.btn:hover {
+  background-color: #d4caf4;
+}
+.svgIcon {
+  width: 1.5rem;
+}
+
+.notesContainer {
+  background-color: #ebe8f5;
+  border-radius: 0.3rem;
+  flex: 1;
+}
+
+.notesContainer p {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.3rem 0 0 0.5rem;
+}
+
+.dropDownContent {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.8rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  color: black;
+}
+.dropDownContent img {
+  width: 1rem;
+}
+.dropDownContent:hover {
+  cursor: pointer;
+  background: #f1ffe2;
+}
+
+.dropDownContentheading {
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+/* .userInfoContainer .settingbtn {
+  visibility: hidden;
+}
+.dropdown {
+  background-color: #fff;
+  border-radius: 0.3rem;
+  position: absolute;
+  top: 7rem;
+  right: 0.8rem;
+  border: 1px solid grey;
+}
+
+.dropdown .btn {
+  background-color: white;
+  width: 100%;
+  margin: 0;
+} */
+
+@media only screen and (max-width: 1024px) {
+  .leftContainer,
+  .rightContainer {
+    width: 50%;
+  }
+  .btn {
+    font-size: 0.9rem;
+    gap: 0;
+    padding: 0rem 0.3rem;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    align-items: center;
+  }
+  .leftContainer,
+  .rightContainer {
+    width: 95%;
+  }
+  .rightContainer {
+    margin-right: 0rem;
+  }
+  .userInfoContainer {
+    position: relative;
+  }
+  .userInfoContainer .settingbtn {
+    position: absolute;
+    top: -0.1rem;
+    right: 0.3rem;
+    visibility: visible;
+  }
+
+  .dropdown {
+    top: 3rem;
+    right: 0.3rem;
+  }
+
+  .svgIcon {
+    width: 2rem;
+  }
+
+  .userName,
+  .uniqueUserName {
+    font-size: 0.8rem;
+  }
+  .btn {
+    font-size: 0.8rem;
+    padding: 0rem 0.3rem;
+    gap: 0rem;
+  }
+  .dropdown .btn {
+    padding: 0rem 0.3rem 0.5rem 0.3rem;
+    gap: 0.3rem;
+  }
+  .followerCard,
+  .followingCard {
+    padding: 0.8rem 0rem;
+  }
+  .followerCard p,
+  .followingCard p {
+    font-size: 0.8rem;
+  }
+  .followerCard h3,
+  .followingCard h3,
+  .followersListContainer p {
+    font-size: 1rem;
+  }
+
+  .btnContainer {
+    padding: 0;
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 425px) {
+  .followerCard,
+  .followingCard {
+    padding: 0.5rem 0rem;
+  }
+}
