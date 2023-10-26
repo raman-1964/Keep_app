@@ -2,14 +2,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 90vh;
-  background: #2a3942;
+  height: calc(100vh - 3.5rem);
 }
 
 .pageContainer {
   padding: 1rem 1.5rem;
-  height: 93.8vh;
-  background: #2a3942;
+  height: calc(100vh - 3.5rem);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -30,16 +28,20 @@
 .chatHighlitcontNDsearch {
   flex: 2;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
+
 .chatHighlitcont {
-  border-top: 1px solid wheat;
   border-radius: 0.3rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
   width: 100%;
-  height: 92%;
+  flex: 1;
   min-height: 12%;
   overflow-y: auto;
   padding-top: 0.3rem;
@@ -55,18 +57,42 @@
   align-items: center;
   justify-content: flex-start;
   gap: 1rem;
-  background: #111b21;
+  background: #b1a2eb;
+  border-radius: 0.3rem;
+  margin-bottom: 0.2rem;
   width: 100%;
-  border-top: 1px solid wheat;
   cursor: pointer;
   position: relative;
   flex-shrink: 0;
+  height: 4rem;
 }
+.chatUser {
+  cursor: auto;
+  margin-bottom: 0;
+  background: #826cdd;
+  justify-content: space-between;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.callIconCont,
+.chatUserCont {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-right: 0.6rem;
+  gap: 0;
+}
+.callIcon {
+  width: 1.5rem;
+  cursor: pointer;
+  margin-right: 1.4rem;
+}
+
 .BG-chatHighlit {
-  background: #2a3942;
+  background: #826cdd;
 }
 .chatHighlit:hover {
-  background: #202c33;
+  background: #826cdd;
 }
 .img {
   background: red;
@@ -79,10 +105,8 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 0.5rem;
 }
 .chatData h1 {
-  color: #fff;
   font-size: 1.2rem;
 }
 .msgNotif {
@@ -90,13 +114,12 @@
   top: 0.6rem;
   right: 0.6rem;
   background: red;
-  color: #fff;
+  /* color: #fff; */
   font-size: 0.7rem;
   border-radius: 1rem;
   padding: 0.1rem 0.5rem;
 }
 .chatData p {
-  color: #fff;
   font-size: 0.9rem;
   padding-right: 0.5rem;
   width: 13rem;
@@ -104,14 +127,28 @@
 .typing {
   color: #05ca01 !important;
 }
+.goBack {
+  cursor: pointer;
+  padding: 0.1rem;
+  width: 1.3rem;
+  margin: 0 0.5rem;
+  border-radius: 50%;
+  opacity: 0.9;
+  background: #b1a2eb;
+  transform: rotate(90deg);
+}
 
 .msgCont {
-  box-shadow: 0 0 0 0.3em rgb(26, 39, 39);
-  border-radius: 0.3rem;
+  border-left: 0.2rem solid #826cdd;
+  border-right: 0.2rem solid #826cdd;
+  border-radius: 0.4rem;
   height: 100%;
   flex: 5;
   display: flex;
   flex-direction: column;
+}
+.emptyMsgCont {
+  border: 0.2rem solid #826cdd;
 }
 .msgCont .chatHighlit {
   border: none;
@@ -122,16 +159,14 @@
   height: 2.5rem;
 }
 .allMsg {
-  flex: 15;
+  flex: 1;
   overflow-y: auto;
   padding: 0 1rem;
   display: flex;
   gap: 0.6rem;
   flex-direction: column;
 }
-/* .allMsg::-webkit-scrollbar {
-  display: none;
-} */
+
 .allMsg > div:first-child {
   margin-top: 0.8rem;
 }
@@ -139,7 +174,6 @@
   margin-bottom: 0.8rem;
 }
 .singlemsg {
-  /* width: auto; */
   background: #005c4b;
   max-width: 30rem;
   align-self: flex-start;
@@ -152,19 +186,19 @@
   word-wrap: break-word;
 }
 .msgInputCont {
-  background: #202c33;
+  background: #826cdd;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  padding: 0.6rem 0;
-  flex: 1;
+  padding-top: 0.4rem;
+  border-bottom-left-radius: 0.3rem;
+  border-bottom-right-radius: 0.3rem;
+  height: 3rem;
   position: relative;
 }
 .msgInput {
   font-weight: 500;
   letter-spacing: 0.5px;
-  background: #2a3942;
-  color: #e6ebea;
   height: auto;
   overflow-y: auto;
   max-height: 6rem;
@@ -175,7 +209,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #fff;
+  flex-direction: column;
+  color: #826cdd;
 }
 
 .downArrow {
@@ -193,4 +228,21 @@
 }
 .downArrow img {
   width: 1rem;
+}
+
+@media only screen and (max-width: 1024px) {
+  .pageContainer {
+    padding: 1rem;
+  }
+}
+
+@media only screen and (max-width: 868px) {
+  .pageContainer {
+    padding: 1rem 0.5rem;
+  }
+}
+@media only screen and (max-width: 705px) {
+  .pageContainer {
+    padding-bottom: 0.1rem;
+  }
 }

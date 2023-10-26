@@ -2,8 +2,8 @@ class AudioVideo {
   io;
   connection;
   localStream;
-  remoteStream;
   callConfig;
+  offer;
   room;
 
   constructor(io, config, room, fn) {
@@ -14,15 +14,17 @@ class AudioVideo {
     this.room = room;
     this.callConfig = config;
 
-    io.on("decline-offer", () => {
-      this.connection = null;
+    io.on("ice-candidate", async (candidate) => {
+      try {
+        if (candidate && this.connection)
+          await this.connection.addIceCandidate(candidate);
+      } catch (error) {
+        console.log(error);
+      }
     });
 
     this.connection.ontrack = (ev) => {
-      if (ev.streams[0]) {
-        // this.remoteStream = ev.streams[0];
-        fn(ev.streams[0]);
-      }
+      if (ev.streams[0]) fn(ev.streams[0]);
     };
 
     this.connection.onicecandidate = (e) => {
@@ -33,13 +35,25 @@ class AudioVideo {
         console.log(error);
       }
     };
+
+    // this.connection.onconnectionstatechange = (event) => {
+    //   switch (this.connection.connectionState) {
+    //     case "connecting":
+    //       this.connectionState = "connecting";
+    //       break;
+    //     case "connected":
+    //       this.connectionState = "connected";
+    //       break;
+    //   }
+    // };
   }
 
-  //CREATING OFFER
+  //  CREATING OFFER
   async createOffer() {
     try {
       const offer = await this.connection.createOffer();
       await this.connection.setLocalDescription(offer);
+      this.offer = offer;
 
       this.io.emit("offer", {
         room: this.room,
@@ -51,7 +65,7 @@ class AudioVideo {
     }
   }
 
-  // ACCEPTING OFFER
+  //  ACCEPTING OFFER
   async createAnswer(offer) {
     try {
       this.connection.setRemoteDescription(new RTCSessionDescription(offer));
@@ -66,6 +80,7 @@ class AudioVideo {
     }
   }
 
+  //  SETTING OR ANSWER
   async answeRecieved(answer) {
     try {
       const remoteDesc = new RTCSessionDescription(answer);
@@ -75,13 +90,7 @@ class AudioVideo {
     }
   }
 
-  // DECLINING OFFER
-  declineOffer() {
-    try {
-      this.io.emit("decline-offer", { room: this.room });
-    } catch (error) {}
-  }
-
+  //  STARTING LOCAL STREAM
   async startLocalStream() {
     try {
       this.localStream = await navigator.mediaDevices.getUserMedia(
@@ -96,12 +105,28 @@ class AudioVideo {
     }
   }
 
-  getRemoteStream() {
-    return this.remoteStream;
-  }
-
   getLocalStream() {
     return this.localStream;
+  }
+
+  destroy() {
+    this.io = null;
+    this.connection = null;
+    this.localStream = null;
+    this.callConfig = null;
+    this.room = null;
+  }
+
+  callAgain() {
+    try {
+      this.io.emit("offer", {
+        room: this.room,
+        config: this.callConfig,
+        offer: this.offer,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
 

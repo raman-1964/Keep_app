@@ -2,18 +2,28 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import "./ChatPage.css";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllChatRequest } from "../../store/Actions/chatAction";
-import { createSocket } from "../../store/Actions/socket-call";
+import {
+  createSocket,
+  destroyConnection,
+  offerRecieved,
+} from "../../store/Actions/socket-call";
 import Search from "./components/Search";
 import { pagination } from "../../utils/pagination";
 import Spinner from "../../components/Spinner/Spinner";
 import MessageContainer from "./components/MessageContainer";
+import CallerDropDown from "./components/CallerDropDown/CallerDropDown";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { defaultToastSetting } from "../../utils/constants";
 
 const ChatPage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const observer = useRef(null);
   const [page, setPage] = useState(1);
   const [isTyping, setIsTyping] = useState(null);
+  const [dimensions, setDimensions] = useState(getWindowDimension());
   const [selectedChat, setSelectedChat] = useState({});
   const [selectedUser, setSelectedUser] = useState({});
 
@@ -22,6 +32,9 @@ const ChatPage = () => {
     (state) => state.chatReducer
   );
   const { unseenMessage } = useSelector((state) => state.messageReducer);
+  const { socket, connection } = useSelector(
+    (state) => state.socketCallReducer
+  );
 
   const msgNotif = useCallback(
     (chat) => {
@@ -39,6 +52,73 @@ const ChatPage = () => {
     (element) => pagination(element, observer, isNextPage, setPage),
     [isNextPage]
   );
+
+  function getWindowDimension() {
+    const { innerWidth: width, innerHeight: height } = window;
+    return { width, height };
+  }
+
+  const getSideBar = () => {
+    return (
+      <div className="chatHighlitcontNDsearch">
+        <Search setSelectedChat={setSelectedChat} />
+
+        <div className="chatHighlitcont scrollbar">
+          {chats.map((chat, ind) => {
+            return (
+              <div
+                ref={ind === chats.length - 1 ? lastElementRef : undefined}
+                key={ind}
+                className={`chatHighlit ${
+                  selectedChat._id === chat._id ? "BG-chatHighlit" : ""
+                }`}
+                onClick={() => setSelectedChat(chat)}
+              >
+                <div className="img"></div>
+                <div className="chatData text-elipsis">
+                  <h1>
+                    {loggedInUser === chat?.users?.[0]?.username
+                      ? chat?.users?.[1]?.username
+                      : chat?.users?.[0]?.username}
+                  </h1>
+                  {isTyping && isTyping === chat._id ? (
+                    <p className="typing">typing...</p>
+                  ) : (
+                    <p className="text-elipsis ">{chat?.latestMessage?.msg}</p>
+                  )}
+                </div>
+                {unseenMessage.length && msgNotif(chat) ? (
+                  <h1 className="msgNotif">{msgNotif(chat)}</h1>
+                ) : null}
+              </div>
+            );
+          })}
+
+          {isNextPageLoading ? (
+            <div className="spinner-chat-cont">
+              <Spinner />
+            </div>
+          ) : null}
+        </div>
+      </div>
+    );
+  };
+
+  const getMsgCont = () => {
+    return (
+      <div className={`msgCont ${!selectedChat?._id && "emptyMsgCont"}`}>
+        <MessageContainer
+          loggedInUser={loggedInUser}
+          selectedChat={selectedChat}
+          isTyping={isTyping}
+          setIsTyping={setIsTyping}
+          selectedUser={selectedUser}
+          dimensions={dimensions}
+          setSelectedChat={setSelectedChat}
+        />
+      </div>
+    );
+  };
 
   useEffect(() => {
     dispatch(createSocket(loggedInUser));
@@ -75,57 +155,51 @@ const ChatPage = () => {
     };
   }, [selectedChat?._id]);
 
+  useEffect(() => {
+    if (socket) {
+      function handleCallDropDown({ from, offer, config }) {
+        dispatch(offerRecieved({ from, offer, config }));
+      }
+      function callCuted() {
+        dispatch(destroyConnection());
+        connection.destroy();
+        toast.warning("call ended", defaultToastSetting);
+        navigate("/chat");
+      }
+
+      socket.on("offer", handleCallDropDown);
+      socket.on("cut-call", callCuted);
+
+      return () => {
+        socket.off("offer", handleCallDropDown);
+        socket.off("cut-call", callCuted);
+      };
+    }
+  }, [socket]);
+
+  useEffect(() => {
+    const handleResize = () => setDimensions(getWindowDimension());
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [JSON.stringify(dimensions)]);
+
   return !chatLoading ? (
-    <div className="pageContainer">
-      <div className="chatHighlitcontNDsearch">
-        <Search setSelectedChat={setSelectedChat} />
-        <div className="chatHighlitcont scrollbar">
-          {chats.map((chat, ind) => {
-            return (
-              <div
-                ref={ind === chats.length - 1 ? lastElementRef : undefined}
-                key={ind}
-                className={`chatHighlit ${
-                  selectedChat._id === chat._id ? "BG-chatHighlit" : ""
-                }`}
-                onClick={() => setSelectedChat(chat)}
-              >
-                <div className="img"></div>
-                <div className="chatData text-elipsis">
-                  <h1>
-                    {loggedInUser === chat?.users?.[0]?.username
-                      ? chat?.users?.[1]?.username
-                      : chat?.users?.[0]?.username}
-                  </h1>
-                  {isTyping && isTyping === chat._id ? (
-                    <p className="typing">typing...</p>
-                  ) : (
-                    <p className="text-elipsis ">{chat?.latestMessage?.msg}</p>
-                  )}
-                </div>
-                {unseenMessage.length && msgNotif(chat) ? (
-                  <h1 className="msgNotif">{msgNotif(chat)}</h1>
-                ) : null}
-              </div>
-            );
-          })}
-          {isNextPageLoading ? (
-            <div className="spinner-chat-cont">
-              <Spinner />
-            </div>
-          ) : null}
-        </div>
+    <>
+      <CallerDropDown />
+      <div className="pageContainer">
+        {dimensions.width > 700 ? (
+          <>
+            {getSideBar()} {getMsgCont()}
+          </>
+        ) : null}
+        {dimensions.width <= 700
+          ? Object.keys(selectedChat).length === 0
+            ? getSideBar()
+            : getMsgCont()
+          : null}
       </div>
-      <div className="msgCont">
-        <MessageContainer
-          loggedInUser={loggedInUser}
-          selectedChat={selectedChat}
-          isTyping={isTyping}
-          setIsTyping={setIsTyping}
-          selectedUser={selectedUser}
-        />
-      </div>
-    </div>
+    </>
   ) : (
     <div className="spinnerCont">
       <Spinner />

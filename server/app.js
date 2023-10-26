@@ -37,17 +37,9 @@ const io = socket(server, {
 });
 
 io.on("connection", (socket) => {
-  // console.log("socket connected");
-
   socket.on("setup", (userName) => {
     socket.join(userName);
-    // console.log(socket.rooms);
   });
-
-  // socket.on("join-chat", (room) => {
-  //   socket.join(room);
-  //   // console.log("user joined ", room);
-  // });
 
   socket.on("typing", ({ room, chatId }) =>
     socket.in(room).emit("Typing", chatId)
@@ -81,7 +73,13 @@ io.on("connection", (socket) => {
     socket.in(room).emit("answer", answer);
   });
 
+  //  ICE CANDIDATE
   socket.on("ice-candidate", ({ room, candidate }) => {
     socket.in(room).emit("ice-candidate", candidate);
+  });
+
+  //  CALL CUT
+  socket.on("cut-call", ({ room }) => {
+    socket.in(room).emit("cut-call");
   });
 });

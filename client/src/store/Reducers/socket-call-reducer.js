@@ -4,6 +4,8 @@ import {
   OFFER_RECEIVED,
   MAKE_RTC_CONNECTION,
   GET_REMOTE_STREAM,
+  DESTROY_CONNECTION,
+  DECLINE_CALL,
 } from "../Constants/socket-call";
 import io from "socket.io-client";
 
@@ -28,11 +30,11 @@ export const socketCallReducer = (state = initialState, action) => {
     }
 
     case GET_REMOTE_STREAM:
-      console.log("reducer", action.payload);
       return {
         ...state,
         remoteStream: action.payload,
       };
+
     case MAKE_RTC_CONNECTION:
       return {
         ...state,
@@ -50,6 +52,21 @@ export const socketCallReducer = (state = initialState, action) => {
         ...state,
         callDropDown: { ...state.callDropDown, show: false },
         answerCall: true,
+      };
+
+    case DECLINE_CALL:
+      return {
+        ...state,
+        callDropDown: { ...state.callDropDown, show: false },
+      };
+
+    case DESTROY_CONNECTION:
+      return {
+        ...state,
+        callDropDown: { show: false, offer: null, from: null, config: null },
+        answerCall: false,
+        connection: null,
+        remoteStream: null,
       };
 
     default:

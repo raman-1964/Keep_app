@@ -6,6 +6,7 @@ import AudioVideo from "../../../../components/audioVideo/audioVideo";
 import {
   getRemoteStream,
   handleAnswerCall,
+  handleDeclineCall,
   makeRTCconnection,
 } from "../../../../store/Actions/socket-call";
 import { useNavigate } from "react-router-dom";
@@ -14,7 +15,7 @@ const CallerDropDown = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { socket, callDropDown, answerCall, connection } = useSelector(
+  const { socket, callDropDown, answerCall } = useSelector(
     (state) => state.socketCallReducer
   );
 
@@ -24,7 +25,6 @@ const CallerDropDown = () => {
       callDropDown.config,
       callDropDown.from,
       (streams) => {
-        console.log("remote stream", streams);
         dispatch(getRemoteStream(streams));
       }
     );
@@ -32,37 +32,33 @@ const CallerDropDown = () => {
     await _call.createAnswer(callDropDown.offer);
 
     dispatch(makeRTCconnection(_call));
-    navigate("/call");
+    navigate(`/call/${callDropDown.from}`);
+  };
+
+  const declineCall = () => {
+    socket.emit("decline-offer", { room: callDropDown.from });
+    dispatch(handleDeclineCall());
   };
 
   useEffect(() => {
-    if (socket) {
-      async function iceCandidate(candidate) {
-        try {
-          if (candidate) await connection.addIceCandidate(candidate);
-        } catch (error) {}
-      }
-
-      socket.on("ice-candidate", iceCandidate);
-
-      return () => {
-        socket.off("ice-candidate", iceCandidate);
-      };
-    }
-  }, [socket]);
-
-  useEffect(() => {
-    if (socket && answerCall) createAnswer();
-  }, [socket, answerCall]);
+    if (answerCall) createAnswer();
+  }, [answerCall]);
 
   return (
     <>
       {callDropDown.show ? (
         <div className={styles.callerDropDown}>
-          <p>call is coming</p>
+          <p>{callDropDown.from} is calling</p>
           <div className={styles.callerBtns}>
-            <Button onClick={() => dispatch(handleAnswerCall())}>answer</Button>
-            <Button>decline</Button>
+            <Button
+              className={styles.button}
+              onClick={() => dispatch(handleAnswerCall())}
+            >
+              Join
+            </Button>
+            <Button className={styles.button} onClick={() => declineCall()}>
+              Decline
+            </Button>
           </div>
         </div>
       ) : null}

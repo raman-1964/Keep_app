@@ -25,6 +25,7 @@ function KaRoutes() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/*" element={<ErrorPage />} />
           <Route path="/call" element={<CallerPage />} />
+          <Route path="/call/:user" element={<CallerPage />} />
         </Routes>
       </div>
     </>

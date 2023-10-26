@@ -8,7 +8,6 @@ import {
 } from "../../../store/Actions/messageAction";
 import { updateChatLatestMessage } from "../../../store/Actions/chatAction";
 import {
-  offerRecieved,
   makeRTCconnection,
   getRemoteStream,
 } from "../../../store/Actions/socket-call";
@@ -17,7 +16,9 @@ import Spinner from "../../../components/Spinner/Spinner";
 import downArrow from "../../../assets/img/downArrow.png";
 import AudioVideo from "../../../components/audioVideo/audioVideo";
 import { useNavigate } from "react-router-dom";
-import CallerDropDown from "./CallerDropDown/CallerDropDown";
+import phone from "../../../assets/img/phone.png";
+import camera from "../../../assets/img/camera.png";
+import { ReactComponent as EmptyMsg } from "../../../assets/svg/empty_msg.svg";
 
 const MessageContainer = ({
   loggedInUser,
@@ -25,6 +26,8 @@ const MessageContainer = ({
   isTyping,
   setIsTyping,
   selectedUser,
+  dimensions,
+  setSelectedChat,
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -46,9 +49,7 @@ const MessageContainer = ({
     isNextPage,
     isNextPageLoading,
   } = useSelector((state) => state.messageReducer);
-  const { socket, connection } = useSelector(
-    (state) => state.socketCallReducer
-  );
+  const { socket } = useSelector((state) => state.socketCallReducer);
 
   const createMessage = (e) => {
     if (e.keyCode === 8) {
@@ -146,7 +147,6 @@ const MessageContainer = ({
       { audio: true, ...(type === "video" && { video: true }) },
       selectedUser.name,
       (streams) => {
-        console.log("remote stream", streams);
         dispatch(getRemoteStream(streams));
       }
     );
@@ -154,7 +154,7 @@ const MessageContainer = ({
     await _call.createOffer();
 
     dispatch(makeRTCconnection(_call));
-    navigate("/call");
+    navigate(`/call/${selectedUser.name}`);
   };
 
   useEffect(() => {
@@ -238,61 +238,55 @@ const MessageContainer = ({
         setIsTyping(null);
       }
 
-      function handleCallDropDown({ from, offer, config }) {
-        dispatch(offerRecieved({ from, offer, config }));
-      }
-
       socket.on("new-msg-received", handleNewMessage);
       socket.on("Typing", typing);
       socket.on("stopTyping", stopTyping);
-
-      socket.on("offer", handleCallDropDown);
 
       return () => {
         socket.off("new-msg-received", handleNewMessage);
         socket.off("Typing", typing);
         socket.off("stopTyping", stopTyping);
-
-        socket.off("offer", handleCallDropDown);
       };
     }
   }, [socket]);
 
   return (
     <>
-      <CallerDropDown />
       {MessageLoading ? (
         <div className="spinnerCont">
           <Spinner />
         </div>
       ) : Object.keys(selectedChat).length ? (
         <>
-          <div className="chatHighlit">
-            <div className="img"></div>
-            <div className="chatData">
-              <h1>{selectedUser.name}</h1>
-              {isTyping && isTyping === selectedChat._id ? (
-                <p>typing...</p>
+          <div className="chatHighlit chatUser">
+            <div className="chatUserCont">
+              {dimensions.width <= 700 ? (
+                <img
+                  src={downArrow}
+                  className="goBack"
+                  onClick={() => setSelectedChat({})}
+                />
               ) : null}
+              <div className="img"></div>
+              <div className="chatData">
+                <h1>{selectedUser.name}</h1>
+                {isTyping && isTyping === selectedChat._id ? (
+                  <p>typing...</p>
+                ) : null}
+              </div>
             </div>
-            <h1
-              style={{
-                color: "white",
-                fontSize: "1rem",
-              }}
-              onClick={() => makeCall("audio")}
-            >
-              audio
-            </h1>
-            <h1
-              onClick={() => makeCall("video")}
-              style={{
-                color: "white",
-                fontSize: "1rem",
-              }}
-            >
-              video
-            </h1>
+            <div className="callIconCont">
+              <img
+                src={camera}
+                className="callIcon"
+                onClick={() => makeCall("video")}
+              />
+              <img
+                src={phone}
+                className="callIcon"
+                onClick={() => makeCall("audio")}
+              />
+            </div>
           </div>
           <div
             className="allMsg scrollbar"
@@ -346,6 +340,7 @@ const MessageContainer = ({
         </>
       ) : (
         <div className="selectChat">
+          <EmptyMsg />
           <h1>select anyone to chat</h1>
         </div>
       )}
