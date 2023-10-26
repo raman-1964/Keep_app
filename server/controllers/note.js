@@ -105,7 +105,7 @@ const deleteNote = async (req, res, next) => {
     if (!foundNote)
       res.status(400).send({ msg: "There is no note of this id" });
 
-    await foundNote.deleteOne({ _id });
+    await foundNote.delete();
 
     res.status(200).send(foundNote);
   } catch (error) {

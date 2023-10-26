@@ -2,12 +2,10 @@ import React, { useState } from "react";
 import { ReactComponent as UpArrow } from "../../assets/svg/up-arrow.svg";
 import { ReactComponent as VerticalDot } from "../../assets/svg/verticalDot.svg";
 import { ReactComponent as Delete } from "../../assets/svg/delete.svg";
-import { ReactComponent as Warning } from "../../assets/svg/warning.svg";
 import Share from "../../assets/img/share.png";
 import styles from "./NoteDropdown.module.css";
 import DropDown from "../../widgets/DropDown/DropDown";
 import Modal from "../../widgets/Modal/Modal";
-import Button from "../../widgets/Button/Button";
 import { useDispatch, useSelector } from "react-redux";
 import {
   deleteFolderRequest,
@@ -15,6 +13,7 @@ import {
 } from "../../store/Actions/folderAction";
 import SharedWith from "./components/SharedWith";
 import { folderType } from "../../utils/constants";
+import DeleteModal from "../DeleteModal/DeleteModal";
 
 const NoteDropdown = ({ type, selectedFolder, setSelectedFolder }) => {
   const dispatch = useDispatch();
@@ -124,31 +123,16 @@ const NoteDropdown = ({ type, selectedFolder, setSelectedFolder }) => {
       </div>
 
       <Modal isModal={deleteModal} className="modal">
-        <div className={styles.modalContainer}>
-          <Warning style={{ width: "4rem" }} />
-          <h1 className={`modalHeading ${styles.heading}`}>
-            {type === folderType.SBO
+        <DeleteModal
+          deleteFunction={deleteYes}
+          setDeleteModal={setDeleteModal}
+          deleteLoading={deleteFolderLoading}
+          title={
+            type === folderType.SBO
               ? "Are you certain you wish to remove out from this folder?"
-              : "Are you sure you want to delete it?"}
-          </h1>
-          <div className={styles.btnCnt}>
-            <Button
-              className={styles.ysBtn}
-              loading={deleteFolderLoading}
-              onClick={() => deleteYes()}
-            >
-              Yes
-            </Button>
-            {!deleteFolderLoading ? (
-              <Button
-                className={styles.noBtn}
-                onClick={() => setDeleteModal(false)}
-              >
-                NO
-              </Button>
-            ) : null}
-          </div>
-        </div>
+              : "Are you sure you want to delete it?"
+          }
+        />
       </Modal>
 
       <Modal

@@ -49,7 +49,9 @@ export const loginReducer = (state = initialState, action) => {
       return { ...state, signupLoading: false };
 
     case LOGOUT_REQUEST:
-      localStorage.clear();
+      localStorage.removeItem("Raman-Keep-Token");
+      localStorage.removeItem("Raman-Keep-Username");
+
       return { ...state, userToken: "" };
 
     default:

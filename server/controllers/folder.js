@@ -70,7 +70,7 @@ const deleteFolder = async (req, res, next) => {
       return res.status(400).send({ msg: "There is no folder of this id" });
 
     await Notes.deleteMany({ folder: _id });
-    await foundFolder.deleteOne({ _id });
+    await foundFolder.delete();
 
     res.status(200).send(foundFolder);
   } catch (e) {}

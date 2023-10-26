@@ -39,26 +39,26 @@ function* getAllFolderRequest(action) {
 }
 
 function* createFolderRequest(action) {
+  const { name, setNewFolderModal, setNewFolderName } = action.payload;
   try {
-    const { name, setNewFolderModal, setNewFolderName } = action.payload;
     const res = yield call(createFolderRequestApi, { name });
     yield put(createFolderSuccess(res));
-    setNewFolderModal(false);
-    setNewFolderName({ folder: "" });
     toast.success("Folder added to Personal successfully", defaultToastSetting);
   } catch (e) {
     toast.error(`${e}`, defaultToastSetting);
     yield put(createFolderFailed(e));
+  } finally {
+    setNewFolderModal(false);
+    setNewFolderName({ folder: "" });
   }
 }
 
 function* deleteFolderRequest(action) {
+  const { _id, type, setDeleteModal, setSelectedFolder, selectedFolder } =
+    action.payload;
   try {
-    const { _id, type, setDeleteModal, setSelectedFolder, selectedFolder } =
-      action.payload;
     const res = yield call(deleteFolderRequestApi, _id);
     yield put(deleteFolderSuccess({ _id, type }));
-    setDeleteModal(false);
     if (selectedFolder) {
       setSelectedFolder({});
       yield put(clearNote());
@@ -67,31 +67,33 @@ function* deleteFolderRequest(action) {
   } catch (e) {
     toast.error(`${e}`, defaultToastSetting);
     yield put(deleteFolderFailed(e));
+  } finally {
+    setDeleteModal(false);
   }
 }
 
 function* shareFolderRequest(action) {
+  const { _id, type, arr, setShareModal, setDeleteOrSharedFolder } =
+    action.payload;
   try {
-    const { _id, type, arr, setShareModal, setDeleteOrSharedFolder } =
-      action.payload;
     const res = yield call(shareFolderRequestApi, { _id, sharedTo: arr });
     yield put(shareFolderSuccess({ _id, type, res }));
-    setShareModal(false);
-    setDeleteOrSharedFolder(null);
     toast.success("folder shared successfully", defaultToastSetting);
   } catch (e) {
     toast.error(`${e}`, defaultToastSetting);
     yield put(shareFolderFailed(e));
+  } finally {
+    setShareModal(false);
+    setDeleteOrSharedFolder(null);
   }
 }
 
 function* removeSharedFolderRequest(action) {
+  const { _id, type, setDeleteModal, setSelectedFolder, selectedFolder } =
+    action.payload;
   try {
-    const { _id, type, setDeleteModal, setSelectedFolder, selectedFolder } =
-      action.payload;
     const res = yield call(shareFolderRequestApi, { _id });
     yield put(deleteFolderSuccess({ _id, type }));
-    setDeleteModal(false);
     if (selectedFolder) {
       setSelectedFolder({});
       yield put(clearNote());
@@ -100,6 +102,8 @@ function* removeSharedFolderRequest(action) {
   } catch (e) {
     toast.error(`${e}`, defaultToastSetting);
     yield put(deleteFolderFailed(e));
+  } finally {
+    setDeleteModal(false);
   }
 }
 

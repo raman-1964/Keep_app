@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { ReactComponent as Logout } from "../../assets/svg/logout.svg";
 import ChatIcon from "../../assets/img/chatIcon.png";
 import DashboardIcon from "../../assets/img/dashboardIcon.png";
-import { logoutRequest } from "../../store/Actions/loginAction";
 import Logo from "../Logo/Logo";
 import { getAllUnseenMessageRequest } from "../../store/Actions/messageAction";
 import { useNavigate } from "react-router-dom";
@@ -58,10 +56,6 @@ function Navbar() {
               style={{ width: "1.5rem", height: "1.5rem" }}
             />
             <span>Dashboard</span>
-          </Button> 
-          <Button className="btn" onClick={() => dispatch(logoutRequest())}>
-            <Logout style={{ width: "1.3rem", height: "1.3rem" }} />
-            <span>Logout</span>
           </Button>
         </div>
       </nav>

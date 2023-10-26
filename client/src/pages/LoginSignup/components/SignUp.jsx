@@ -1,5 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { signupRequest } from "../../../store/Actions/loginAction";
@@ -9,20 +8,13 @@ import Input from "../../../widgets/Input/Input";
 import Logo from "../../../components/Logo/Logo";
 import hidePassword from "../../../assets/img/hidePassword.png";
 import showPassword from "../../../assets/img/showPassword.png";
-import { ReactComponent as Close } from "../../../assets/svg/close.svg";
-import { debounceSearch } from "../../../utils/debounce";
-import authHeader from "../../../services/auth-header";
-const BASE_URL = process.env.REACT_APP_URL;
-
+import UserName from "../../../components/userName/UserName";
 
 function SignUp({ setLoginToggle }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const timerRef = useRef(null);
-  const [suggestedUserName, setSuggestedUserName] = useState([]);
-  const [availableUserName, setAvailableUserName] = useState("pending");
-  const [seePassword, setSeePassword] = useState(true);
+  const [seePassword, setSeePassword] = useState(false);
   const [signUp, setSignUp] = useState({
     name: "",
     username: "",
@@ -42,108 +34,22 @@ function SignUp({ setLoginToggle }) {
 
   const signup = (e) => {
     console.log(signUp);
-    // e.preventDefault();
     const { isValid, errors } = signUpAllValidation(signUp);
     if (isValid) dispatch(signupRequest(signUp));
     setError(errors);
-  };
-
-  const makeApi = debounceSearch((username) => {
-    if (suggestedUserName.includes(username)) {
-      setAvailableUserName("success");
-      setSuggestedUserName([]);
-    } else if (username.length >= 5)
-      axios
-        .post(
-          `${BASE_URL}/auth/unique-user-name`,
-          { username },
-          {
-            headers: { ...authHeader() },
-          }
-        )
-        .then((res) => {
-          setAvailableUserName(res.data.available);
-          setSuggestedUserName(res.data.suggestedUserName);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-  }, 300);
-
-  const handleUserName = (username) => {
-    setSignUp((prevState) => {
-      return {
-        ...prevState,
-        username,
-      };
-    });
-
-    if (timerRef.current) clearTimeout(timerRef.current);
-    timerRef.current = setTimeout(() => makeApi(username), 300);
   };
 
   useEffect(() => {
     if (userToken) navigate("/");
   }, [userToken]);
 
-  console.log(suggestedUserName);
+  // console.log(suggestedUserName);
 
   return (
     <>
       <div className="login-container">
         <Logo />
-        <div style={{ width: "100%" }}>
-              <div className="log-input">
-                <h1>User name</h1>
-                <Input
-                  className={`${
-                    availableUserName === "pending"
-                      ? "normal"
-                      : availableUserName === "success"
-                      ? "success"
-                      : "rejected"
-                  }`}
-                  type="text"
-                  placeholder="Choose unique username"
-                  autoComplete="off"
-                  name="username"
-                  value={signUp}
-                  setValue={setSignUp}
-                  onChange={(e) => handleUserName(e.target.value)}
-                />
-                <p className="error">
-                  {error && error["username"] ? error["username"][0] : ""}
-                </p>
-                {availableUserName === "rejected" ? (
-                  <p className="error">
-                    username already taken, slect or type another
-                  </p>
-                ) : null}
-              </div>
-
-              {availableUserName === "rejected" &&
-              suggestedUserName.length > 0 ? (
-                <div className="suggestedCont ">
-                  <div className="suggestedNameCont noScrollbar">
-                    {suggestedUserName.map((name, ind) => (
-                      <p
-                        key={`userName#${ind}`}
-                        className="suggestedName"
-                        onClick={() => handleUserName(name)}
-                      >
-                        {name}
-                      </p>
-                    ))}
-                  </div>
-                  <div
-                    className="closeSuggestion"
-                    onClick={() => setSuggestedUserName([])}
-                  >
-                    <Close style={{ width: "1rem", height: "1rem" }} />
-                  </div>
-                </div>
-              ) : null}
-            </div>
+        <UserName value={signUp} setValue={setSignUp} error={error} />
         <div className="log-input">
           <h1>Name</h1>
           <Input
