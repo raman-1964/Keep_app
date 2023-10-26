@@ -50,7 +50,11 @@ const DashboardEditModal = ({ userInfo, setEditModal }) => {
           setValue={setUpdatedData}
         />
       </div>
-      <Button onClick={() => handleUpdate()} loading={updateUserLoading}>
+      <Button
+        spinnerTheme="light"
+        onClick={() => handleUpdate()}
+        loading={updateUserLoading}
+      >
         Update
       </Button>
     </>
@@ -105,6 +109,7 @@ const ChangePasswordModal = ({ setModal }) => {
       </div>
 
       <Button
+        spinnerTheme="light"
         loading={changePasswordLoading}
         onClick={() => dispatch(changePasswordRequest({ password, setModal }))}
       >
@@ -143,7 +148,7 @@ const FeedbackModal = () => {
           setValue={setFeedback}
         />
       </div>
-      <Button>Submit Feedback</Button>
+      <Button spinnerTheme="light">Submit Feedback</Button>
     </>
   );
 };

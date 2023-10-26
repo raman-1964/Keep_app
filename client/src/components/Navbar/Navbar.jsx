@@ -53,7 +53,10 @@ function Navbar() {
             )}
             <span>Mode</span>
           </Button>*/}
-          <Button className="btn" onClick={() => navigate("/dashboard")}>
+          <Button
+            className={`${styles.btn} ${styles.msgIcon}`}
+            onClick={() => navigate("/dashboard")}
+          >
             <img
               src={DashboardIcon}
               alt="ProfileIcon"
