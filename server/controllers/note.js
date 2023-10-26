@@ -25,8 +25,12 @@ const getNotes = async (req, res, next) => {
       .sort({ updatedAt: -1 })
       .skip(skip)
       .limit(limit)
-      .select("-user")
+      .populate("isFavorite", "username -_id")
       .lean();
+
+    notes.forEach((note) => {
+      note.isFavorite = note.isFavorite?.map((fav) => fav.username);
+    });
 
     const resp_data = {
       prev: true,
@@ -75,21 +79,17 @@ const updateNote = async (req, res, next) => {
 
     const foundNote = await Notes.findOne({ _id });
     if (!foundNote)
-      res.status(400).send({ msg: "There is no note of this id" });
+      return res.status(400).send({ msg: "There is no note of this id" });
 
-    // const id = req.user_token_details._id;
+    foundNote.title = title;
+    foundNote.text = text;
+    foundNote.colorCode = selectedColor;
+    await foundNote.save();
 
-    const ans = await Notes.findByIdAndUpdate(
-      _id,
-      { title, text, colorCode: { ...selectedColor } },
-      { new: true }
-    );
-
-    // await foundNote.updateOne(note, { new: true });
-    // await foundNote.set({
-    //   note,
-    // });
-    // await foundNote.save();
+    const ans = await Notes.findOne({ _id })
+      .populate("isFavorite", "username -_id")
+      .lean();
+    ans.isFavorite = ans.isFavorite?.map((fav) => fav.username);
 
     res.status(200).send(ans);
   } catch (error) {
@@ -103,7 +103,7 @@ const deleteNote = async (req, res, next) => {
 
     const foundNote = await Notes.findOne({ _id });
     if (!foundNote)
-      res.status(400).send({ msg: "There is no note of this id" });
+      return res.status(400).send({ msg: "There is no note of this id" });
 
     await foundNote.delete();
 
@@ -118,13 +118,18 @@ const likeNote = async (req, res, next) => {
     const _id = { ...req.body };
 
     const foundNote = await Notes.findOne({ _id });
-    if (!foundNote) res.status(400).send("There is no note of this id");
+    if (!foundNote) return res.status(400).send("There is no note of this id");
 
-    const ans = await Notes.findByIdAndUpdate(
-      _id,
-      { isFavorite: true },
-      { new: true }
-    );
+    foundNote.isFavorite = [
+      ...foundNote.isFavorite,
+      req.user_token_details._id,
+    ];
+    await foundNote.save();
+
+    const ans = await Notes.findOne({ _id })
+      .populate("isFavorite", "username -_id")
+      .lean();
+    ans.isFavorite = ans.isFavorite?.map((fav) => fav.username);
 
     res.status(200).send(ans);
   } catch (error) {
@@ -137,13 +142,19 @@ const removeLikeNote = async (req, res, next) => {
     const _id = { ...req.body };
 
     const foundNote = await Notes.findOne({ _id });
-    if (!foundNote) res.status(400).send("There is no note of this id");
+    if (!foundNote) return res.status(400).send("There is no note of this id");
 
-    const ans = await Notes.findByIdAndUpdate(
-      _id,
-      { isFavorite: false },
-      { new: true }
+    const favourite = foundNote.isFavorite.filter(
+      (id) => id != req.user_token_details._id
     );
+
+    foundNote.isFavorite = favourite;
+    await foundNote.save();
+
+    const ans = await Notes.findOne({ _id })
+      .populate("isFavorite", "username -_id")
+      .lean();
+    ans.isFavorite = ans.isFavorite?.map((fav) => fav.username);
 
     res.status(200).send(ans);
   } catch (error) {

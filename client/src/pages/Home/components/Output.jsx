@@ -16,7 +16,7 @@ const Output = forwardRef(
       id,
       titleContent,
       textContent,
-      isFavorite = false,
+      isFavorite = [],
       setNote,
       setToggle,
       selectedColor = {
@@ -28,6 +28,8 @@ const Output = forwardRef(
     ref
   ) => {
     const dispatch = useDispatch();
+
+    const loggedInUser = localStorage.getItem("Raman-Keep-Username");
     const { deleteNoteLoading } = useSelector((state) => state.noteReducer);
     const deletei = () => {
       dispatch(deleteNoteRequest(id));
@@ -68,15 +70,16 @@ const Output = forwardRef(
             </Button>
             <Button
               onClick={() => {
-                if (isFavorite) dispatch(unlikeNoteRequest({ _id: id }));
+                if (isFavorite.includes(loggedInUser))
+                  dispatch(unlikeNoteRequest({ _id: id }));
                 else dispatch(likeNoteRequest({ _id: id }));
               }}
             >
               <Favourite
                 style={{
                   transform: "scale(0.7)",
-                  fill: `${isFavorite ? "red" : ""}`,
-                  color: `${isFavorite ? "red" : ""}`,
+                  fill: `${isFavorite.includes(loggedInUser) ? "red" : ""}`,
+                  color: `${isFavorite.includes(loggedInUser) ? "red" : ""}`,
                 }}
               />
             </Button>

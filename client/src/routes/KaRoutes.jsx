@@ -5,6 +5,7 @@ import Home from "../pages/Home/Home";
 import ChatPage from "../pages/ChatPage/ChatPage";
 import Navbar from "../components/Navbar/Navbar";
 import Dashboard from "../pages/Dashboard/Dashboard";
+import ErrorPage from "../pages/ErrorPage/ErrorPage";
 
 function KaRoutes() {
   const { userToken } = useSelector((state) => state.loginReducer);
@@ -21,6 +22,7 @@ function KaRoutes() {
           <Route path="/" element={<Home />} />
           <Route path="/chat" element={<ChatPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/*" element={<ErrorPage />} />
         </Routes>
       </div>
     </>

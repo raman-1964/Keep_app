@@ -15,9 +15,12 @@ const noteSchema = mongoose.Schema(
       ref: "Folder",
       required: true,
     },
-    isFavorite: {
-      type: Boolean,
-    },
+    isFavorite: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Users",
+      },
+    ],
     colorCode: {
       bg: String,
       txt: String,
