@@ -3,7 +3,7 @@ import styles from "./DropDown.module.css";
 
 const DropDown = ({
   children,
-  btn,
+  btn = null,
   width = "150px",
   top = "unset",
   right = "unset",

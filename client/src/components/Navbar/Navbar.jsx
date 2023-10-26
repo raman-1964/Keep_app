@@ -5,14 +5,15 @@ import DashboardIcon from "../../assets/img/dashboardIcon.png";
 import Logo from "../Logo/Logo";
 import { getAllUnseenMessageRequest } from "../../store/Actions/messageAction";
 import { useNavigate } from "react-router-dom";
-import "./Navbar.css";
+import styles from "./Navbar.module.css";
 import Button from "../../widgets/Button/Button";
 
 function Navbar() {
   const navigate = useNavigate();
-  // const [dark, setDark] = useState(false);
   const dispatch = useDispatch();
+
   const { unseenMessage } = useSelector((state) => state.messageReducer);
+  // const [dark, setDark] = useState(false);
 
   // useEffect(() => {
   //   if (dark) document.body.style.backgroundColor = "black";
@@ -25,14 +26,17 @@ function Navbar() {
 
   return (
     <>
-      <nav className="navbar">
+      <nav className={styles.navbar}>
         <Logo />
-        <div className="icons">
-          {/* <button className="btn" onClick={() => navigate("/")}>
+        <div className={styles.icons}>
+          {/* <button className={styles.btn" onClick={() => navigate("/")}>
             <HomeIcon style={{ width: "1.3rem", height: "1.3rem" }} />
             <span>Home</span>
           </button> */}
-          <Button className="btn msgIcon" onClick={() => navigate("/chat")}>
+          <Button
+            className={`${styles.btn} ${styles.msgIcon}`}
+            onClick={() => navigate("/chat")}
+          >
             <img
               src={ChatIcon}
               alt="chaticon"
@@ -41,7 +45,7 @@ function Navbar() {
             {unseenMessage.length ? <h1>{unseenMessage.length}</h1> : null}
             <span>Chats</span>
           </Button>
-          {/* <Button className="btn" onClick={() => setDark(!dark)}>
+          {/* <Button className={styles.btn" onClick={() => setDark(!dark)}>
             {dark ? (
               <Day style={{ width: "1.3rem", height: "1.3rem" }} />
             ) : (

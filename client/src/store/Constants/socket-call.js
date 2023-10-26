@@ -1,0 +1,5 @@
+export const CREATE_SOCKET = "CREATE_SOCKET";
+
+export const OFFER_RECEIVED = "OFFER_RECEIVED";
+export const ANSWER_CALL = "ANSWER_CALL";
+export const MAKE_RTC_CONNECTION = "MAKE_RTC_CONNECTION";

@@ -41,6 +41,7 @@ io.on("connection", (socket) => {
 
   socket.on("setup", (userName) => {
     socket.join(userName);
+    // console.log(socket.rooms);
   });
 
   // socket.on("join-chat", (room) => {
@@ -62,5 +63,25 @@ io.on("connection", (socket) => {
       if (user.username === msg.sender.username) return;
       socket.in(user.username).emit("new-msg-received", msg);
     });
+  });
+
+  //    CREATING OFFER
+  socket.on("offer", ({ room, config, offer }) => {
+    const arr = [...new Set(socket.rooms)];
+    socket.in(room).emit("offer", { from: arr[1], offer, config });
+  });
+
+  //    DECLINING OFFER
+  socket.on("decline-offer", ({ room }) => {
+    socket.in(room).emit("decline-offer");
+  });
+
+  //    ACCEPTING OFFER
+  socket.on("answer", ({ room, answer }) => {
+    socket.in(room).emit("answer", answer);
+  });
+
+  socket.on("ice-candidate", ({ room, candidate }) => {
+    socket.in(room).emit("ice-candidate", candidate);
   });
 });

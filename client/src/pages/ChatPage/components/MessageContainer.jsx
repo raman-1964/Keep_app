@@ -7,21 +7,30 @@ import {
   seenedMessageRequest,
 } from "../../../store/Actions/messageAction";
 import { updateChatLatestMessage } from "../../../store/Actions/chatAction";
+import {
+  offerRecieved,
+  makeRTCconnection,
+} from "../../../store/Actions/socket-call";
 import Input from "../../../widgets/Input/Input";
 import Spinner from "../../../components/Spinner/Spinner";
 import downArrow from "../../../assets/img/downArrow.png";
+import AudioVideo from "../../../components/audioVideo/audioVideo";
+import { useNavigate } from "react-router-dom";
+import CallerDropDown from "./CallerDropDown/CallerDropDown";
 
 const MessageContainer = ({
   loggedInUser,
   selectedChat,
-  socket,
   isTyping,
   setIsTyping,
-  giveUserparams,
+  selectedUser,
 }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
+  const selectedChatRef = useRef(null);
   const bottomRef = useRef(null);
+
   const [rows, setRows] = useState();
   const [page, setPage] = useState(1);
   const [showArrow, setShowArrow] = useState(false);
@@ -36,6 +45,9 @@ const MessageContainer = ({
     isNextPage,
     isNextPageLoading,
   } = useSelector((state) => state.messageReducer);
+  const { socket, connection } = useSelector(
+    (state) => state.socketCallReducer
+  );
 
   const createMessage = (e) => {
     if (e.keyCode === 8) {
@@ -68,7 +80,7 @@ const MessageContainer = ({
         );
         setRows(1);
         socket.emit("stop-typing", {
-          room: giveUserparams(selectedChat, "username"),
+          room: selectedUser.name,
           chatId: selectedChat._id,
         });
         setSendMessage({ message: "" });
@@ -88,7 +100,7 @@ const MessageContainer = ({
     if (!socket) return;
 
     socket.emit("typing", {
-      room: giveUserparams(selectedChat, "username"),
+      room: selectedUser.name,
       chatId: selectedChat._id,
     });
 
@@ -97,7 +109,7 @@ const MessageContainer = ({
       const now = new Date().getTime();
       if (now - time > 3000)
         socket.emit("stop-typing", {
-          room: giveUserparams(selectedChat, "username"),
+          room: selectedUser.name,
           chatId: selectedChat._id,
         });
     }, 3000);
@@ -120,10 +132,24 @@ const MessageContainer = ({
   const observerCallback = (entries) => {
     setShowArrow(entries[0].isIntersecting);
   };
+
   const observerOptions = {
     root: null,
     rootMargin: "0px",
     threshold: 1.0,
+  };
+
+  const makeCall = async (type) => {
+    const _call = new AudioVideo(
+      socket,
+      { audio: true, ...(type === "video" && { video: true }) },
+      selectedUser.name
+    );
+    await _call.startLocalStream();
+    await _call.createOffer();
+
+    dispatch(makeRTCconnection(_call));
+    if (socket) navigate("/call");
   };
 
   useEffect(() => {
@@ -147,6 +173,7 @@ const MessageContainer = ({
 
   useEffect(() => {
     if (selectedChat._id) {
+      selectedChatRef.current = selectedChat;
       setPage(1);
       fetchMessages("first");
       const willSeen = unseenMessage
@@ -170,7 +197,10 @@ const MessageContainer = ({
   useEffect(() => {
     if (socket) {
       function handleNewMessage(msg) {
-        if (!selectedChat._id || selectedChat._id !== msg.chat._id) {
+        if (
+          !selectedChatRef.current?._id ||
+          selectedChatRef.current?._id !== msg.chat._id
+        ) {
           // for giving notification
           dispatch(getAllUnseenMessageRequest(msg));
           dispatch(
@@ -180,16 +210,16 @@ const MessageContainer = ({
             })
           );
         } else {
-          if (selectedChat._id === msg.chat._id)
+          if (selectedChatRef.current._id === msg.chat._id)
             dispatch(
               seenedMessageRequest({
                 messages_id: [msg._id],
-                seenBy: giveUserparams(selectedChat, "_id"),
+                seenBy: selectedUser.id,
               })
             );
           dispatch(
             updateChatLatestMessage({
-              chatId: selectedChat._id,
+              chatId: selectedChatRef.current._id,
               latestMessage: msg,
             })
           );
@@ -203,34 +233,62 @@ const MessageContainer = ({
         setIsTyping(null);
       }
 
+      function handleCallDropDown({ from, offer, config }) {
+        console.log("offer received", { from, offer });
+        dispatch(offerRecieved({ from, offer, config }));
+      }
+
       socket.on("new-msg-received", handleNewMessage);
       socket.on("Typing", typing);
       socket.on("stopTyping", stopTyping);
+
+      socket.on("offer", handleCallDropDown);
 
       return () => {
         socket.off("new-msg-received", handleNewMessage);
         socket.off("Typing", typing);
         socket.off("stopTyping", stopTyping);
+
+        socket.off("offer", handleCallDropDown);
       };
     }
-  });
+  }, [socket]);
 
   return (
     <>
+      <CallerDropDown />
       {MessageLoading ? (
         <div className="spinnerCont">
           <Spinner />
         </div>
       ) : Object.keys(selectedChat).length ? (
         <>
-          <div className={`chatHighlit `}>
+          <div className="chatHighlit">
             <div className="img"></div>
             <div className="chatData">
-              <h1>{giveUserparams(selectedChat, "username")}</h1>
+              <h1>{selectedUser.name}</h1>
               {isTyping && isTyping === selectedChat._id ? (
                 <p>typing...</p>
               ) : null}
             </div>
+            <h1
+              style={{
+                color: "white",
+                fontSize: "1rem",
+              }}
+              onClick={() => makeCall("audio")}
+            >
+              audio
+            </h1>
+            <h1
+              onClick={() => makeCall("video")}
+              style={{
+                color: "white",
+                fontSize: "1rem",
+              }}
+            >
+              video
+            </h1>
           </div>
           <div
             className="allMsg scrollbar"

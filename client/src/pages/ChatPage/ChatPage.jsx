@@ -2,13 +2,11 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import "./ChatPage.css";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllChatRequest } from "../../store/Actions/chatAction";
+import { createSocket } from "../../store/Actions/socket-call";
 import Search from "./components/Search";
 import { pagination } from "../../utils/pagination";
 import Spinner from "../../components/Spinner/Spinner";
 import MessageContainer from "./components/MessageContainer";
-import io from "socket.io-client";
-
-let socket;
 
 const ChatPage = () => {
   const dispatch = useDispatch();
@@ -17,22 +15,13 @@ const ChatPage = () => {
   const [page, setPage] = useState(1);
   const [isTyping, setIsTyping] = useState(null);
   const [selectedChat, setSelectedChat] = useState({});
+  const [selectedUser, setSelectedUser] = useState({});
 
   const loggedInUser = localStorage.getItem("Raman-Keep-Username");
   const { chats, chatLoading, isNextPage, isNextPageLoading } = useSelector(
     (state) => state.chatReducer
   );
   const { unseenMessage } = useSelector((state) => state.messageReducer);
-
-  const giveUserparams = useCallback((chat, params) => {
-    return params === "username"
-      ? loggedInUser === chat?.users?.[0]?.username
-        ? chat?.users?.[1]?.[params]
-        : chat?.users?.[0]?.[params]
-      : loggedInUser === chat?.users?.[0]?.username
-      ? chat?.users?.[0]?.[params]
-      : chat?.users?.[1]?.[params];
-  });
 
   const msgNotif = useCallback(
     (chat) => {
@@ -52,8 +41,7 @@ const ChatPage = () => {
   );
 
   useEffect(() => {
-    socket = io(process.env.REACT_APP_ENDPOINT);
-    socket.emit("setup", loggedInUser);
+    dispatch(createSocket(loggedInUser));
   }, []);
 
   useEffect(() => {
@@ -67,6 +55,25 @@ const ChatPage = () => {
       if (observer.current) observer.current.disconnect();
     };
   }, [page]);
+
+  useEffect(() => {
+    if (selectedChat?._id) {
+      const selectedUsername =
+        loggedInUser === selectedChat?.users?.[0]?.username
+          ? selectedChat?.users?.[1]?.username
+          : selectedChat?.users?.[0]?.username;
+
+      const selectedUserId =
+        loggedInUser === selectedChat?.users?.[0]?.username
+          ? selectedChat?.users?.[0]?._id
+          : selectedChat?.users?.[1]?._id;
+      setSelectedUser({ id: selectedUserId, name: selectedUsername });
+    }
+
+    return () => {
+      setSelectedUser({});
+    };
+  }, [selectedChat?._id]);
 
   return !chatLoading ? (
     <div className="pageContainer">
@@ -85,7 +92,11 @@ const ChatPage = () => {
               >
                 <div className="img"></div>
                 <div className="chatData text-elipsis">
-                  <h1>{giveUserparams(chat, "username")}</h1>
+                  <h1>
+                    {loggedInUser === chat?.users?.[0]?.username
+                      ? chat?.users?.[1]?.username
+                      : chat?.users?.[0]?.username}
+                  </h1>
                   {isTyping && isTyping === chat._id ? (
                     <p className="typing">typing...</p>
                   ) : (
@@ -109,10 +120,9 @@ const ChatPage = () => {
         <MessageContainer
           loggedInUser={loggedInUser}
           selectedChat={selectedChat}
-          socket={socket}
           isTyping={isTyping}
           setIsTyping={setIsTyping}
-          giveUserparams={giveUserparams}
+          selectedUser={selectedUser}
         />
       </div>
     </div>
