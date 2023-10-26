@@ -5,6 +5,7 @@ import { loginReducer } from "./loginReducer";
 import { chatReducer } from "./chatReducer";
 import { messageReducer } from "./messageReducer";
 import { folderReducer } from "./folderReducer";
+import { socketCallReducer } from "./socket-call-reducer";
 
 const rootReducer = combineReducers({
   noteReducer,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   folderReducer,
   messageReducer,
   chatReducer,
+  socketCallReducer,
 });
 
 export default rootReducer;

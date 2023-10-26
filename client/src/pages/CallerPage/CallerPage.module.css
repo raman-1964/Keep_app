@@ -1,0 +1,89 @@
+.callerContainer {
+  width: 100%;
+  height: calc(100vh - 3.5rem);
+  position: relative;
+}
+
+.videoCont {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  padding: 0.5rem;
+}
+.remoteVideo {
+  width: 100%;
+  border: 3px solid #3d13e7;
+  height: 100%;
+  border-radius: 0.5rem;
+  object-fit: cover;
+}
+.localVideo {
+  width: 10rem;
+  height: 11rem;
+  z-index: 10;
+  position: absolute;
+  top: 1.2rem;
+  right: 1.2rem;
+  border: 1px solid #826cdd;
+  border-radius: 0.5rem;
+  object-fit: cover;
+}
+
+.controlCont {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  position: absolute;
+  transform: translateX(-50%);
+  left: 50%;
+  bottom: 2rem;
+}
+.icon {
+  width: 2.5rem;
+  cursor: pointer;
+  height: 2.5rem;
+  padding: 0.5rem;
+  background: #826cdd;
+  border-radius: 50%;
+}
+.offIcon {
+  background: red;
+}
+.iconCont {
+  display: flex;
+  margin-right: 0.5rem;
+  flex-direction: column;
+  gap: 0.6rem;
+  align-items: center;
+}
+.userImg {
+  background: red;
+  width: 20rem;
+  height: 20rem;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  border: 3px solid #3d13e7;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.phone {
+  background: red;
+}
+
+@media only screen and (max-width: 500px) {
+  .localVideo {
+    width: 6rem;
+    height: 8rem;
+    top: 1rem;
+    right: 1rem;
+  }
+}
+
+@media only screen and (max-width: 320px){
+  .userImg{
+    width: 13rem;
+    height: 13rem;
+  }
+}

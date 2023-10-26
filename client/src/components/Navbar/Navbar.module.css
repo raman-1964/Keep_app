@@ -44,6 +44,7 @@
     display: none;
   }
 }
+
 @media only screen and (max-width: 425px) {
   .navbar {
     padding: 0rem 0.8rem;
