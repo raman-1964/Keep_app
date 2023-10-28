@@ -35,13 +35,6 @@
   align-items: center;
 }
 
-/* .userImage {
-  width: 30%;
-  display: grid;
-  place-items: center;
-  padding-left: 1rem;
-} */
-
 .userImage img {
   width: 5rem;
   height: 5rem;
@@ -121,7 +114,6 @@
   font-size: 1rem;
   font-weight: 600;
   font-style: italic;
-  margin-bottom: 0.8rem;
 }
 
 .followersList {
@@ -134,7 +126,7 @@
 }
 
 .follower {
-  background-color: rgba(255, 255, 255, 0.63);
+  background: #826cdd;
   padding: 0.3rem 0.5rem;
   border-radius: 0.2rem;
   display: flex;
@@ -222,28 +214,12 @@
   font-weight: 600;
 }
 
-/* .userInfoContainer .settingbtn {
-  visibility: hidden;
-}
-.dropdown {
-  background-color: #fff;
-  border-radius: 0.3rem;
-  position: absolute;
-  top: 7rem;
-  right: 0.8rem;
-  border: 1px solid grey;
-}
-
-.dropdown .btn {
-  background-color: white;
-  width: 100%;
-  margin: 0;
-} */
-
 @media only screen and (max-width: 1024px) {
-  .leftContainer,
+  .leftContainer {
+    width: 40%;
+  }
   .rightContainer {
-    width: 50%;
+    width: 60%;
   }
   .btn {
     font-size: 0.9rem;
@@ -253,7 +229,7 @@
 }
 
 @media only screen and (max-width: 768px) {
-  .container {
+  .dashboardContainer {
     flex-direction: column;
     align-items: center;
   }

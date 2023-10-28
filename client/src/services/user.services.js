@@ -45,3 +45,14 @@ export const changePasswordRequestApi = async (data) => {
     throw Error(e.response?.data?.msg ?? "Something went wrong");
   }
 };
+
+export const follow_unfollow_Api = async (data) => {
+  try {
+    const res = await axios.post(BASE_URL + "/user/follow_unfollow", data, {
+      headers: { ...authHeader() },
+    });
+    return res.data;
+  } catch (e) {
+    throw Error(e.response?.data?.msg ?? "Something went wrong");
+  }
+};

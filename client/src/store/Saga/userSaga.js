@@ -4,6 +4,8 @@ import {
   changePasswordSuccess,
   deleteUserFailed,
   deleteUserSuccess,
+  followUnfollowFailed,
+  followUnfollowSuccess,
   updateUserInfoFailed,
   updateUserInfoSuccess,
   userInfoFailed,
@@ -12,12 +14,14 @@ import {
 import {
   CHANGE_PASSWORD_REQUEST,
   DELETE_USER_REQUEST,
+  FOLLOW_UNFOLLOW_REQUEST,
   UPDATE_USER_INFO_REQUEST,
   USER_INFO_REQUEST,
 } from "../Constants/userConstants";
 import {
   changePasswordRequestApi,
   deleteUserRequestApi,
+  follow_unfollow_Api,
   updateUserInfoRequestApi,
   userInfoRequestApi,
 } from "../../services/user.services";
@@ -76,11 +80,22 @@ function* changePasswordRequest(action) {
   }
 }
 
+function* follow_unfollow(action) {
+  try {
+    const res = yield call(follow_unfollow_Api, action.payload);
+    yield put(followUnfollowSuccess(res));
+  } catch (error) {
+    toast.error(`${error}`, defaultToastSetting);
+    yield put(followUnfollowFailed(error));
+  }
+}
+
 function* userSaga() {
   yield takeEvery(USER_INFO_REQUEST, userInfoRequest);
   yield takeEvery(DELETE_USER_REQUEST, deleteUserRequest);
   yield takeEvery(UPDATE_USER_INFO_REQUEST, updateUserInfoRequest);
   yield takeEvery(CHANGE_PASSWORD_REQUEST, changePasswordRequest);
+  yield takeEvery(FOLLOW_UNFOLLOW_REQUEST, follow_unfollow);
 }
 
 export default userSaga;

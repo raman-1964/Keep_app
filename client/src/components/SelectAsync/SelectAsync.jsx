@@ -5,19 +5,21 @@ import authHeader from "../../services/auth-header";
 import { debounceSearch } from "../../utils/debounce";
 const BASE_URL = process.env.REACT_APP_URL;
 
-const Search = ({ onChange, allId = null }) => {
+const SelectAsync = ({ onChange, allId = null, isProfile = false }) => {
   const [searchValue, setSearchValue] = useState("");
 
   const promiseOptions = async (inputValue) => {
     return await axios
-      .get(`${BASE_URL}/user/search?user=${inputValue}`, {
-        headers: { ...authHeader() },
-        params: { ...(Array.isArray(allId) && { allId }) },
-      })
+      .post(
+        `${BASE_URL}/user/search?user=${inputValue}`,
+        { allId, isProfile },
+        { headers: { ...authHeader() } }
+      )
       .then((response) => {
         const arrayMap = response.data.map((data) => {
           return { label: data.username, _id: data._id };
         });
+        if (isProfile) onChange(response.data);
         return arrayMap;
       })
       .catch((err) => {
@@ -49,6 +51,7 @@ const Search = ({ onChange, allId = null }) => {
           menu: (baseStyles) => ({
             ...baseStyles,
             fontSize: "1.1rem",
+            ...(isProfile && { display: "none" }),
           }),
         }}
         noOptionsMessage={({ inputValue }) =>
@@ -58,9 +61,10 @@ const Search = ({ onChange, allId = null }) => {
             <button>No results found!</button>
           )
         }
+        isClearable={true}
       />
     </div>
   );
 };
 
-export default Search;
+export default SelectAsync;
