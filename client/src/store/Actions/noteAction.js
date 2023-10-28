@@ -6,6 +6,9 @@ import {
   DELETE_NOTE_FAILED,
   DELETE_NOTE_REQUEST,
   DELETE_NOTE_SUCCESS,
+  GET_LIKE_NOTE_FAILED,
+  GET_LIKE_NOTE_REQUEST,
+  GET_LIKE_NOTE_SUCCESS,
   GET_NOTE_FAILED,
   GET_NOTE_REQUEST,
   GET_NOTE_SUCCESS,
@@ -30,6 +33,18 @@ export const getNoteSuccess = (data) => {
 
 export const getNoteFailed = (data) => {
   return { type: GET_NOTE_FAILED, payload: data };
+};
+
+export const getLikeNoteRequest = (data) => {
+  return { type: GET_LIKE_NOTE_REQUEST, payload: data };
+};
+
+export const getLikeNoteSuccess = (data) => {
+  return { type: GET_LIKE_NOTE_SUCCESS, payload: data };
+};
+
+export const getLikeNoteFailed = (data) => {
+  return { type: GET_LIKE_NOTE_FAILED, payload: data };
 };
 
 export const addNoteRequest = (data) => {

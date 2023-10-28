@@ -5,6 +5,7 @@ import { ReactComponent as SettingIcon } from "../../assets/svg/settingIcon.svg"
 import { ReactComponent as ChangePasswordIcon } from "../../assets/svg/changePasswordIcon.svg";
 import { ReactComponent as Delete } from "../../assets/svg/delete.svg";
 import { ReactComponent as Logout } from "../../assets/svg/logout.svg";
+import { ReactComponent as UpArrow } from "../../assets/svg/up-arrow.svg";
 import addPeoplesIcon from "../../assets/img/addPeoples.png";
 import feedbackIcon from "../../assets/img/feedbackIcon.png";
 import HeartIcon from "../../assets/img/heartIcon.png";
@@ -26,6 +27,9 @@ import DropDown from "../../widgets/DropDown/DropDown";
 import { logoutRequest } from "../../store/Actions/loginAction";
 import DeleteModal from "../../components/DeleteModal/DeleteModal";
 import FollowerContainer from "./components/FollowerContainer";
+import { getLikeNoteRequest } from "../../store/Actions/noteAction";
+import { folderType } from "../../utils/constants";
+import NoteContainer from "../../components/NoteContainer/NoteContainer";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -33,8 +37,12 @@ const Dashboard = () => {
   const { userDataLoading, userData, deleteUserLoading } = useSelector(
     (state) => state.userReducer
   );
+  const { likedNotes, getLikedNoteLoading } = useSelector(
+    (state) => state.noteReducer
+  );
 
   const [toggle, setToggle] = useState("following");
+  const [fldType, setFldType] = useState(folderType.PRS);
   const [editModal, setEditModal] = useState(false);
   const [feedbackBool, setFeedbackBool] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
@@ -43,6 +51,7 @@ const Dashboard = () => {
 
   useLayoutEffect(() => {
     dispatch(userInfoRequest());
+    dispatch(getLikeNoteRequest({ type: fldType }));
   }, []);
 
   return (
@@ -69,7 +78,7 @@ const Dashboard = () => {
                   className={styles.followCard}
                   onClick={() => setToggle("followers")}
                 >
-                  <h3>{userData?.follwers?.length ?? 0}</h3>
+                  <h3>{userData?.followers?.length ?? 0}</h3>
                   <p>Followers</p>
                 </Button>
                 <Button
@@ -86,7 +95,7 @@ const Dashboard = () => {
                 {toggle === "following" ? (
                   <FollowerContainer data={userData?.following} />
                 ) : (
-                  <FollowerContainer data={userData?.follwers} />
+                  <FollowerContainer data={userData?.followers} />
                 )}
               </div>
             </div>
@@ -154,10 +163,85 @@ const Dashboard = () => {
                 </DropDown>
               </div>
               <div className={styles.notesContainer}>
-                <p>
-                  <img src={HeartIcon} alt="" style={{ width: "2rem" }} />
-                  Liked Notes
-                </p>
+                <div className={styles.noteContainerHead}>
+                  <p>
+                    <img src={HeartIcon} alt="" style={{ width: "1.5rem" }} />
+                    Liked Notes
+                  </p>
+                  <DropDown
+                    right="0"
+                    width="9rem"
+                    btn={
+                      <div className={styles.folderTypes}>
+                        <p>
+                          {fldType === folderType.PRS
+                            ? "Personal"
+                            : fldType === folderType.SBO
+                            ? "Shared by others"
+                            : "Shared by you"}
+                        </p>
+                        <UpArrow style={{ transform: "rotate(180deg)" }} />
+                      </div>
+                    }
+                  >
+                    <div
+                      className={styles.dropDownContent}
+                      onClick={() => {
+                        setFldType(folderType.PRS);
+                        dispatch(getLikeNoteRequest({ type: folderType.PRS }));
+                      }}
+                    >
+                      <h1 className={styles.dropDownContentheading}>
+                        Personal
+                      </h1>
+                    </div>
+                    <div
+                      className={styles.dropDownContent}
+                      onClick={() => {
+                        setFldType(folderType.SBY);
+                        dispatch(getLikeNoteRequest({ type: folderType.SBY }));
+                      }}
+                    >
+                      <h1 className={styles.dropDownContentheading}>
+                        Shared by you
+                      </h1>
+                    </div>
+                    <div
+                      className={styles.dropDownContent}
+                      onClick={() => {
+                        setFldType(folderType.SBO);
+                        dispatch(getLikeNoteRequest({ type: folderType.SBO }));
+                      }}
+                    >
+                      <h1 className={styles.dropDownContentheading}>
+                        Shared by others
+                      </h1>
+                    </div>
+                  </DropDown>
+                </div>
+                {getLikedNoteLoading ? (
+                  <Spinner />
+                ) : (
+                  <div className={`${styles.likedNoteCont} scrollbar output`}>
+                    {likedNotes?.map((cur, ind) => {
+                      return (
+                        <NoteContainer
+                          key={ind}
+                          ref={undefined}
+                          id={cur._id}
+                          titleContent={cur.title}
+                          textContent={cur.text}
+                          selectedColor={cur?.colorCode}
+                          isDashboard={true}
+                          // setColorCode={setColorCode}
+                          // isFavorite={cur?.isFavorite}
+                          // setNote={setNote}
+                          // setToggle={setToggleId}
+                        />
+                      );
+                    })}
+                  </div>
+                )}
               </div>
             </div>
           </>

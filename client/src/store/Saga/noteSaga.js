@@ -2,6 +2,7 @@ import { call, put, takeEvery } from "redux-saga/effects";
 import {
   addNoteApi,
   deleteNoteApi,
+  getLikeNoteApi,
   getNoteApi,
   likeNoteApi,
   unlikeNoteApi,
@@ -12,6 +13,8 @@ import {
   addNoteSuccess,
   deleteNoteFailed,
   deleteNoteSuccess,
+  getLikeNoteFailed,
+  getLikeNoteSuccess,
   getNoteFailed,
   getNoteSuccess,
   likeNoteFailed,
@@ -24,6 +27,7 @@ import {
 import {
   ADD_NOTE_REQUEST,
   DELETE_NOTE_REQUEST,
+  GET_LIKE_NOTE_REQUEST,
   GET_NOTE_REQUEST,
   LIKE_NOTE_REQUEST,
   UNLIKE_NOTE_REQUEST,
@@ -99,8 +103,18 @@ function* unlikeNote(action) {
   }
 }
 
+function* getLikeNote(action) {
+  try {
+    const res = yield call(getLikeNoteApi, action.payload);
+    yield put(getLikeNoteSuccess(res));
+  } catch (error) {
+    yield put(getLikeNoteFailed(error));
+  }
+}
+
 function* noteSaga() {
   yield takeEvery(GET_NOTE_REQUEST, getNote);
+  yield takeEvery(GET_LIKE_NOTE_REQUEST, getLikeNote);
   yield takeEvery(ADD_NOTE_REQUEST, addNote);
   yield takeEvery(UPDATE_NOTE_REQUEST, updateNote);
   yield takeEvery(DELETE_NOTE_REQUEST, deleteNote);

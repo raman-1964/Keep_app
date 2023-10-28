@@ -183,15 +183,38 @@
   background-color: #ebe8f5;
   border-radius: 0.3rem;
   flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.noteContainerHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 2.5rem;
+  padding: 0 0.3rem;
+}
+.folderTypes {
+  display: flex;
+  gap: 0.9rem;
+  align-items: center;
+  background: #826cdd;
+  font-size: 1rem;
+  border-radius: 0.3rem;
+  color: #f7f4f4;
+  font-weight: 500;
+  padding: 0.1rem 0.5rem;
 }
 
 .notesContainer p {
   display: flex;
   align-items: center;
   gap: 0.3rem;
-  padding: 0.3rem 0 0 0.5rem;
 }
 
+.likedNoteCont {
+  flex: 1;
+  overflow-y: auto;
+}
 .dropDownContent {
   display: flex;
   align-items: center;

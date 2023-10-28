@@ -5,7 +5,6 @@ import React, {
   useRef,
   useState,
 } from "react";
-import Output from "./components/Output";
 import InputHome from "./components/InputHome";
 import { useDispatch, useSelector } from "react-redux";
 import { getNoteRequest } from "../../store/Actions/noteAction";
@@ -25,6 +24,7 @@ import {
 import Spinner from "../../components/Spinner/Spinner";
 import { folderType } from "../../utils/constants";
 import Toggle from "../../widgets/Toggle/Toggle";
+import NoteContainer from "../../components/NoteContainer/NoteContainer";
 
 function Home() {
   const dispatch = useDispatch();
@@ -192,7 +192,7 @@ function Home() {
                   <div className="output">
                     {filteredNotes()?.map((cur, ind) => {
                       return (
-                        <Output
+                        <NoteContainer
                           key={ind}
                           ref={
                             ind == notes.length - 1 ? lastElementRef : undefined

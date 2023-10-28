@@ -7,11 +7,14 @@ const {
   deleteNote,
   likeNote,
   removeLikeNote,
+  getALlLikeNote,
 } = require("../controllers/note");
 
 const auth = require("../midddleware/auth");
 
 router.get("/", auth, getNotes);
+
+router.get("/like", auth, getALlLikeNote);
 
 router.post("/", auth, createNote);
 

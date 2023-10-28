@@ -6,6 +6,9 @@ import {
   DELETE_NOTE_FAILED,
   DELETE_NOTE_REQUEST,
   DELETE_NOTE_SUCCESS,
+  GET_LIKE_NOTE_FAILED,
+  GET_LIKE_NOTE_REQUEST,
+  GET_LIKE_NOTE_SUCCESS,
   GET_NOTE_FAILED,
   GET_NOTE_REQUEST,
   GET_NOTE_SUCCESS,
@@ -22,6 +25,8 @@ import {
 
 const initialState = {
   notes: [],
+  likedNotes: [],
+  getLikedNoteLoading: false,
   isNextPage: true,
   isNextPageLoading: false,
   notesLoading: false,
@@ -167,6 +172,20 @@ export const noteReducer = (state = initialState, action) => {
       });
       return { ...state, likeNotesLoading: updatedLikeLoading };
     }
+
+    case GET_LIKE_NOTE_REQUEST:
+      return {
+        ...state,
+        getLikedNoteLoading: true,
+      };
+    case GET_LIKE_NOTE_SUCCESS:
+      return {
+        ...state,
+        likedNotes: action.payload,
+        getLikedNoteLoading: false,
+      };
+    case GET_LIKE_NOTE_FAILED:
+      return { ...state, getLikedNoteLoading: false };
 
     case CLEAR_NOTE:
       return {
