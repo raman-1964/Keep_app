@@ -187,7 +187,12 @@ const getALlLikeNote = async (req, res, next) => {
     const response = [];
     await Promise.all(
       folder.map(async (t) => {
-        const note = await Notes.find({ folder: t._id })
+        const note = await Notes.find({
+          folder: t._id,
+          isFavorite: {
+            $in: [req.user_token_details._id],
+          },
+        })
           .sort({ createdAt: -1 })
           .select("title text colorCode -_id")
           .lean();
