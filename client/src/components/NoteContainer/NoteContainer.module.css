@@ -19,9 +19,11 @@
   border-radius: 0.3rem 0.3rem 0 0;
   height: 100%;
 }
-.card_cont:hover .cards {
+
+.card_cont:hover .HomeCards {
   height: 85%;
 }
+
 .cards h3 {
   text-transform: capitalize;
   font-weight: 700;

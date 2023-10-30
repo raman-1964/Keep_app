@@ -41,7 +41,7 @@ const Dashboard = () => {
     (state) => state.noteReducer
   );
 
-  const [toggle, setToggle] = useState("following");
+  const [toggle, setToggle] = useState("Following");
   const [fldType, setFldType] = useState(folderType.PRS);
   const [editModal, setEditModal] = useState(false);
   const [feedbackBool, setFeedbackBool] = useState(false);
@@ -63,6 +63,78 @@ const Dashboard = () => {
           <>
             <div className={styles.leftContainer}>
               <div className={styles.userInfoContainer}>
+                <DropDown
+                  right="0"
+                  width="12.5rem"
+                  btn={
+                    <SettingIcon
+                      style={{ height: "1.5rem", width: "1.5rem" }}
+                    />
+                  }
+                  className={styles.dropdown}
+                >
+                  <div
+                    className={styles.dropDownContent}
+                    onClick={() => setEditModal(true)}
+                  >
+                    <EditPensil
+                      className={styles.svgIcon}
+                      style={{ height: "1.5rem" }}
+                    />
+                    <h1 className={styles.dropDownContentheading}>
+                      Edit Profile
+                    </h1>
+                  </div>
+                  <div
+                    className={styles.dropDownContent}
+                    onClick={() => setChangePasswordModal(true)}
+                  >
+                    <ChangePasswordIcon
+                      style={{ height: "1rem", transform: "Scale(1.5)" }}
+                      className={styles.svgIcon}
+                    />
+                    <h1 className={styles.dropDownContentheading}>
+                      change password
+                    </h1>
+                  </div>
+                  <div
+                    className={styles.dropDownContent}
+                    onClick={() => setFindPeopleModal(true)}
+                  >
+                    <img
+                      src={addPeoplesIcon}
+                      alt=""
+                      className={styles.svgIcon}
+                    />
+                    <h1 className={styles.dropDownContentheading}>
+                      Find Peoples
+                    </h1>
+                  </div>
+                  <div
+                    className={styles.dropDownContent}
+                    onClick={() => setFeedbackBool(true)}
+                  >
+                    <img src={feedbackIcon} alt="" className={styles.svgIcon} />
+                    <h1 className={styles.dropDownContentheading}>Feedback</h1>
+                  </div>
+                  <div
+                    className={styles.dropDownContent}
+                    onClick={() => setDeleteModal(true)}
+                  >
+                    <Delete className={styles.svgIcon} />
+                    <h1 className={styles.dropDownContentheading}>
+                      Delete Account
+                    </h1>
+                  </div>
+                  <div
+                    className={styles.dropDownContent}
+                    onClick={() => dispatch(logoutRequest())}
+                  >
+                    <Logout height="1rem" className={styles.svgIcon} />
+                    <h1 className={styles.dropDownContentheading}>Logout</h1>
+                  </div>
+                </DropDown>
+
                 <div className={styles.userImage}>
                   <img src="" alt="" />
                 </div>
@@ -75,15 +147,23 @@ const Dashboard = () => {
 
               <div className={styles.followCountContainer}>
                 <Button
-                  className={styles.followCard}
-                  onClick={() => setToggle("followers")}
+                  className={
+                    toggle === "Followers"
+                      ? `${styles.followCard} ${styles.active}`
+                      : `${styles.followCard}`
+                  }
+                  onClick={() => setToggle("Followers")}
                 >
                   <h3>{userData?.followers?.length ?? 0}</h3>
                   <p>Followers</p>
                 </Button>
                 <Button
-                  className={styles.followCard}
-                  onClick={() => setToggle("following")}
+                  className={
+                    toggle === "Following"
+                      ? `${styles.followCard} ${styles.active}`
+                      : `${styles.followCard}`
+                  }
+                  onClick={() => setToggle("Following")}
                 >
                   <h3>{userData?.following?.length ?? 0}</h3>
                   <p>Following</p>
@@ -92,7 +172,7 @@ const Dashboard = () => {
 
               <div className={styles.followersListContainer}>
                 <p>{toggle}</p>
-                {toggle === "following" ? (
+                {toggle === "Following" ? (
                   <FollowerContainer data={userData?.following} />
                 ) : (
                   <FollowerContainer data={userData?.followers} />
@@ -158,7 +238,9 @@ const Dashboard = () => {
                     onClick={() => setDeleteModal(true)}
                   >
                     <Delete className={styles.svgIcon} />
-                    <h1 className={styles.dropDownContentheading}>Delete</h1>
+                    <h1 className={styles.dropDownContentheading}>
+                      Delete Account
+                    </h1>
                   </div>
                 </DropDown>
               </div>

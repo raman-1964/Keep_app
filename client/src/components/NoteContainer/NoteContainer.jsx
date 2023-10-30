@@ -41,7 +41,7 @@ const NoteContainer = forwardRef(
       <>
         <div className={styles.card_cont} ref={ref}>
           <div
-            className={`${styles.cards} scrollbar`}
+            className={`${!isDashboard ? styles.HomeCards : null} ${styles.cards} scrollbar`}
             style={{
               background: `${selectedColor.bg}`,
               color: `${selectedColor.txt}`,
@@ -51,7 +51,7 @@ const NoteContainer = forwardRef(
             <p>{textContent}</p>
           </div>
           {!isDashboard ? (
-            <div className={styles.button_cnt}>
+            <div className={` ${styles.button_cnt }`}>
               <Button
                 spinnerClassName={styles.deleteSpinnerClassName}
                 loading={deleteNoteLoading.includes(id)}

@@ -98,7 +98,7 @@
   font-size: 1rem;
 }
 
-.followCard:hover {
+.active {
   background-color: #d4caf4;
 }
 
@@ -113,7 +113,6 @@
 .followersListContainer p {
   font-size: 1rem;
   font-weight: 600;
-  font-style: italic;
 }
 
 .followersList {
@@ -123,10 +122,11 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  margin-top: 0.5rem;
 }
 
 .follower {
-  background: #826cdd;
+  background: #b0a3eb;
   padding: 0.3rem 0.5rem;
   border-radius: 0.2rem;
   display: flex;
@@ -185,13 +185,14 @@
   flex: 1;
   display: flex;
   flex-direction: column;
+  min-height: 0px;
 }
 .noteContainerHead {
   display: flex;
   justify-content: space-between;
   align-items: center;
   height: 2.5rem;
-  padding: 0 0.3rem;
+  padding: 0.3rem;
 }
 .folderTypes {
   display: flex;
@@ -212,9 +213,13 @@
 }
 
 .likedNoteCont {
-  flex: 1;
   overflow-y: auto;
 }
+
+.card_cont:hover .cards {
+  height: 100% !important;
+}
+
 .dropDownContent {
   display: flex;
   align-items: center;
@@ -224,9 +229,8 @@
   border-radius: 0.5rem;
   color: black;
 }
-.dropDownContent img {
-  width: 1rem;
-}
+
+
 .dropDownContent:hover {
   cursor: pointer;
   background: #f1ffe2;
@@ -236,6 +240,19 @@
   font-size: 0.8rem;
   font-weight: 600;
 }
+
+.userInfoContainer .settingbtn {
+  background: transparent;
+}
+
+/* dropdown for mobile view  */
+.dropdown {
+  position: absolute;
+  top: 0.2rem;
+  right: 0.2rem;
+  visibility: hidden;
+}
+
 
 @media only screen and (max-width: 1024px) {
   .leftContainer {
@@ -255,6 +272,10 @@
   .dashboardContainer {
     flex-direction: column;
     align-items: center;
+    justify-content: flex-start;
+    overflow: scroll;
+    padding: 0;
+    margin-top: 1rem;
   }
   .leftContainer,
   .rightContainer {
@@ -266,35 +287,12 @@
   .userInfoContainer {
     position: relative;
   }
-  .userInfoContainer .settingbtn {
-    position: absolute;
-    top: -0.1rem;
-    right: 0.3rem;
-    visibility: visible;
-  }
 
   .dropdown {
-    top: 3rem;
-    right: 0.3rem;
+    visibility:visible;
   }
+ 
 
-  .svgIcon {
-    width: 2rem;
-  }
-
-  .userName,
-  .uniqueUserName {
-    font-size: 0.8rem;
-  }
-  .btn {
-    font-size: 0.8rem;
-    padding: 0rem 0.3rem;
-    gap: 0rem;
-  }
-  .dropdown .btn {
-    padding: 0rem 0.3rem 0.5rem 0.3rem;
-    gap: 0.3rem;
-  }
   .followerCard,
   .followingCard {
     padding: 0.8rem 0rem;
@@ -307,6 +305,9 @@
   .followingCard h3,
   .followersListContainer p {
     font-size: 1rem;
+  }
+  .followersListContainer{
+    display: none;
   }
 
   .btnContainer {
