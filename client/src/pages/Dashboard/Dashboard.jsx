@@ -62,10 +62,8 @@ const Dashboard = () => {
     <>
       <div className={styles.dashboardContainer}>
         {userDataLoading ? (
-          // <div className={styles.spinnerContainer}>
           <Spinner />
         ) : (
-          // </div>
           <>
             <div className={styles.leftContainer}>
               <div className={styles.userInfoContainer}>
@@ -276,7 +274,7 @@ const Dashboard = () => {
                 </div>
               ) : null}
 
-              <div className={styles.notesContainer}>
+              <div className={`${styles.notesContainer} scrollbar`}>
                 <div className={styles.noteContainerHead}>
                   <p>
                     <img src={HeartIcon} alt="" style={{ width: "1.5rem" }} />
@@ -334,9 +332,11 @@ const Dashboard = () => {
                   </DropDown>
                 </div>
                 {getLikedNoteLoading ? (
-                  <Spinner />
+                  <div className={styles.noteSpinnerCont}>
+                    <Spinner />
+                  </div>
                 ) : (
-                  <div className={`${styles.likedNoteCont} scrollbar output`}>
+                  <div className={`${styles.likeNoteCont} output`}>
                     {likedNotes?.map((cur, ind) => {
                       return (
                         <NoteContainer
@@ -347,10 +347,6 @@ const Dashboard = () => {
                           textContent={cur.text}
                           selectedColor={cur?.colorCode}
                           isDashboard={true}
-                          // setColorCode={setColorCode}
-                          // isFavorite={cur?.isFavorite}
-                          // setNote={setNote}
-                          // setToggle={setToggleId}
                         />
                       );
                     })}
