@@ -17,6 +17,8 @@
     display: flex;
     /* background-color: bisque; */
     height: 90vh;
+    max-height: 40rem;
+    padding: 0rem 0.5rem 0 2rem;
 }
 
 .leftContainer{
@@ -25,7 +27,50 @@
     justify-content: center;
     align-items: flex-start;
     flex: 1;
+    gap: 1rem;
 }
+
+.leftContainer h1{
+    font-size: 2.6rem;
+}
+/* .leftContainer .textSlogan:before{
+    content:"";
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: green;
+} */
+
+.leftContainer p{
+    color: #aea0ed;
+}
+
+.btnCont{
+    margin: 2rem 0rem;
+}
+
+.btnCont .btn{
+    border-radius: 0.4rem;
+    font-size: 1.5rem;
+    background-color: #826cdd;
+    padding: 0.5rem 1rem;
+    margin-right: 1rem;
+    border-style: none;
+    outline: none;
+    color: #fff;
+    font-weight: lighter;
+}
+.signInbtn{
+    background-color: #fff !important;
+    color: #000 !important;
+    border: 1px solid #826cdd !important;
+
+}
+
+.btn:hover{
+    outline:1px solid #3d21ac !important;
+}
+
 .rightContainer{
     position: relative;
    /* flex: 1; */
@@ -58,3 +103,12 @@
     width: 15rem;
 }
 
+
+.featureContainer{
+    height: 90vh;
+    max-height: 40rem;
+    /* background-color: rgb(253, 253, 253); */
+}
+.featureContainer h1{
+    text-align: center;
+}

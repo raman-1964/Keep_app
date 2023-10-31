@@ -1,0 +1,12 @@
+.Card{
+    background-color: #e7e3f8;
+    display: inline-block;
+    height: 10rem;
+    width: 20rem;
+    margin: 0.5rem;
+    border-radius: 0.3rem;
+    overflow: hidden;
+}
+.featureImg{
+    
+}

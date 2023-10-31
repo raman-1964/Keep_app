@@ -3,6 +3,7 @@ import Logo from "../../components/Logo/Logo";
 import styles from "./LandingPage.module.css";
 import MacFrame from "../../assets/img/macbookFrame.jpg";
 import MobileFrame from "../../assets/img/mobileFrame1.jpeg";
+import FeatureCard from "./components/FeatureCard";
 
 const LandingPage = () => {
   return (
@@ -18,14 +19,14 @@ const LandingPage = () => {
       </div>
       <div className={styles.AnimationContainer}>
         <div className={styles.leftContainer}>
-          <h1>Enjoy note taking <br /> with your friends</h1>
+          <h1 className={styles.textSlogan}>Enjoy note taking <br /> with your friends</h1>
           <p>
             Put down your thoughts down in one app, share <br /> with your friends and
             loved ones.
           </p>
           <div className={styles.btnCont}>
-            <button>Get Started!</button>
-            <button>Sign In</button>
+            <button  className={styles.btn}>Get Started!</button>
+            <button className={`${styles.btn} ${styles.signInbtn}`}>Sign In</button>
           </div>
         </div>
         <div className={styles.rightContainer}>
@@ -36,6 +37,15 @@ const LandingPage = () => {
                 <img src={MobileFrame} alt="" />
             </div>
         </div>
+      </div>
+      <div className={styles.featureContainer}>
+          <h1>Features</h1>
+          <div className={styles.cardContainer}>
+            <FeatureCard/>
+            <FeatureCard/>
+            <FeatureCard/>
+            <FeatureCard/>
+          </div>
       </div>
     </div>
   );
