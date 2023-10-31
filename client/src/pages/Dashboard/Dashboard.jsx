@@ -30,6 +30,7 @@ import FollowerContainer from "./components/FollowerContainer";
 import { getLikeNoteRequest } from "../../store/Actions/noteAction";
 import { folderType } from "../../utils/constants";
 import NoteContainer from "../../components/NoteContainer/NoteContainer";
+import { useWindowDimension } from "../../components/CustomHooks/CustomHooks";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -41,6 +42,8 @@ const Dashboard = () => {
     (state) => state.noteReducer
   );
 
+  const { dimensions } = useWindowDimension();
+
   const [toggle, setToggle] = useState("Following");
   const [fldType, setFldType] = useState(folderType.PRS);
   const [editModal, setEditModal] = useState(false);
@@ -48,6 +51,7 @@ const Dashboard = () => {
   const [deleteModal, setDeleteModal] = useState(false);
   const [changePasswordModal, setChangePasswordModal] = useState(false);
   const [findPeopleModal, setFindPeopleModal] = useState(false);
+  const [followingFollowerModal, setFollowingFollowerModal] = useState(false);
 
   useLayoutEffect(() => {
     dispatch(userInfoRequest());
@@ -58,82 +62,92 @@ const Dashboard = () => {
     <>
       <div className={styles.dashboardContainer}>
         {userDataLoading ? (
+          // <div className={styles.spinnerContainer}>
           <Spinner />
         ) : (
+          // </div>
           <>
             <div className={styles.leftContainer}>
               <div className={styles.userInfoContainer}>
-                <DropDown
-                  right="0"
-                  width="12.5rem"
-                  btn={
-                    <SettingIcon
-                      style={{ height: "1.5rem", width: "1.5rem" }}
-                    />
-                  }
-                  className={styles.dropdown}
-                >
-                  <div
-                    className={styles.dropDownContent}
-                    onClick={() => setEditModal(true)}
+                {dimensions.width <= 768 ? (
+                  <DropDown
+                    right="0"
+                    width="12.5rem"
+                    btn={
+                      <SettingIcon
+                        style={{ height: "1.5rem", width: "1.5rem" }}
+                      />
+                    }
+                    className={styles.dropdown}
                   >
-                    <EditPensil
-                      className={styles.svgIcon}
-                      style={{ height: "1.5rem" }}
-                    />
-                    <h1 className={styles.dropDownContentheading}>
-                      Edit Profile
-                    </h1>
-                  </div>
-                  <div
-                    className={styles.dropDownContent}
-                    onClick={() => setChangePasswordModal(true)}
-                  >
-                    <ChangePasswordIcon
-                      style={{ height: "1rem", transform: "Scale(1.5)" }}
-                      className={styles.svgIcon}
-                    />
-                    <h1 className={styles.dropDownContentheading}>
-                      change password
-                    </h1>
-                  </div>
-                  <div
-                    className={styles.dropDownContent}
-                    onClick={() => setFindPeopleModal(true)}
-                  >
-                    <img
-                      src={addPeoplesIcon}
-                      alt=""
-                      className={styles.svgIcon}
-                    />
-                    <h1 className={styles.dropDownContentheading}>
-                      Find Peoples
-                    </h1>
-                  </div>
-                  <div
-                    className={styles.dropDownContent}
-                    onClick={() => setFeedbackBool(true)}
-                  >
-                    <img src={feedbackIcon} alt="" className={styles.svgIcon} />
-                    <h1 className={styles.dropDownContentheading}>Feedback</h1>
-                  </div>
-                  <div
-                    className={styles.dropDownContent}
-                    onClick={() => setDeleteModal(true)}
-                  >
-                    <Delete className={styles.svgIcon} />
-                    <h1 className={styles.dropDownContentheading}>
-                      Delete Account
-                    </h1>
-                  </div>
-                  <div
-                    className={styles.dropDownContent}
-                    onClick={() => dispatch(logoutRequest())}
-                  >
-                    <Logout height="1rem" className={styles.svgIcon} />
-                    <h1 className={styles.dropDownContentheading}>Logout</h1>
-                  </div>
-                </DropDown>
+                    <div
+                      className={styles.dropDownContent}
+                      onClick={() => setEditModal(true)}
+                    >
+                      <EditPensil
+                        className={styles.svgIcon}
+                        style={{ height: "1.5rem" }}
+                      />
+                      <h1 className={styles.dropDownContentheading}>
+                        Edit Profile
+                      </h1>
+                    </div>
+                    <div
+                      className={styles.dropDownContent}
+                      onClick={() => setChangePasswordModal(true)}
+                    >
+                      <ChangePasswordIcon
+                        style={{ height: "1rem", transform: "Scale(1.5)" }}
+                        className={styles.svgIcon}
+                      />
+                      <h1 className={styles.dropDownContentheading}>
+                        change password
+                      </h1>
+                    </div>
+                    <div
+                      className={styles.dropDownContent}
+                      onClick={() => setFindPeopleModal(true)}
+                    >
+                      <img
+                        src={addPeoplesIcon}
+                        alt=""
+                        className={styles.svgIcon}
+                      />
+                      <h1 className={styles.dropDownContentheading}>
+                        Find Peoples
+                      </h1>
+                    </div>
+                    <div
+                      className={styles.dropDownContent}
+                      onClick={() => setFeedbackBool(true)}
+                    >
+                      <img
+                        src={feedbackIcon}
+                        alt=""
+                        className={styles.svgIcon}
+                      />
+                      <h1 className={styles.dropDownContentheading}>
+                        Feedback
+                      </h1>
+                    </div>
+                    <div
+                      className={styles.dropDownContent}
+                      onClick={() => setDeleteModal(true)}
+                    >
+                      <Delete className={styles.svgIcon} />
+                      <h1 className={styles.dropDownContentheading}>
+                        Delete Account
+                      </h1>
+                    </div>
+                    <div
+                      className={styles.dropDownContent}
+                      onClick={() => dispatch(logoutRequest())}
+                    >
+                      <Logout height="1rem" className={styles.svgIcon} />
+                      <h1 className={styles.dropDownContentheading}>Logout</h1>
+                    </div>
+                  </DropDown>
+                ) : null}
 
                 <div className={styles.userImage}>
                   <img src="" alt="" />
@@ -147,103 +161,121 @@ const Dashboard = () => {
 
               <div className={styles.followCountContainer}>
                 <Button
-                  className={
-                    toggle === "Followers"
-                      ? `${styles.followCard} ${styles.active}`
-                      : `${styles.followCard}`
+                  className={`${styles.followCard} ${
+                    toggle === "Followers" && dimensions.width > 768
+                      ? styles.active
+                      : null
                   }
-                  onClick={() => setToggle("Followers")}
+                  `}
+                  onClick={() => {
+                    setToggle("Followers");
+                    if (dimensions.width <= 768)
+                      setFollowingFollowerModal(true);
+                  }}
                 >
                   <h3>{userData?.followers?.length ?? 0}</h3>
                   <p>Followers</p>
                 </Button>
                 <Button
-                  className={
-                    toggle === "Following"
-                      ? `${styles.followCard} ${styles.active}`
-                      : `${styles.followCard}`
+                  className={`${styles.followCard} ${
+                    toggle === "Following" && dimensions.width > 768
+                      ? styles.active
+                      : null
                   }
-                  onClick={() => setToggle("Following")}
+                  `}
+                  onClick={() => {
+                    setToggle("Following");
+                    if (dimensions.width <= 768)
+                      setFollowingFollowerModal(true);
+                  }}
                 >
                   <h3>{userData?.following?.length ?? 0}</h3>
                   <p>Following</p>
                 </Button>
               </div>
-
-              <div className={styles.followersListContainer}>
-                <p>{toggle}</p>
-                {toggle === "Following" ? (
-                  <FollowerContainer data={userData?.following} />
-                ) : (
-                  <FollowerContainer data={userData?.followers} />
-                )}
-              </div>
+              {dimensions.width > 768 ? (
+                <div className={styles.followersListContainer}>
+                  <p>{toggle}</p>
+                  {toggle === "Following" ? (
+                    <FollowerContainer data={userData?.following} />
+                  ) : (
+                    <FollowerContainer data={userData?.followers} />
+                  )}
+                </div>
+              ) : null}
             </div>
 
             <div className={styles.rightContainer}>
-              <div className={styles.btnContainer}>
-                <Button
-                  className={styles.btn}
-                  onClick={() => setEditModal(true)}
-                >
-                  <EditPensil className={styles.svgIcon} />
-                  Edit Profile
-                </Button>
-                <Button
-                  className={styles.btn}
-                  onClick={() => setFindPeopleModal(true)}
-                >
-                  <img src={addPeoplesIcon} alt="" className={styles.svgIcon} />
-                  Find Peoples
-                </Button>
-                <Button
-                  className={styles.btn}
-                  onClick={() => setFeedbackBool(true)}
-                >
-                  <img src={feedbackIcon} alt="" className={styles.svgIcon} />
-                  Feedback
-                </Button>
-
-                <DropDown
-                  right="0"
-                  width="12.5rem"
-                  btn={
-                    <Button className={styles.btn}>
-                      <SettingIcon className={styles.svgIcon} />
-                      Settings
-                    </Button>
-                  }
-                >
-                  <div
-                    className={styles.dropDownContent}
-                    onClick={() => dispatch(logoutRequest())}
+              {dimensions.width > 768 ? (
+                <div className={styles.btnContainer}>
+                  <Button
+                    className={styles.btn}
+                    onClick={() => setEditModal(true)}
                   >
-                    <Logout height="1rem" className={styles.svgIcon} />
-                    <h1 className={styles.dropDownContentheading}>Logout</h1>
-                  </div>
-                  <div
-                    className={styles.dropDownContent}
-                    onClick={() => setChangePasswordModal(true)}
+                    <EditPensil className={styles.svgIcon} />
+                    Edit Profile
+                  </Button>
+                  <Button
+                    className={styles.btn}
+                    onClick={() => setFindPeopleModal(true)}
                   >
-                    <ChangePasswordIcon
-                      style={{ height: "1rem", transform: "Scale(1.5)" }}
+                    <img
+                      src={addPeoplesIcon}
+                      alt=""
                       className={styles.svgIcon}
                     />
-                    <h1 className={styles.dropDownContentheading}>
-                      change password
-                    </h1>
-                  </div>
-                  <div
-                    className={styles.dropDownContent}
-                    onClick={() => setDeleteModal(true)}
+                    Find Peoples
+                  </Button>
+                  <Button
+                    className={styles.btn}
+                    onClick={() => setFeedbackBool(true)}
                   >
-                    <Delete className={styles.svgIcon} />
-                    <h1 className={styles.dropDownContentheading}>
-                      Delete Account
-                    </h1>
-                  </div>
-                </DropDown>
-              </div>
+                    <img src={feedbackIcon} alt="" className={styles.svgIcon} />
+                    Feedback
+                  </Button>
+
+                  <DropDown
+                    right="0"
+                    width="12.5rem"
+                    btn={
+                      <Button className={styles.btn}>
+                        <SettingIcon className={styles.svgIcon} />
+                        Settings
+                      </Button>
+                    }
+                  >
+                    <div
+                      className={styles.dropDownContent}
+                      onClick={() => dispatch(logoutRequest())}
+                    >
+                      <Logout height="1rem" className={styles.svgIcon} />
+                      <h1 className={styles.dropDownContentheading}>Logout</h1>
+                    </div>
+                    <div
+                      className={styles.dropDownContent}
+                      onClick={() => setChangePasswordModal(true)}
+                    >
+                      <ChangePasswordIcon
+                        style={{ height: "1rem", transform: "Scale(1.5)" }}
+                        className={styles.svgIcon}
+                      />
+                      <h1 className={styles.dropDownContentheading}>
+                        change password
+                      </h1>
+                    </div>
+                    <div
+                      className={styles.dropDownContent}
+                      onClick={() => setDeleteModal(true)}
+                    >
+                      <Delete className={styles.svgIcon} />
+                      <h1 className={styles.dropDownContentheading}>
+                        Delete Account
+                      </h1>
+                    </div>
+                  </DropDown>
+                </div>
+              ) : null}
+
               <div className={styles.notesContainer}>
                 <div className={styles.noteContainerHead}>
                   <p>
@@ -378,6 +410,26 @@ const Dashboard = () => {
         className="modal"
       >
         <ChangePasswordModal setModal={setChangePasswordModal} />
+      </Modal>
+
+      <Modal
+        onClose={() => setFollowingFollowerModal(false)}
+        isModal={followingFollowerModal}
+        showCloseButton
+        className="modal"
+      >
+        <h1 className="modalHeading">{toggle}</h1>
+        {toggle === "Following" ? (
+          <FollowerContainer
+            style={{ maxHeight: "66vh" }}
+            data={userData?.following}
+          />
+        ) : (
+          <FollowerContainer
+            style={{ maxHeight: "66vh" }}
+            data={userData?.followers}
+          />
+        )}
       </Modal>
     </>
   );

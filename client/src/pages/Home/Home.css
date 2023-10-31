@@ -1,5 +1,6 @@
 /* input container started */
 .homeSpinnerCont {
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -8,6 +9,7 @@
 .homeSpinnerCont p {
   font-size: 1.5rem;
   font-weight: 600;
+  text-align: center;
 }
 .notesContainer {
   height: calc(100vh - 3.5rem);

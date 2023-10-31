@@ -96,7 +96,7 @@ const ChangePasswordModal = ({ setModal }) => {
         <h1>Old Password</h1>
         <Input
           type="password"
-          placeholder="Regarding xyz..."
+          placeholder="Enter your old password"
           name="oldP"
           value={password}
           setValue={setPassword}
@@ -107,7 +107,7 @@ const ChangePasswordModal = ({ setModal }) => {
         <h1>New Password</h1>
         <Input
           type={seePassword ? "text" : "password"}
-          placeholder="Enter your password"
+          placeholder="Enter your new password"
           autoComplete="off"
           name="newP"
           value={password}

@@ -4,9 +4,13 @@ import ChatIcon from "../../../assets/img/chatIcon.png";
 import Button from "../../../widgets/Button/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { followUnfollowRequest } from "../../../store/Actions/userAction";
+import { createChatRequest } from "../../../store/Actions/chatAction";
+import { useNavigate } from "react-router-dom";
 
 const FollowerContainer = ({ data, style = null }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const { userData } = useSelector((state) => state.userReducer);
 
   return (
@@ -36,17 +40,14 @@ const FollowerContainer = ({ data, style = null }) => {
             >
               {curr?.followers?.includes(userData._id) ? "unfollow" : "follow"}
             </Button>
-            <div className={styles.followerImg}>
-              <img
-                src={ChatIcon}
-                alt=""
-                style={{
-                  width: "1.3rem",
-                  height: "1.3rem",
-                  border: "none",
-                }}
-              />
-            </div>
+            <img
+              src={ChatIcon}
+              alt=""
+              className={styles.msgIcon}
+              onClick={() =>
+                dispatch(createChatRequest({ userId: curr._id, navigate }))
+              }
+            />
           </div>
         </div>
       ))}
