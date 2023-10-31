@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useLayoutEffect, useState } from "react";
 import styles from "./Dashboard.module.css";
 import { ReactComponent as EditPensil } from "../../assets/svg/editPensil.svg";
 import { ReactComponent as SettingIcon } from "../../assets/svg/settingIcon.svg";
 import { ReactComponent as ChangePasswordIcon } from "../../assets/svg/changePasswordIcon.svg";
 import { ReactComponent as Delete } from "../../assets/svg/delete.svg";
 import { ReactComponent as Logout } from "../../assets/svg/logout.svg";
+import { ReactComponent as UpArrow } from "../../assets/svg/up-arrow.svg";
 import addPeoplesIcon from "../../assets/img/addPeoples.png";
 import feedbackIcon from "../../assets/img/feedbackIcon.png";
-import ChatIcon from "../../assets/img/chatIcon.png";
 import HeartIcon from "../../assets/img/heartIcon.png";
 import Button from "../../widgets/Button/Button";
 import Modal from "../../widgets/Modal/Modal";
@@ -26,6 +26,11 @@ import Spinner from "../../components/Spinner/Spinner";
 import DropDown from "../../widgets/DropDown/DropDown";
 import { logoutRequest } from "../../store/Actions/loginAction";
 import DeleteModal from "../../components/DeleteModal/DeleteModal";
+import FollowerContainer from "./components/FollowerContainer";
+import { getLikeNoteRequest } from "../../store/Actions/noteAction";
+import { folderType } from "../../utils/constants";
+import NoteContainer from "../../components/NoteContainer/NoteContainer";
+import { useWindowDimension } from "../../components/CustomHooks/CustomHooks";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -33,55 +38,116 @@ const Dashboard = () => {
   const { userDataLoading, userData, deleteUserLoading } = useSelector(
     (state) => state.userReducer
   );
+  const { likedNotes, getLikedNoteLoading } = useSelector(
+    (state) => state.noteReducer
+  );
+
+  const { dimensions } = useWindowDimension();
 
   const [toggle, setToggle] = useState("Following");
+  const [fldType, setFldType] = useState(folderType.PRS);
   const [editModal, setEditModal] = useState(false);
   const [feedbackBool, setFeedbackBool] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
   const [changePasswordModal, setChangePasswordModal] = useState(false);
+  const [findPeopleModal, setFindPeopleModal] = useState(false);
+  const [followingFollowerModal, setFollowingFollowerModal] = useState(false);
 
-  // const [showDropdown, setShowDropdown] = useState(false);
-
-  useEffect(() => {
+  useLayoutEffect(() => {
     dispatch(userInfoRequest());
+    dispatch(getLikeNoteRequest({ type: fldType }));
   }, []);
 
   return (
     <>
       <div className={styles.dashboardContainer}>
         {userDataLoading ? (
+          // <div className={styles.spinnerContainer}>
           <Spinner />
         ) : (
+          // </div>
           <>
             <div className={styles.leftContainer}>
               <div className={styles.userInfoContainer}>
-                {/* <Button
-                  className={`${styles.btn} ${styles.settingbtn}`}
-                  onClick={() => setShowDropdown(!showDropdown)}
-                >
-                  <SettingIcon className={styles.svgIcon} />
-                </Button>
-                {showDropdown ? (
-                  <div className={styles.dropdown}>
-                    <Button
-                      className={styles.btn}
+                {dimensions.width <= 768 ? (
+                  <DropDown
+                    right="0"
+                    width="12.5rem"
+                    btn={
+                      <SettingIcon
+                        style={{ height: "1.5rem", width: "1.5rem" }}
+                      />
+                    }
+                    className={styles.dropdown}
+                  >
+                    <div
+                      className={styles.dropDownContent}
                       onClick={() => setEditModal(true)}
                     >
-                      <EditPensil className={styles.svgIcon} />
-                      Edit Profile
-                    </Button>
-
-                    <Button className={styles.btn}>
-                      <ChangePasswordIcon className={styles.svgIcon} />
-                      Change Password
-                    </Button>
-
-                    <Button className={styles.btn}>
-                      <img src={DeleteAccountIcon} className={styles.svgIcon} />
-                      Delete Account
-                    </Button>
-                  </div>
-                ) : null} */}
+                      <EditPensil
+                        className={styles.svgIcon}
+                        style={{ height: "1.5rem" }}
+                      />
+                      <h1 className={styles.dropDownContentheading}>
+                        Edit Profile
+                      </h1>
+                    </div>
+                    <div
+                      className={styles.dropDownContent}
+                      onClick={() => setChangePasswordModal(true)}
+                    >
+                      <ChangePasswordIcon
+                        style={{ height: "1rem", transform: "Scale(1.5)" }}
+                        className={styles.svgIcon}
+                      />
+                      <h1 className={styles.dropDownContentheading}>
+                        change password
+                      </h1>
+                    </div>
+                    <div
+                      className={styles.dropDownContent}
+                      onClick={() => setFindPeopleModal(true)}
+                    >
+                      <img
+                        src={addPeoplesIcon}
+                        alt=""
+                        className={styles.svgIcon}
+                      />
+                      <h1 className={styles.dropDownContentheading}>
+                        Find Peoples
+                      </h1>
+                    </div>
+                    <div
+                      className={styles.dropDownContent}
+                      onClick={() => setFeedbackBool(true)}
+                    >
+                      <img
+                        src={feedbackIcon}
+                        alt=""
+                        className={styles.svgIcon}
+                      />
+                      <h1 className={styles.dropDownContentheading}>
+                        Feedback
+                      </h1>
+                    </div>
+                    <div
+                      className={styles.dropDownContent}
+                      onClick={() => setDeleteModal(true)}
+                    >
+                      <Delete className={styles.svgIcon} />
+                      <h1 className={styles.dropDownContentheading}>
+                        Delete Account
+                      </h1>
+                    </div>
+                    <div
+                      className={styles.dropDownContent}
+                      onClick={() => dispatch(logoutRequest())}
+                    >
+                      <Logout height="1rem" className={styles.svgIcon} />
+                      <h1 className={styles.dropDownContentheading}>Logout</h1>
+                    </div>
+                  </DropDown>
+                ) : null}
 
                 <div className={styles.userImage}>
                   <img src="" alt="" />
@@ -95,126 +161,215 @@ const Dashboard = () => {
 
               <div className={styles.followCountContainer}>
                 <Button
-                  className={styles.followCard}
-                  onClick={() => setToggle("Followers")}
+                  className={`${styles.followCard} ${
+                    toggle === "Followers" && dimensions.width > 768
+                      ? styles.active
+                      : null
+                  }
+                  `}
+                  onClick={() => {
+                    setToggle("Followers");
+                    if (dimensions.width <= 768)
+                      setFollowingFollowerModal(true);
+                  }}
                 >
-                  <h3>120</h3>
+                  <h3>{userData?.followers?.length ?? 0}</h3>
                   <p>Followers</p>
                 </Button>
                 <Button
-                  className={styles.followCard}
-                  onClick={() => setToggle("Following")}
+                  className={`${styles.followCard} ${
+                    toggle === "Following" && dimensions.width > 768
+                      ? styles.active
+                      : null
+                  }
+                  `}
+                  onClick={() => {
+                    setToggle("Following");
+                    if (dimensions.width <= 768)
+                      setFollowingFollowerModal(true);
+                  }}
                 >
-                  <h3>420</h3>
+                  <h3>{userData?.following?.length ?? 0}</h3>
                   <p>Following</p>
                 </Button>
               </div>
-
-              <div className={styles.followersListContainer}>
-                <p>{toggle}</p>
-                <div className={`scrollbar ${styles.followersList}`}>
-                  {[...Array(9).keys()].map((_, ind) => (
-                    <div key={ind} className={styles.follower}>
-                      <div className={styles.wrapper}>
-                        <div className={styles.followerImg}>
-                          <img src="" alt="" />
-                        </div>
-                        <div className={styles.userInfo}>
-                          <div className={styles.userName}>
-                            Sachin Jaluthariya
-                          </div>
-                          <div className={styles.uniqueUserName}>_sumit_</div>
-                        </div>
-                      </div>
-                      <div className={styles.wrapper}>
-                        <Button className={styles.btn}>following</Button>
-                        <div className={styles.followerImg}>
-                          <img
-                            src={ChatIcon}
-                            alt=""
-                            style={{
-                              width: "1.8rem",
-                              height: "1.8rem",
-                              border: "none",
-                            }}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  ))}
+              {dimensions.width > 768 ? (
+                <div className={styles.followersListContainer}>
+                  <p>{toggle}</p>
+                  {toggle === "Following" ? (
+                    <FollowerContainer data={userData?.following} />
+                  ) : (
+                    <FollowerContainer data={userData?.followers} />
+                  )}
                 </div>
-              </div>
+              ) : null}
             </div>
 
             <div className={styles.rightContainer}>
-              <div className={styles.btnContainer}>
-                <Button
-                  className={styles.btn}
-                  onClick={() => setEditModal(true)}
-                >
-                  <EditPensil className={styles.svgIcon} />
-                  Edit Profile
-                </Button>
-                <Button className={styles.btn}>
-                  <img src={addPeoplesIcon} alt="" className={styles.svgIcon} />
-                  Find Peoples
-                </Button>
-                <Button
-                  className={styles.btn}
-                  onClick={() => setFeedbackBool(true)}
-                >
-                  <img src={feedbackIcon} alt="" className={styles.svgIcon} />
-                  Feedback
-                </Button>
-
-                <DropDown
-                  right="0"
-                  width="12.5rem"
-                  btn={
-                    <Button className={styles.btn}>
-                      <SettingIcon className={styles.svgIcon} />
-                      Settings
-                    </Button>
-                  }
-                >
-                  <div
-                    className={styles.dropDownContent}
-                    onClick={() => dispatch(logoutRequest())}
+              {dimensions.width > 768 ? (
+                <div className={styles.btnContainer}>
+                  <Button
+                    className={styles.btn}
+                    onClick={() => setEditModal(true)}
                   >
-                    <Logout height="1rem" className={styles.svgIcon} />
-                    <h1 className={styles.dropDownContentheading}>Logout</h1>
-                  </div>
-                  <div
-                    className={styles.dropDownContent}
-                    onClick={() => setChangePasswordModal(true)}
+                    <EditPensil className={styles.svgIcon} />
+                    Edit Profile
+                  </Button>
+                  <Button
+                    className={styles.btn}
+                    onClick={() => setFindPeopleModal(true)}
                   >
-                    <ChangePasswordIcon
-                      style={{ height: "1rem", transform: "Scale(1.5)" }}
+                    <img
+                      src={addPeoplesIcon}
+                      alt=""
                       className={styles.svgIcon}
                     />
-                    <h1 className={styles.dropDownContentheading}>
-                      change password
-                    </h1>
-                  </div>
-                  <div
-                    className={styles.dropDownContent}
-                    onClick={() => setDeleteModal(true)}
+                    Find Peoples
+                  </Button>
+                  <Button
+                    className={styles.btn}
+                    onClick={() => setFeedbackBool(true)}
                   >
-                    <Delete className={styles.svgIcon} />
-                    <h1 className={styles.dropDownContentheading}>Delete</h1>
-                  </div>
-                </DropDown>
-              </div>
+                    <img src={feedbackIcon} alt="" className={styles.svgIcon} />
+                    Feedback
+                  </Button>
+
+                  <DropDown
+                    right="0"
+                    width="12.5rem"
+                    btn={
+                      <Button className={styles.btn}>
+                        <SettingIcon className={styles.svgIcon} />
+                        Settings
+                      </Button>
+                    }
+                  >
+                    <div
+                      className={styles.dropDownContent}
+                      onClick={() => dispatch(logoutRequest())}
+                    >
+                      <Logout height="1rem" className={styles.svgIcon} />
+                      <h1 className={styles.dropDownContentheading}>Logout</h1>
+                    </div>
+                    <div
+                      className={styles.dropDownContent}
+                      onClick={() => setChangePasswordModal(true)}
+                    >
+                      <ChangePasswordIcon
+                        style={{ height: "1rem", transform: "Scale(1.5)" }}
+                        className={styles.svgIcon}
+                      />
+                      <h1 className={styles.dropDownContentheading}>
+                        change password
+                      </h1>
+                    </div>
+                    <div
+                      className={styles.dropDownContent}
+                      onClick={() => setDeleteModal(true)}
+                    >
+                      <Delete className={styles.svgIcon} />
+                      <h1 className={styles.dropDownContentheading}>
+                        Delete Account
+                      </h1>
+                    </div>
+                  </DropDown>
+                </div>
+              ) : null}
+
               <div className={styles.notesContainer}>
-                <p>
-                  <img src={HeartIcon} alt="" style={{ width: "2rem" }} />
-                  Liked Notes
-                </p>
+                <div className={styles.noteContainerHead}>
+                  <p>
+                    <img src={HeartIcon} alt="" style={{ width: "1.5rem" }} />
+                    Liked Notes
+                  </p>
+                  <DropDown
+                    right="0"
+                    width="9rem"
+                    btn={
+                      <div className={styles.folderTypes}>
+                        <p>
+                          {fldType === folderType.PRS
+                            ? "Personal"
+                            : fldType === folderType.SBO
+                            ? "Shared by others"
+                            : "Shared by you"}
+                        </p>
+                        <UpArrow style={{ transform: "rotate(180deg)" }} />
+                      </div>
+                    }
+                  >
+                    <div
+                      className={styles.dropDownContent}
+                      onClick={() => {
+                        setFldType(folderType.PRS);
+                        dispatch(getLikeNoteRequest({ type: folderType.PRS }));
+                      }}
+                    >
+                      <h1 className={styles.dropDownContentheading}>
+                        Personal
+                      </h1>
+                    </div>
+                    <div
+                      className={styles.dropDownContent}
+                      onClick={() => {
+                        setFldType(folderType.SBY);
+                        dispatch(getLikeNoteRequest({ type: folderType.SBY }));
+                      }}
+                    >
+                      <h1 className={styles.dropDownContentheading}>
+                        Shared by you
+                      </h1>
+                    </div>
+                    <div
+                      className={styles.dropDownContent}
+                      onClick={() => {
+                        setFldType(folderType.SBO);
+                        dispatch(getLikeNoteRequest({ type: folderType.SBO }));
+                      }}
+                    >
+                      <h1 className={styles.dropDownContentheading}>
+                        Shared by others
+                      </h1>
+                    </div>
+                  </DropDown>
+                </div>
+                {getLikedNoteLoading ? (
+                  <Spinner />
+                ) : (
+                  <div className={`${styles.likedNoteCont} scrollbar output`}>
+                    {likedNotes?.map((cur, ind) => {
+                      return (
+                        <NoteContainer
+                          key={ind}
+                          ref={undefined}
+                          id={cur._id}
+                          titleContent={cur.title}
+                          textContent={cur.text}
+                          selectedColor={cur?.colorCode}
+                          isDashboard={true}
+                          // setColorCode={setColorCode}
+                          // isFavorite={cur?.isFavorite}
+                          // setNote={setNote}
+                          // setToggle={setToggleId}
+                        />
+                      );
+                    })}
+                  </div>
+                )}
               </div>
             </div>
           </>
         )}
       </div>
+
+      <Modal
+        onClose={() => setFindPeopleModal(false)}
+        isModal={findPeopleModal}
+        showCloseButton
+        className="modal"
+      >
+        <FindPeopleModal setModal={setFindPeopleModal} />
+      </Modal>
 
       <Modal
         onClose={() => setEditModal(false)}
@@ -255,6 +410,26 @@ const Dashboard = () => {
         className="modal"
       >
         <ChangePasswordModal setModal={setChangePasswordModal} />
+      </Modal>
+
+      <Modal
+        onClose={() => setFollowingFollowerModal(false)}
+        isModal={followingFollowerModal}
+        showCloseButton
+        className="modal"
+      >
+        <h1 className="modalHeading">{toggle}</h1>
+        {toggle === "Following" ? (
+          <FollowerContainer
+            style={{ maxHeight: "66vh" }}
+            data={userData?.following}
+          />
+        ) : (
+          <FollowerContainer
+            style={{ maxHeight: "66vh" }}
+            data={userData?.followers}
+          />
+        )}
       </Modal>
     </>
   );

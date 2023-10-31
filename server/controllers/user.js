@@ -7,7 +7,11 @@ const getUser = async (req, res, next) => {
   try {
     const _id = req.user_token_details._id;
 
-    const me = await Users.findOne({ _id }).select("-password").lean();
+    const me = await Users.findOne({ _id })
+      .select("-password")
+      .populate("followers", "-following -bio -email -password")
+      .populate("following", "-following -bio -email -password")
+      .lean();
     if (!me) return res.status(400).send("User not found");
 
     res.status(200).send(me);
@@ -55,17 +59,19 @@ const deleteUser = async (req, res, next) => {
 
 const searchUser = async (req, res, next) => {
   try {
-    let { user, allId } = req.query;
+    const user = req.query.user;
+    let { allId, isProfile } = req.body;
 
     if (!Array.isArray(allId)) allId = [req.user_token_details._id];
     else allId.push(req.user_token_details._id);
+    const selectFields = isProfile ? "-password" : "username";
 
     const data = await Users.find({
       username: new RegExp("^" + user, "i"),
       _id: { $nin: allId },
     })
-      .select("username")
-      .limit(15)
+      .select(selectFields)
+      .limit(10)
       .lean();
 
     res.status(200).send(data);
@@ -97,10 +103,48 @@ const changePassword = async (req, res, next) => {
   }
 };
 
+const follow_unfollow = async (req, res, next) => {
+  try {
+    const { id, isFollow } = req.body;
+
+    const opponent = await Users.findOne({ _id: id });
+    if (!opponent) return res.status(400).send("User not found");
+
+    if (isFollow) {
+      await Users.findByIdAndUpdate(req.user_token_details._id, {
+        $addToSet: { following: id },
+      });
+
+      await Users.findByIdAndUpdate(id, {
+        $addToSet: { followers: req.user_token_details._id },
+      });
+    } else {
+      await Users.findByIdAndUpdate(req.user_token_details._id, {
+        $pull: { following: id },
+      });
+
+      await Users.findByIdAndUpdate(id, {
+        $pull: { followers: req.user_token_details._id },
+      });
+    }
+
+    const me = await Users.findOne({ _id: req.user_token_details._id })
+      .select("-password")
+      .populate("followers", "-following -bio -email -password")
+      .populate("following", "-following -bio -email -password")
+      .lean();
+
+    res.status(200).send(me);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   getUser,
   updateUser,
   changePassword,
   deleteUser,
   searchUser,
+  follow_unfollow,
 };

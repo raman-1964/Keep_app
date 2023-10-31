@@ -25,15 +25,11 @@ function* getAllChatRequest(action) {
 
 function* createChatRequest(action) {
   try {
-    const res = yield call(createChatRequestApi, {
-      userId: action.payload.userId,
-    });
-    yield put(
-      createChatSuccess({
-        setSelectedChat: action.payload.setSelectedChat,
-        res,
-      })
-    );
+    const { userId, setSelectedChat, navigate } = action.payload;
+    const res = yield call(createChatRequestApi, { userId });
+    yield put(createChatSuccess({ res }));
+    if (setSelectedChat) setSelectedChat(res);
+    if (navigate) navigate("/chat", { state: { res } });
   } catch (e) {
     yield put(createChatFailed(e));
   }

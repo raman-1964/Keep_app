@@ -14,6 +14,18 @@ export const getNoteApi = async (data) => {
   }
 };
 
+export const getLikeNoteApi = async (data) => {
+  try {
+    const res = await axios.get(BASE_URL + "/note/like", {
+      headers: { ...authHeader() },
+      params: { ...data },
+    });
+    return res.data;
+  } catch (e) {
+    throw Error(e.response?.data?.msg ?? "Something went wrong");
+  }
+};
+
 export const addNoteApi = async (data) => {
   try {
     const res = await axios.post(BASE_URL + "/note", data, {

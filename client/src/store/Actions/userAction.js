@@ -5,6 +5,9 @@ import {
   DELETE_USER_FAILED,
   DELETE_USER_REQUEST,
   DELETE_USER_SUCCESS,
+  FOLLOW_UNFOLLOW_FAILED,
+  FOLLOW_UNFOLLOW_REQUEST,
+  FOLLOW_UNFOLLOW_SUCCESS,
   SEARCH_USER_FAILED,
   SEARCH_USER_REQUEST,
   SEARCH_USER_SUCCESS,
@@ -64,4 +67,14 @@ export const changePasswordSuccess = (data) => {
 };
 export const changePasswordFailed = (data) => {
   return { type: CHANGE_PASSWORD_FAILED, payload: data };
+};
+
+export const followUnfollowRequest = (data) => {
+  return { type: FOLLOW_UNFOLLOW_REQUEST, payload: data };
+};
+export const followUnfollowSuccess = (data) => {
+  return { type: FOLLOW_UNFOLLOW_SUCCESS, payload: data };
+};
+export const followUnfollowFailed = (data) => {
+  return { type: FOLLOW_UNFOLLOW_FAILED, payload: data };
 };

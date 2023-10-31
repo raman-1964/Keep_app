@@ -5,6 +5,7 @@ const {
   deleteUser,
   searchUser,
   changePassword,
+  follow_unfollow,
 } = require("../controllers/user");
 const auth = require("../midddleware/auth");
 
@@ -18,6 +19,8 @@ router.put("/change-password", auth, changePassword);
 
 router.delete("/", auth, deleteUser);
 
-router.get("/search", auth, searchUser);
+router.post("/search", auth, searchUser);
+
+router.post("/follow_unfollow", auth, follow_unfollow);
 
 module.exports = router;

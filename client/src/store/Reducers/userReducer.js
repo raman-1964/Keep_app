@@ -5,6 +5,9 @@ import {
   DELETE_USER_FAILED,
   DELETE_USER_REQUEST,
   DELETE_USER_SUCCESS,
+  FOLLOW_UNFOLLOW_FAILED,
+  FOLLOW_UNFOLLOW_REQUEST,
+  FOLLOW_UNFOLLOW_SUCCESS,
   UPDATE_USER_INFO_FAILED,
   UPDATE_USER_INFO_REQUEST,
   UPDATE_USER_INFO_SUCCESS,
@@ -18,6 +21,7 @@ const initialState = {
   deleteUserLoading: false,
   updateUserLoading: false,
   changePasswordLoading: false,
+  followUnfollowLoading: false,
   userData: {},
 };
 
@@ -91,6 +95,23 @@ export const userReducer = (state = initialState, action) => {
       return {
         ...state,
         changePasswordLoading: false,
+      };
+
+    case FOLLOW_UNFOLLOW_REQUEST:
+      return {
+        ...state,
+        followUnfollowLoading: true,
+      };
+    case FOLLOW_UNFOLLOW_SUCCESS:
+      return {
+        ...state,
+        userData: action.payload,
+        followUnfollowLoading: false,
+      };
+    case FOLLOW_UNFOLLOW_FAILED:
+      return {
+        ...state,
+        followUnfollowLoading: false,
       };
 
     default:

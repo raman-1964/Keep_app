@@ -20,21 +20,27 @@ import { pagination } from "../../utils/pagination";
 import Spinner from "../../components/Spinner/Spinner";
 import MessageContainer from "./components/MessageContainer";
 import CallerDropDown from "./components/CallerDropDown/CallerDropDown";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { defaultToastSetting } from "../../utils/constants";
+import { useWindowDimension } from "../../components/CustomHooks/CustomHooks";
 
 const ChatPage = () => {
   const dispatch = useDispatch();
+
   const navigate = useNavigate();
+  const { state } = useLocation();
 
   const selectedChatRef = useRef(null);
-
   const observer = useRef(null);
+
+  const { dimensions } = useWindowDimension();
+
   const [page, setPage] = useState(1);
   const [isTyping, setIsTyping] = useState(null);
-  const [dimensions, setDimensions] = useState(getWindowDimension());
-  const [selectedChat, setSelectedChat] = useState({});
+  const [selectedChat, setSelectedChat] = useState({
+    ...(state?.res && { ...state.res }),
+  });
   const [selectedUser, setSelectedUser] = useState({});
 
   const loggedInUser = localStorage.getItem("Raman-Keep-Username");
@@ -62,11 +68,6 @@ const ChatPage = () => {
     (element) => pagination(element, observer, isNextPage, setPage),
     [isNextPage]
   );
-
-  function getWindowDimension() {
-    const { innerWidth: width, innerHeight: height } = window;
-    return { width, height };
-  }
 
   const getSideBar = () => {
     return (
@@ -237,13 +238,6 @@ const ChatPage = () => {
       };
     }
   }, [socket]);
-
-  useEffect(() => {
-    const handleResize = () => setDimensions(getWindowDimension());
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [JSON.stringify(dimensions)]);
 
   return !chatLoading ? (
     <>

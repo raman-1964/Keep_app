@@ -48,8 +48,6 @@ export const chatReducer = (state = initialState, action) => {
       return { ...state, createChatLoading: true };
 
     case CREATE_CHAT_SUCCESS: {
-      action.payload.setSelectedChat(action.payload.res);
-
       let updatedChats;
       const chatExists = state.chats.some(
         (chat) => chat._id === action.payload.res._id

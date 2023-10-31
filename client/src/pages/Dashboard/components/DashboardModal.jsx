@@ -9,6 +9,8 @@ import {
 import UserName from "../../../components/userName/UserName";
 import hidePassword from "../../../assets/img/hidePassword.png";
 import showPassword from "../../../assets/img/showPassword.png";
+import SelectAsync from "../../../components/SelectAsync/SelectAsync";
+import FollowerContainer from "./FollowerContainer";
 
 const DashboardEditModal = ({ userInfo, setEditModal }) => {
   const dispatch = useDispatch();
@@ -62,7 +64,18 @@ const DashboardEditModal = ({ userInfo, setEditModal }) => {
 };
 
 const FindPeopleModal = () => {
-  return <></>;
+  const [data, setData] = useState([]);
+  const handleSearch = (e) => {
+    setData(e);
+  };
+
+  return (
+    <>
+      <h1 className="modalHeading">Find People</h1>
+      <SelectAsync onChange={handleSearch} isProfile={true} />
+      <FollowerContainer style={{ maxHeight: "66vh" }} data={data} />
+    </>
+  );
 };
 
 const ChangePasswordModal = ({ setModal }) => {
@@ -83,18 +96,18 @@ const ChangePasswordModal = ({ setModal }) => {
         <h1>Old Password</h1>
         <Input
           type="password"
-          placeholder="Regarding xyz..."
+          placeholder="Enter your old password"
           name="oldP"
           value={password}
           setValue={setPassword}
         />
       </div>
 
-      <div className="log-input">
+      <div style={{ marginBottom: "2rem" }} className="log-input">
         <h1>New Password</h1>
         <Input
           type={seePassword ? "text" : "password"}
-          placeholder="Enter your password"
+          placeholder="Enter your new password"
           autoComplete="off"
           name="newP"
           value={password}

@@ -19,6 +19,18 @@ const userSchema = mongoose.Schema({
   bio: {
     type: String,
   },
+  followers: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Users",
+    },
+  ],
+  following: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Users",
+    },
+  ],
   password: {
     type: String,
     required: true,
