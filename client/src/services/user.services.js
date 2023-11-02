@@ -56,3 +56,16 @@ export const follow_unfollow_Api = async (data) => {
     throw Error(e.response?.data?.msg ?? "Something went wrong");
   }
 };
+
+export const changePhotoApi = async (data) => {
+  try {
+    const img = new FormData();
+    img.append("img", data);
+    const res = await axios.put(BASE_URL + "/user/photo", img, {
+      headers: { ...authHeader() },
+    });
+    return res.data;
+  } catch (e) {
+    throw Error(e.response?.data?.msg ?? "Something went wrong");
+  }
+};

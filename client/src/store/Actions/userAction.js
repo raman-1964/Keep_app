@@ -2,6 +2,8 @@ import {
   CHANGE_PASSWORD_FAILED,
   CHANGE_PASSWORD_REQUEST,
   CHANGE_PASSWORD_SUCCESS,
+  CHANGE_PHOTO_REQUEST,
+  CHANGE_PHOTO_SUCCESS,
   DELETE_USER_FAILED,
   DELETE_USER_REQUEST,
   DELETE_USER_SUCCESS,
@@ -77,4 +79,11 @@ export const followUnfollowSuccess = (data) => {
 };
 export const followUnfollowFailed = (data) => {
   return { type: FOLLOW_UNFOLLOW_FAILED, payload: data };
+};
+
+export const changePhotoRequest = (data) => {
+  return { type: CHANGE_PHOTO_REQUEST, payload: data };
+};
+export const changePhotoSuccess = (data) => {
+  return { type: CHANGE_PHOTO_SUCCESS, payload: data };
 };

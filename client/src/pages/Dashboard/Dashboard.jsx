@@ -13,6 +13,7 @@ import Button from "../../widgets/Button/Button";
 import Modal from "../../widgets/Modal/Modal";
 import {
   ChangePasswordModal,
+  ChangePhotoModal,
   DashboardEditModal,
   FeedbackModal,
   FindPeopleModal,
@@ -52,6 +53,8 @@ const Dashboard = () => {
   const [changePasswordModal, setChangePasswordModal] = useState(false);
   const [findPeopleModal, setFindPeopleModal] = useState(false);
   const [followingFollowerModal, setFollowingFollowerModal] = useState(false);
+  const [changePhotoModal, setChangePhotoModal] = useState(false);
+  const [imageURL, setImageURL] = useState("");
 
   useLayoutEffect(() => {
     dispatch(userInfoRequest());
@@ -147,9 +150,38 @@ const Dashboard = () => {
                   </DropDown>
                 ) : null}
 
-                <div className={styles.userImage}>
-                  <img src="" alt="" />
-                </div>
+                <DropDown
+                  left="0"
+                  width="12.5rem"
+                  btn={<img src="" alt="" className={styles.userImage} />}
+                  // className={styles.dropdown}
+                >
+                  <div
+                    className={styles.dropDownContent}
+                    // onClick={() => setEditModal(true)}
+                  >
+                    <EditPensil
+                      className={styles.svgIcon}
+                      style={{ height: "1.5rem" }}
+                    />
+                    <h1 className={styles.dropDownContentheading}>
+                      view photo
+                    </h1>
+                  </div>
+                  <div
+                    className={styles.dropDownContent}
+                    onClick={() => setChangePhotoModal(true)}
+                  >
+                    <ChangePasswordIcon
+                      style={{ height: "1rem", transform: "Scale(1.5)" }}
+                      className={styles.svgIcon}
+                    />
+                    <h1 className={styles.dropDownContentheading}>
+                      change photo
+                    </h1>
+                  </div>
+                </DropDown>
+
                 <div className={styles.userInfo}>
                   <p className={styles.uniqueUserName}>{userData.username}</p>
                   <p className={styles.userName}>{userData.name}</p>
@@ -406,6 +438,18 @@ const Dashboard = () => {
         className="modal"
       >
         <ChangePasswordModal setModal={setChangePasswordModal} />
+      </Modal>
+      <Modal
+        onClose={() => setChangePhotoModal(false)}
+        isModal={changePhotoModal}
+        showCloseButton={imageURL === ""}
+        className="modal"
+      >
+        <ChangePhotoModal
+          setModal={setChangePhotoModal}
+          setImageURL={setImageURL}
+          userId={userData._id}
+        />
       </Modal>
 
       <Modal

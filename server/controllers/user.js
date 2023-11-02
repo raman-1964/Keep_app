@@ -140,6 +140,19 @@ const follow_unfollow = async (req, res, next) => {
   }
 };
 
+const update_photo = async (req, res, next) => {
+  try {
+    const { img } = req.body;
+    console.log(img);
+
+    const me = await Users.findOne({ _id: req.user_token_details._id }).lean();
+
+    res.status(200).send(me);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   getUser,
   updateUser,
@@ -147,4 +160,5 @@ module.exports = {
   deleteUser,
   searchUser,
   follow_unfollow,
+  update_photo,
 };
