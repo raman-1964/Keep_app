@@ -194,11 +194,13 @@ const Dashboard = () => {
               {dimensions.width > 768 ? (
                 <div className={styles.followersListContainer}>
                   <p>{toggle}</p>
-                  {toggle === "Following" ? (
-                    <FollowerContainer data={userData?.following} />
-                  ) : (
-                    <FollowerContainer data={userData?.followers} />
-                  )}
+                  <FollowerContainer
+                    data={
+                      toggle === "Following"
+                        ? userData?.following
+                        : userData?.followers
+                    }
+                  />
                 </div>
               ) : null}
             </div>

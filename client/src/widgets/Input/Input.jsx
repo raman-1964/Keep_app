@@ -1,5 +1,5 @@
 import React, { forwardRef } from "react";
-import "./Input.css";
+import styles from "./Input.module.css";
 
 const Input = forwardRef(
   (
@@ -23,7 +23,9 @@ const Input = forwardRef(
               value={value[name]}
               onChange={onChange}
               name={name}
-              className={`input textarea ${className ?? ""}`}
+              className={`${styles.input} ${styles.textarea} ${
+                className ?? ""
+              }`}
               {...rest}
               ref={ref}
             />
@@ -38,7 +40,7 @@ const Input = forwardRef(
               onChange={onChange}
               name={name}
               type={type}
-              className={`input ${className ?? ""}`}
+              className={`${styles.input} ${className ?? ""}`}
               {...rest}
             />
           </div>

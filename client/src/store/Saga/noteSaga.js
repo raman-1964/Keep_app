@@ -49,10 +49,10 @@ function* addNote(action) {
   try {
     const res = yield call(addNoteApi, { ...action.payload.data });
     action.payload.setInputModal(false);
-    toast.success("note added successfully", defaultToastSetting);
+    toast.success("Note added successfully", defaultToastSetting);
     yield put(addNoteSuccess(res));
   } catch (error) {
-    toast.error(`${error}`, defaultToastSetting);
+    toast.error(`${error.message}`, defaultToastSetting);
     action.payload.setInputModal(false);
     yield put(addNoteFailed(error));
   }
@@ -64,10 +64,10 @@ function* updateNote(action) {
       note: action.payload.data,
       id: action.payload.id,
     });
-    toast.success("note updated successfully", defaultToastSetting);
+    toast.success("Note updated successfully", defaultToastSetting);
     yield put(updateNoteSuccess(res));
   } catch (error) {
-    toast.error(`${error}`, defaultToastSetting);
+    toast.error(`${error.message}`, defaultToastSetting);
     yield put(updateNoteFailed(error));
   } finally {
     action.payload.setToggle(null);
@@ -77,10 +77,10 @@ function* updateNote(action) {
 function* deleteNote(action) {
   try {
     const res = yield call(deleteNoteApi, action.payload);
-    toast.success("note deleted successfully", defaultToastSetting);
+    toast.success("Note deleted successfully", defaultToastSetting);
     yield put(deleteNoteSuccess(action.payload));
   } catch (error) {
-    toast.error(`${error}`, defaultToastSetting);
+    toast.error(`${error.message}`, defaultToastSetting);
     yield put(deleteNoteFailed(action.payload));
   }
 }
@@ -90,6 +90,7 @@ function* likeNote(action) {
     const res = yield call(likeNoteApi, action.payload);
     yield put(likeNoteSuccess(res));
   } catch (error) {
+    toast.error(`${error.message}`, defaultToastSetting);
     yield put(likeNoteFailed(error));
   }
 }
@@ -99,6 +100,7 @@ function* unlikeNote(action) {
     const res = yield call(unlikeNoteApi, action.payload);
     yield put(unlikeNoteSuccess(res));
   } catch (error) {
+    toast.error(`${error.message}`, defaultToastSetting);
     yield put(unlikeNoteFailed(error));
   }
 }

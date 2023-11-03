@@ -172,6 +172,7 @@
   filter: none;
 }
 .btn:hover {
+  color: #000;
   background-color: #d4caf4;
 }
 
@@ -261,6 +262,13 @@
   border: none;
   margin-top: 0.1rem;
   cursor: pointer;
+}
+
+/* MODAL STYLES */
+.modalBtnCont {
+  display: grid;
+  place-items: center;
+  margin-top: 0.6rem;
 }
 @media only screen and (max-width: 1024px) {
   .leftContainer {

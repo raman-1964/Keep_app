@@ -58,12 +58,14 @@
   display: flex;
 }
 
-.button_cnt button {
-  display: grid;
-  place-items: center;
-  font-size: 1.2rem;
-  background: none;
+.button_cnt .btn {
   color: black;
+  background: none;
+}
+
+.button_cnt .btn:hover {
+  color: black;
+  background: none;
 }
 .deleteSpinnerClassName div {
   width: 1.3rem;

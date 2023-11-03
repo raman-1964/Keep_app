@@ -137,11 +137,8 @@
   flex-direction: column;
 }
 
-.FolderNavigationContainer button {
-  background: none;
-}
-
 .InputOutputNotes {
+  position: relative;
   border-top: 2px solid white;
   overflow-y: scroll;
 }
@@ -150,22 +147,23 @@
   margin: 0.5rem auto;
 }
 .addnewnotebtn {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  color: #826cdd;
   width: auto;
-  background: none;
-  filter: drop-shadow(5px 5px 5px rgba(183, 82, 230, 0.3));
-  font-size: 1.1rem;
-  margin-left: 2rem;
-  font-weight: bolder;
+}
+.addBtnCont {
+  width: 100%;
+  margin-top: 0.6rem;
+  display: grid;
+  place-items: center;
 }
 .addFilterNoteCont {
   display: flex;
+  position: sticky;
+  top: 0;
+  background: #f5f5f5;
+  z-index: 10;
   justify-content: space-between;
   align-items: center;
-  padding-right: 1rem;
+  padding: 0.4rem 1rem;
 }
 .FilterNoteCont {
   display: flex;

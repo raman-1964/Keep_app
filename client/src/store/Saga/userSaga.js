@@ -33,7 +33,7 @@ function* userInfoRequest(action) {
     const res = yield call(userInfoRequestApi, action.payload);
     yield put(userInfoSuccess(res));
   } catch (error) {
-    toast.error(`${error}`, defaultToastSetting);
+    toast.error(`${error.message}`, defaultToastSetting);
     yield put(userInfoFailed(error));
   }
 }
@@ -43,9 +43,9 @@ function* updateUserInfoRequest(action) {
   try {
     const res = yield call(updateUserInfoRequestApi, updatedData);
     yield put(updateUserInfoSuccess(res));
-    toast.success("profile updated successfully", defaultToastSetting);
+    toast.success("Profile updated successfully", defaultToastSetting);
   } catch (error) {
-    toast.error(`${error}`, defaultToastSetting);
+    toast.error(`${error.message}`, defaultToastSetting);
     yield put(updateUserInfoFailed(error));
   } finally {
     setEditModal(false);
@@ -57,9 +57,9 @@ function* deleteUserRequest(action) {
     const res = yield call(deleteUserRequestApi);
     yield put(deleteUserSuccess(action.payload.navigate));
     window.location.reload();
-    toast.success("your Account deleted successfully", defaultToastSetting);
+    toast.success("Your Account deleted successfully", defaultToastSetting);
   } catch (error) {
-    toast.error(`${error}`, defaultToastSetting);
+    toast.error(`${error.message}`, defaultToastSetting);
     yield put(deleteUserFailed(error));
   } finally {
     action.payload.setDeleteModal(false);
@@ -71,9 +71,9 @@ function* changePasswordRequest(action) {
   try {
     const res = yield call(changePasswordRequestApi, password);
     yield put(changePasswordSuccess(action.payload.navigate));
-    toast.success("your password changed successfully", defaultToastSetting);
+    toast.success("Your password changed successfully", defaultToastSetting);
   } catch (error) {
-    toast.error(`${error}`, defaultToastSetting);
+    toast.error(`${error.message}`, defaultToastSetting);
     yield put(changePasswordFailed(error));
   } finally {
     setModal(false);
@@ -85,7 +85,7 @@ function* follow_unfollow(action) {
     const res = yield call(follow_unfollow_Api, action.payload);
     yield put(followUnfollowSuccess(res));
   } catch (error) {
-    toast.error(`${error}`, defaultToastSetting);
+    toast.error(`${error.message}`, defaultToastSetting);
     yield put(followUnfollowFailed(error));
   }
 }

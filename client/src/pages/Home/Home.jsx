@@ -280,13 +280,15 @@ function Home() {
             value={newFolderName}
             setValue={setNewFolderName}
           />
-          <Button
-            onClick={() => createNewFolder()}
-            spinnerTheme="light"
-            loading={createfolderLoading}
-          >
-            Create
-          </Button>
+          <div className="addBtnCont">
+            <Button
+              onClick={() => createNewFolder()}
+              spinnerTheme="light"
+              loading={createfolderLoading}
+            >
+              Create
+            </Button>
+          </div>
         </div>
       </Modal>
     </>

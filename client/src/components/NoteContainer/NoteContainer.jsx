@@ -41,7 +41,9 @@ const NoteContainer = forwardRef(
       <>
         <div className={styles.card_cont} ref={ref}>
           <div
-            className={`${!isDashboard ? styles.HomeCards : null} ${styles.cards} scrollbar`}
+            className={`${!isDashboard ? styles.HomeCards : null} ${
+              styles.cards
+            } scrollbar`}
             style={{
               background: `${selectedColor.bg}`,
               color: `${selectedColor.txt}`,
@@ -51,11 +53,12 @@ const NoteContainer = forwardRef(
             <p>{textContent}</p>
           </div>
           {!isDashboard ? (
-            <div className={` ${styles.button_cnt }`}>
+            <div className={` ${styles.button_cnt}`}>
               <Button
                 spinnerClassName={styles.deleteSpinnerClassName}
                 loading={deleteNoteLoading.includes(id)}
                 onClick={deletei}
+                className={styles.btn}
               >
                 <Delete />
               </Button>
@@ -68,6 +71,7 @@ const NoteContainer = forwardRef(
                   setToggle(id);
                   setColorCode(selectedColor);
                 }}
+                className={styles.btn}
               >
                 <Edit />
               </Button>
@@ -77,6 +81,7 @@ const NoteContainer = forwardRef(
                     dispatch(unlikeNoteRequest({ _id: id }));
                   else dispatch(likeNoteRequest({ _id: id }));
                 }}
+                className={styles.btn}
               >
                 <Favourite
                   style={{

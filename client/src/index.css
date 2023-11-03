@@ -50,10 +50,7 @@
   width: 30vw;
   max-height: 85vh;
 }
-.modal button:hover {
-  background: rgb(103, 78, 201);
-  color: #fff;
-}
+
 .modalHeading {
   font-size: 1.2rem;
   font-weight: 600;

@@ -16,12 +16,20 @@
 .ysBtn {
   background: none;
   border: 1px solid red;
-  color: black;
+  color: #000;
   padding: 0.4rem 1.5rem;
+  width: auto;
 }
 .noBtn {
   background: none;
   border: 1px solid rgb(13, 183, 30);
-  color: black;
+  color: #000;
   padding: 0.4rem 1.5rem;
+  width: auto;
+}
+
+.ysBtn:hover,
+.noBtn:hover {
+  background: none;
+  color: #000;
 }
