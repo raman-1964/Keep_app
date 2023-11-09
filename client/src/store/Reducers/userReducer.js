@@ -118,7 +118,7 @@ export const userReducer = (state = initialState, action) => {
     case CHANGE_PHOTO_SUCCESS:
       return {
         ...state,
-        // userData: action.payload,
+        userData: { ...state.userData, imgUrl: action.payload },
       };
 
     default:

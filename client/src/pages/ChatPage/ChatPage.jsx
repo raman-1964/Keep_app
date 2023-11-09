@@ -15,6 +15,7 @@ import {
   getAllUnseenMessageRequest,
   seenedMessageRequest,
 } from "../../store/Actions/messageAction";
+import { ReactComponent as Profile } from "../../assets/svg/profile.svg";
 import Search from "./components/Search";
 import { pagination } from "../../utils/pagination";
 import Spinner from "../../components/Spinner/Spinner";
@@ -27,7 +28,6 @@ import { useWindowDimension } from "../../components/CustomHooks/CustomHooks";
 
 const ChatPage = () => {
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
   const { state } = useLocation();
 
@@ -35,7 +35,6 @@ const ChatPage = () => {
   const observer = useRef(null);
 
   const { dimensions } = useWindowDimension();
-
   const [page, setPage] = useState(1);
   const [isTyping, setIsTyping] = useState(null);
   const [selectedChat, setSelectedChat] = useState({
@@ -69,6 +68,12 @@ const ChatPage = () => {
     [isNextPage]
   );
 
+  const imageURL = (users) => {
+    return loggedInUser === users?.[0]?.username
+      ? users?.[1]?.imgUrl
+      : users?.[0]?.imgUrl;
+  };
+
   const getSideBar = () => {
     return (
       <div className="chatHighlitcontNDsearch">
@@ -85,7 +90,12 @@ const ChatPage = () => {
                 }`}
                 onClick={() => setSelectedChat(chat)}
               >
-                <div className="img"></div>
+                {imageURL(chat?.users) ? (
+                  <img className="img" src={imageURL(chat?.users)} />
+                ) : (
+                  <Profile className="img" />
+                )}
+
                 <div className="chatData text-elipsis">
                   <h1>
                     {loggedInUser === chat?.users?.[0]?.username
@@ -163,7 +173,12 @@ const ChatPage = () => {
         loggedInUser === selectedChat?.users?.[0]?.username
           ? selectedChat?.users?.[0]?._id
           : selectedChat?.users?.[1]?._id;
-      setSelectedUser({ id: selectedUserId, name: selectedUsername });
+
+      const imgUrl =
+        loggedInUser === selectedChat?.users?.[0]?.username
+          ? selectedChat?.users?.[1]?.imgUrl
+          : selectedChat?.users?.[0]?.imgUrl;
+      setSelectedUser({ id: selectedUserId, name: selectedUsername, imgUrl });
       selectedChatRef.current = selectedChat;
     }
 

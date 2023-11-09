@@ -8,7 +8,7 @@ export const uploadFile = async (bucket, file, userId) => {
   try {
     const signatureData = await axios.post(
       BASE_URL + "/upload",
-      { folder: bucket, userId },
+      { folder: bucket, public_id: userId },
       { headers: { ...authHeader() } }
     );
 
@@ -22,8 +22,6 @@ export const uploadFile = async (bucket, file, userId) => {
     formData.append("folder", bucket);
     formData.append("public_id", userId);
 
-    // formData.append("upload_preset", "userImage");
-
     const image = await axios.post(CLOUD_URL + "upload", formData);
 
     return image.data.secure_url;
@@ -36,14 +34,15 @@ export const deleteFile = async (userId) => {
   try {
     const signatureData = await axios.post(
       BASE_URL + "/upload",
-      { userId },
+      { public_id: "userImage/" + userId },
       { headers: { ...authHeader() } }
     );
 
     const { timestamp, signature } = signatureData.data;
 
     const response = await axios.post(CLOUD_URL + "destroy", {
-      public_id: userId,
+      public_id: "userImage/" + userId,
+      // folder: "userImage",
       signature,
       api_key,
       timestamp,

@@ -7,8 +7,12 @@ import muteIcon from "../../assets/img/muteIcon.png";
 import camera from "../../assets/img/camera.png";
 import cameraClosed from "../../assets/img/VideoClosedIcon.png";
 import { ReactComponent as Close } from "../../assets/svg/close.svg";
+import { ReactComponent as Profile } from "../../assets/svg/profile.svg";
 import { useNavigate, useParams } from "react-router-dom";
-import { destroyConnection } from "../../store/Actions/socket-call";
+import {
+  destroyConnection,
+  getCallerData,
+} from "../../store/Actions/socket-call";
 import { toast } from "react-toastify";
 import { defaultToastSetting } from "../../utils/constants";
 
@@ -25,7 +29,7 @@ const CallerPage = () => {
   const [callDeclined, setCallDeclined] = useState(false);
   const [waitToJoin, setWaitToJoin] = useState(true);
 
-  const { socket, connection, remoteStream } = useSelector(
+  const { socket, callerData, connection, remoteStream } = useSelector(
     (state) => state.socketCallReducer
   );
 
@@ -64,7 +68,9 @@ const CallerPage = () => {
 
   useEffect(() => {
     if (connection) localRef.current.srcObject = connection.getLocalStream();
+    dispatch(getCallerData(user));
   }, []);
+  console.log(callerData);
 
   useEffect(() => {
     if (socket) {
@@ -129,7 +135,16 @@ const CallerPage = () => {
               autoPlay={true}
               ref={localRef}
             ></audio>
-            <div className={styles.userImg}></div>
+            {callerData?.imgUrl ? (
+              <img
+                className={styles.userImg}
+                src={callerData?.imgUrl}
+                alt="userImg"
+              />
+            ) : (
+              <Profile className={styles.userImg} />
+            )}
+
             <audio
               className={styles.remoteVideo}
               autoPlay={true}

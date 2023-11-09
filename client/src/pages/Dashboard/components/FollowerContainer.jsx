@@ -19,7 +19,7 @@ const FollowerContainer = ({ data, style = null }) => {
         <div key={ind} className={styles.follower}>
           <div className={styles.wrapper}>
             <div className={styles.followerImg}>
-              <img src="" alt="" />
+              <img src={curr?.imgUrl} alt="" />
             </div>
             <div className={styles.userInfo}>
               <p>{curr.username}</p>

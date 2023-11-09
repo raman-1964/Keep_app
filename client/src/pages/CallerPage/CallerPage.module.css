@@ -58,7 +58,6 @@
   align-items: center;
 }
 .userImg {
-  background: red;
   width: 20rem;
   height: 20rem;
   border-radius: 50%;
@@ -81,8 +80,8 @@
   }
 }
 
-@media only screen and (max-width: 320px){
-  .userImg{
+@media only screen and (max-width: 320px) {
+  .userImg {
     width: 13rem;
     height: 13rem;
   }

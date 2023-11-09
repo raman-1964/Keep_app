@@ -307,6 +307,19 @@
   top: 0.2rem;
   right: 0.2rem;
 }
+.viewPhotoCont {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+.viewPhoto {
+  transform: scale(1.2);
+  width: 12rem;
+  height: 12rem;
+  margin: auto;
+  margin: 1rem 0;
+}
 
 @media only screen and (max-width: 1024px) {
   .leftContainer {

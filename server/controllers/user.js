@@ -142,12 +142,27 @@ const follow_unfollow = async (req, res, next) => {
 
 const update_photo = async (req, res, next) => {
   try {
-    const { img } = req.body;
-    console.log(img);
+    const { imgUrl } = req.body;
 
-    const me = await Users.findOne({ _id: req.user_token_details._id }).lean();
+    const me = await Users.findOne({ _id: req.user_token_details._id });
 
-    res.status(200).send(me);
+    me.imgUrl = imgUrl;
+    await me.save();
+
+    res.status(200).send(imgUrl);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const getAnotherUser = async (req, res, next) => {
+  try {
+    const { username } = req.params;
+
+    const user = await Users.findOne({ username });
+    if (!user) return res.status(400).send({ msg: "user not found" });
+
+    res.status(200).send(user);
   } catch (error) {
     console.log(error);
   }
@@ -161,4 +176,5 @@ module.exports = {
   searchUser,
   follow_unfollow,
   update_photo,
+  getAnotherUser,
 };

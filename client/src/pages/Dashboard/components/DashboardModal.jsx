@@ -174,12 +174,18 @@ const FeedbackModal = () => {
   );
 };
 
-const ChangePhotoModal = ({ setModal, setImageURL, userId }) => {
+const ViewPhotoModal = ({ imageURL }) => {
+  return (
+    <div className={styles.viewPhotoCont}>
+      <img className={styles.viewPhoto} src={imageURL} alt="userImage" />
+    </div>
+  );
+};
+
+const ChangePhotoModal = ({ setModal, setImageURL, userId, imageURL }) => {
   const dispatch = useDispatch();
 
   let inputRef = useRef(null);
-
-  const [selectedImage, setSelectedImage] = useState();
   const [uploadLoading, setUploadLoading] = useState(false);
 
   const fileChangeHandler = (files, cb) => {
@@ -194,8 +200,7 @@ const ChangePhotoModal = ({ setModal, setImageURL, userId }) => {
 
     uploadFile(process.env.REACT_APP_UPLOAD_BUCKET, imgFile, userId)
       .then((res) => {
-        console.log(res);
-        setSelectedImage(res);
+        setImageURL(res);
         setImageURL(res);
       })
       .catch((err) => console.log(err))
@@ -205,13 +210,13 @@ const ChangePhotoModal = ({ setModal, setImageURL, userId }) => {
       cb();
     }
   };
+
   const removeImage = () => {
     setUploadLoading(true);
 
-    deleteFile()
+    deleteFile(userId)
       .then((res) => {
-        console.log(res);
-        // setSelectedImage(res);
+        setImageURL("");
       })
       .catch((err) => console.log(err))
       .finally(() => setUploadLoading(false));
@@ -220,20 +225,20 @@ const ChangePhotoModal = ({ setModal, setImageURL, userId }) => {
   return (
     <>
       <h1 className="modalHeading">Change Photo</h1>
-      <div
-        className={styles.dragNdrop}
-        onDragOver={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-        }}
-        onDrop={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          fileChangeHandler(e.dataTransfer.files[0]);
-        }}
-      >
-        {!selectedImage ? (
-          !uploadLoading ? (
+      {!imageURL ? (
+        <div
+          className={styles.dragNdrop}
+          onDragOver={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+          }}
+          onDrop={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            fileChangeHandler(e.dataTransfer.files[0]);
+          }}
+        >
+          {!uploadLoading ? (
             <>
               <TrayArrowUp />
               <p>Drag and drop file here</p>
@@ -262,18 +267,24 @@ const ChangePhotoModal = ({ setModal, setImageURL, userId }) => {
             </>
           ) : (
             <Spinner />
-          )
-        ) : (
-          <div className={styles.profileImageCont}>
-            <Close onClick={() => removeImage()} className={styles.close} />
-            <img src={selectedImage} alt="profile" />
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      ) : (
+        <div className={styles.dragNdrop}>
+          {!uploadLoading ? (
+            <div className={styles.profileImageCont}>
+              <Close onClick={() => removeImage()} className={styles.close} />
+              <img src={imageURL} alt="profile" />
+            </div>
+          ) : (
+            <Spinner />
+          )}
+        </div>
+      )}
 
       <Button
         onClick={() => {
-          dispatch(changePhotoRequest(selectedImage));
+          dispatch(changePhotoRequest(imageURL));
           setModal(false);
         }}
       >
@@ -288,5 +299,6 @@ export {
   FeedbackModal,
   FindPeopleModal,
   ChangePasswordModal,
+  ViewPhotoModal,
   ChangePhotoModal,
 };

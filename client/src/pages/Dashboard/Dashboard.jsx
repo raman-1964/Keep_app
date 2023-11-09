@@ -6,6 +6,7 @@ import { ReactComponent as ChangePasswordIcon } from "../../assets/svg/changePas
 import { ReactComponent as Delete } from "../../assets/svg/delete.svg";
 import { ReactComponent as Logout } from "../../assets/svg/logout.svg";
 import { ReactComponent as UpArrow } from "../../assets/svg/up-arrow.svg";
+import { ReactComponent as Profile } from "../../assets/svg/profile.svg";
 import addPeoplesIcon from "../../assets/img/addPeoples.png";
 import feedbackIcon from "../../assets/img/feedbackIcon.png";
 import HeartIcon from "../../assets/img/heartIcon.png";
@@ -17,6 +18,7 @@ import {
   DashboardEditModal,
   FeedbackModal,
   FindPeopleModal,
+  ViewPhotoModal,
 } from "./components/DashboardModal";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -54,7 +56,8 @@ const Dashboard = () => {
   const [findPeopleModal, setFindPeopleModal] = useState(false);
   const [followingFollowerModal, setFollowingFollowerModal] = useState(false);
   const [changePhotoModal, setChangePhotoModal] = useState(false);
-  const [imageURL, setImageURL] = useState("");
+  const [viewPhotoModal, setViewPhotoModal] = useState(false);
+  const [imageURL, setImageURL] = useState(userData?.imgUrl);
 
   useLayoutEffect(() => {
     dispatch(userInfoRequest());
@@ -153,21 +156,35 @@ const Dashboard = () => {
                 <DropDown
                   left="0"
                   width="12.5rem"
-                  btn={<img src="" alt="" className={styles.userImage} />}
+                  btn={
+                    <>
+                      {userData?.imgUrl ? (
+                        <img
+                          src={userData?.imgUrl}
+                          alt=""
+                          className={styles.userImage}
+                        />
+                      ) : (
+                        <Profile className={styles.userImage} />
+                      )}
+                    </>
+                  }
                   // className={styles.dropdown}
                 >
-                  <div
-                    className={styles.dropDownContent}
-                    // onClick={() => setEditModal(true)}
-                  >
-                    <EditPensil
-                      className={styles.svgIcon}
-                      style={{ height: "1.5rem" }}
-                    />
-                    <h1 className={styles.dropDownContentheading}>
-                      view photo
-                    </h1>
-                  </div>
+                  {userData?.imgUrl ? (
+                    <div
+                      className={styles.dropDownContent}
+                      onClick={() => setViewPhotoModal(true)}
+                    >
+                      <EditPensil
+                        className={styles.svgIcon}
+                        style={{ height: "1.5rem" }}
+                      />
+                      <h1 className={styles.dropDownContentheading}>
+                        view photo
+                      </h1>
+                    </div>
+                  ) : null}
                   <div
                     className={styles.dropDownContent}
                     onClick={() => setChangePhotoModal(true)}
@@ -442,14 +459,23 @@ const Dashboard = () => {
       <Modal
         onClose={() => setChangePhotoModal(false)}
         isModal={changePhotoModal}
-        showCloseButton={imageURL === ""}
+        showCloseButton
         className="modal"
       >
         <ChangePhotoModal
           setModal={setChangePhotoModal}
           setImageURL={setImageURL}
+          imageURL={userData?.imgUrl}
           userId={userData._id}
         />
+      </Modal>
+      <Modal
+        onClose={() => setViewPhotoModal(false)}
+        isModal={viewPhotoModal}
+        showCloseButton
+        className="modal"
+      >
+        <ViewPhotoModal imageURL={userData?.imgUrl} />
       </Modal>
 
       <Modal

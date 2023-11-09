@@ -7,6 +7,7 @@ const {
   changePassword,
   follow_unfollow,
   update_photo,
+  getAnotherUser,
 } = require("../controllers/user");
 const auth = require("../midddleware/auth");
 
@@ -15,6 +16,8 @@ const router = express.Router();
 router.get("/me", auth, getUser);
 
 router.put("/", auth, updateUser);
+
+router.get("/:username", getAnotherUser);
 
 router.put("/change-password", auth, changePassword);
 

@@ -1,5 +1,7 @@
 import {
   ANSWER_CALL,
+  CALLER_DATA,
+  CALLER_DATA_SUCCESS,
   CREATE_SOCKET,
   DECLINE_CALL,
   DESTROY_CONNECTION,
@@ -28,4 +30,10 @@ export const makeRTCconnection = (data) => {
 };
 export const destroyConnection = (data) => {
   return { type: DESTROY_CONNECTION, payload: data };
+};
+export const getCallerData = (data) => {
+  return { type: CALLER_DATA, payload: data };
+};
+export const getCallerDataSuccess = (data) => {
+  return { type: CALLER_DATA_SUCCESS, payload: data };
 };
