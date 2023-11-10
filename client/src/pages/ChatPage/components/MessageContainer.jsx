@@ -16,6 +16,7 @@ import phone from "../../../assets/img/phone.png";
 import camera from "../../../assets/img/camera.png";
 import { ReactComponent as Send } from "../../../assets/svg/send.svg";
 import { ReactComponent as EmptyMsg } from "../../../assets/svg/empty_msg.svg";
+import { ReactComponent as Profile } from "../../../assets/svg/profile.svg";
 import AudioVideo from "../../../components/audioVideo/audioVideo";
 import { useNavigate } from "react-router-dom";
 
@@ -231,7 +232,11 @@ const MessageContainer = ({
                   onClick={() => setSelectedChat({})}
                 />
               ) : null}
-              <div className="img"></div>
+              {selectedUser?.imgUrl ? (
+                <img className="img" src={selectedUser?.imgUrl} />
+              ) : (
+                <Profile className="img" />
+              )}
               <div className="chatData">
                 <h1>{selectedUser.name}</h1>
                 {isTyping && isTyping === selectedChat._id ? (

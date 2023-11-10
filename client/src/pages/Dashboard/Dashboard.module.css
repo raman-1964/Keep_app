@@ -35,9 +35,9 @@
   align-items: center;
 }
 
-.userImage img {
+.userImage {
   width: 5rem;
-  height: 5rem;
+  height: 5rem !important;
   border-radius: 50%;
   border: 2px solid green;
   padding: 0.1rem;
@@ -143,9 +143,6 @@
 .followerImg {
   display: grid;
   place-items: center;
-}
-
-.followerImg img {
   border: 2px solid green;
   width: 2.5rem;
   height: 2.5rem;
@@ -262,6 +259,65 @@
   margin-top: 0.1rem;
   cursor: pointer;
 }
+
+/* FOR IMAGE CHANGE */
+
+.dragNdrop {
+  width: 100%;
+  margin: 1.5rem 0;
+  height: 12rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #567191;
+  background: #fff;
+  border: 2px dashed #826cdd;
+  border-radius: 1rem;
+  gap: 4px;
+}
+.dragNdrop p {
+  text-align: center;
+  font-size: 1.1rem;
+}
+
+.browseFilesBtn {
+  padding: 0;
+  font-weight: 400;
+  font-size: 1.1rem;
+  color: rgb(103, 78, 201);
+  filter: none;
+  background: none;
+  border: none;
+}
+.profileImageCont {
+  position: relative;
+  width: 100%;
+  display: grid;
+  place-items: center;
+  height: 100%;
+}
+.close {
+  position: absolute;
+  cursor: pointer;
+  top: 0.2rem;
+  right: 0.2rem;
+}
+.viewPhotoCont {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+.viewPhoto {
+  transform: scale(1.2);
+  width: 12rem;
+  height: 12rem;
+  margin: auto;
+  margin: 1rem 0;
+}
+
 @media only screen and (max-width: 1024px) {
   .leftContainer {
     width: 40%;

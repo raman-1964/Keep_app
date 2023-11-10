@@ -2,6 +2,7 @@ import {
   CHANGE_PASSWORD_FAILED,
   CHANGE_PASSWORD_REQUEST,
   CHANGE_PASSWORD_SUCCESS,
+  CHANGE_PHOTO_SUCCESS,
   DELETE_USER_FAILED,
   DELETE_USER_REQUEST,
   DELETE_USER_SUCCESS,
@@ -112,6 +113,12 @@ export const userReducer = (state = initialState, action) => {
       return {
         ...state,
         followUnfollowLoading: false,
+      };
+
+    case CHANGE_PHOTO_SUCCESS:
+      return {
+        ...state,
+        userData: { ...state.userData, imgUrl: action.payload },
       };
 
     default:

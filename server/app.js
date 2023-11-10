@@ -11,6 +11,7 @@ const folder_routes = require("./routes/folder");
 const user_routes = require("./routes/user");
 const chat_routes = require("./routes/chat");
 const message_routes = require("./routes/message");
+const upload_routes = require("./routes/upload");
 
 const app = express();
 app.use(express.json());
@@ -24,6 +25,7 @@ app.use("/api/note", note_routes);
 app.use("/api/user", user_routes);
 app.use("/api/chat", chat_routes);
 app.use("/api/message", message_routes);
+app.use("/api/upload", upload_routes);
 
 const server = app.listen(process.env.APP_PORT, () => {
   console.log(`listening to port No. ${process.env.APP_PORT}`);

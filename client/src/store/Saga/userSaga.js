@@ -2,6 +2,7 @@ import { call, put, takeEvery } from "redux-saga/effects";
 import {
   changePasswordFailed,
   changePasswordSuccess,
+  changePhotoSuccess,
   deleteUserFailed,
   deleteUserSuccess,
   followUnfollowFailed,
@@ -13,6 +14,7 @@ import {
 } from "../Actions/userAction";
 import {
   CHANGE_PASSWORD_REQUEST,
+  CHANGE_PHOTO_REQUEST,
   DELETE_USER_REQUEST,
   FOLLOW_UNFOLLOW_REQUEST,
   UPDATE_USER_INFO_REQUEST,
@@ -20,6 +22,7 @@ import {
 } from "../Constants/userConstants";
 import {
   changePasswordRequestApi,
+  changePhotoApi,
   deleteUserRequestApi,
   follow_unfollow_Api,
   updateUserInfoRequestApi,
@@ -90,12 +93,22 @@ function* follow_unfollow(action) {
   }
 }
 
+function* changePhoto(action) {
+  try {
+    const res = yield call(changePhotoApi, action.payload);
+    yield put(changePhotoSuccess(res));
+  } catch (error) {
+    toast.error(`${error}`, defaultToastSetting);
+  }
+}
+
 function* userSaga() {
   yield takeEvery(USER_INFO_REQUEST, userInfoRequest);
   yield takeEvery(DELETE_USER_REQUEST, deleteUserRequest);
   yield takeEvery(UPDATE_USER_INFO_REQUEST, updateUserInfoRequest);
   yield takeEvery(CHANGE_PASSWORD_REQUEST, changePasswordRequest);
   yield takeEvery(FOLLOW_UNFOLLOW_REQUEST, follow_unfollow);
+  yield takeEvery(CHANGE_PHOTO_REQUEST, changePhoto);
 }
 
 export default userSaga;

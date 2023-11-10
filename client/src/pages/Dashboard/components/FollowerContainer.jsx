@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { followUnfollowRequest } from "../../../store/Actions/userAction";
 import { createChatRequest } from "../../../store/Actions/chatAction";
 import { useNavigate } from "react-router-dom";
+import { ReactComponent as Profile } from "../../../assets/svg/profile.svg";
 
 const FollowerContainer = ({ data, style = null }) => {
   const dispatch = useDispatch();
@@ -18,9 +19,11 @@ const FollowerContainer = ({ data, style = null }) => {
       {data?.map((curr, ind) => (
         <div key={ind} className={styles.follower}>
           <div className={styles.wrapper}>
-            <div className={styles.followerImg}>
-              <img src="" alt="" />
-            </div>
+            {curr?.imgUrl ? (
+              <img className={styles.followerImg} src={curr?.imgUrl} alt="" />
+            ) : (
+              <Profile className={styles.followerImg} />
+            )}
             <div className={styles.userInfo}>
               <p>{curr.username}</p>
               <p className={styles.userName}>{curr.name}</p>

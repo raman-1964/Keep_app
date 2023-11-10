@@ -1,16 +1,24 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Input from "../../../widgets/Input/Input";
 import Button from "../../../widgets/Button/Button";
 import { useDispatch, useSelector } from "react-redux";
 import {
   changePasswordRequest,
+  changePhotoRequest,
   updateUserInfoRequest,
 } from "../../../store/Actions/userAction";
 import UserName from "../../../components/userName/UserName";
 import hidePassword from "../../../assets/img/hidePassword.png";
 import showPassword from "../../../assets/img/showPassword.png";
 import SelectAsync from "../../../components/SelectAsync/SelectAsync";
+import { ReactComponent as TrayArrowUp } from "../../../assets/svg/tray_arrow_up.svg";
 import FollowerContainer from "./FollowerContainer";
+import styles from "../Dashboard.module.css";
+import { toast } from "react-toastify";
+import { defaultToastSetting } from "../../../utils/constants";
+import { deleteFile, uploadFile } from "../../../services/upload.services";
+import Spinner from "../../../components/Spinner/Spinner";
+import { ReactComponent as Close } from "../../../assets/svg/close.svg";
 
 const DashboardEditModal = ({ userInfo, setEditModal }) => {
   const dispatch = useDispatch();
@@ -29,7 +37,7 @@ const DashboardEditModal = ({ userInfo, setEditModal }) => {
 
   return (
     <>
-      <h1 className="modalHeading">Edit Profile Information</h1>
+      <h1 className="modalHeading">Update Your Profile</h1>
 
       <UserName value={updatedData} setValue={setUpdatedData} />
       <div className="inputCont">
@@ -166,9 +174,131 @@ const FeedbackModal = () => {
   );
 };
 
+const ViewPhotoModal = ({ imageURL }) => {
+  return (
+    <div className={styles.viewPhotoCont}>
+      <img className={styles.viewPhoto} src={imageURL} alt="userImage" />
+    </div>
+  );
+};
+
+const ChangePhotoModal = ({ setModal, setImageURL, userId, imageURL }) => {
+  const dispatch = useDispatch();
+
+  let inputRef = useRef(null);
+  const [uploadLoading, setUploadLoading] = useState(false);
+
+  const fileChangeHandler = (files, cb) => {
+    const imgFile = files[0];
+
+    const type = imgFile.type.split("/")[0];
+    if (type !== "image") {
+      toast.warning("Only images are allowed", defaultToastSetting);
+      return;
+    }
+    setUploadLoading(true);
+
+    uploadFile(process.env.REACT_APP_UPLOAD_BUCKET, imgFile, userId)
+      .then((res) => {
+        setImageURL(res);
+        setImageURL(res);
+      })
+      .catch((err) => console.log(err))
+      .finally(() => setUploadLoading(false));
+
+    if (cb && typeof cb === "function") {
+      cb();
+    }
+  };
+
+  const removeImage = () => {
+    setUploadLoading(true);
+
+    deleteFile(userId)
+      .then((res) => {
+        setImageURL("");
+      })
+      .catch((err) => console.log(err))
+      .finally(() => setUploadLoading(false));
+  };
+
+  return (
+    <>
+      <h1 className="modalHeading">Change Photo</h1>
+      {!imageURL ? (
+        <div
+          className={styles.dragNdrop}
+          onDragOver={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+          }}
+          onDrop={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            fileChangeHandler(e.dataTransfer.files[0]);
+          }}
+        >
+          {!uploadLoading ? (
+            <>
+              <TrayArrowUp />
+              <p>Drag and drop file here</p>
+              <p>or</p>
+              <Button
+                className={styles.browseFilesBtn}
+                onClick={() => {
+                  inputRef.click();
+                }}
+              >
+                <input
+                  type="file"
+                  style={{ display: "none" }}
+                  onChange={(e) => {
+                    fileChangeHandler(e.target.files, () => {
+                      e.target.value = null;
+                    });
+                  }}
+                  ref={(fileInput) => {
+                    inputRef = fileInput;
+                  }}
+                  accept="image/*"
+                />
+                Browse files
+              </Button>
+            </>
+          ) : (
+            <Spinner />
+          )}
+        </div>
+      ) : (
+        <div className={styles.dragNdrop}>
+          {!uploadLoading ? (
+            <div className={styles.profileImageCont}>
+              <Close onClick={() => removeImage()} className={styles.close} />
+              <img src={imageURL} alt="profile" />
+            </div>
+          ) : (
+            <Spinner />
+          )}
+        </div>
+      )}
+
+      <Button
+        onClick={() => {
+          dispatch(changePhotoRequest(imageURL));
+          setModal(false);
+        }}
+      >
+        Change Photo
+      </Button>
+    </>
+  );
+};
+
 export {
   DashboardEditModal,
   FeedbackModal,
   FindPeopleModal,
   ChangePasswordModal,
+  ViewPhotoModal,
+  ChangePhotoModal,
 };

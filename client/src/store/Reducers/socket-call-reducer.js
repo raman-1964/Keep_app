@@ -6,12 +6,14 @@ import {
   GET_REMOTE_STREAM,
   DESTROY_CONNECTION,
   DECLINE_CALL,
+  CALLER_DATA_SUCCESS,
 } from "../Constants/socket-call";
 import io from "socket.io-client";
 
 const initialState = {
   socket: null,
   callDropDown: { show: false, offer: null, from: null, config: null },
+  callerData: {},
   answerCall: false,
   connection: null,
   remoteStream: null,
@@ -67,6 +69,11 @@ export const socketCallReducer = (state = initialState, action) => {
         answerCall: false,
         connection: null,
         remoteStream: null,
+      };
+    case CALLER_DATA_SUCCESS:
+      return {
+        ...state,
+        callerData: action.payload,
       };
 
     default:
