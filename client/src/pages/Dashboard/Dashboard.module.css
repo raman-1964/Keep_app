@@ -143,9 +143,6 @@
 .followerImg {
   display: grid;
   place-items: center;
-}
-
-.followerImg img {
   border: 2px solid green;
   width: 2.5rem;
   height: 2.5rem;
