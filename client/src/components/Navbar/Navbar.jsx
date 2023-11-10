@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ChatIcon from "../../assets/img/chatIcon.png";
 import DashboardIcon from "../../assets/img/dashboardIcon.png";
@@ -12,6 +12,7 @@ function Navbar() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const [activePage, setActivePage] = useState("/");
   const { unseenMessage } = useSelector((state) => state.messageReducer);
   // const [dark, setDark] = useState(false);
 
@@ -21,21 +22,27 @@ function Navbar() {
   // }, [dark]);
 
   useEffect(() => {
+    setActivePage(window.location.pathname);
     dispatch(getAllUnseenMessageRequest());
   }, []);
 
   return (
     <>
       <nav className={styles.navbar}>
-        <Logo />
+        <Logo setActivePage={setActivePage} />
         <div className={styles.icons}>
           {/* <button className={styles.btn" onClick={() => navigate("/")}>
             <HomeIcon style={{ width: "1.3rem", height: "1.3rem" }} />
             <span>Home</span>
           </button> */}
           <Button
-            className={`${styles.btn} ${styles.msgIcon}`}
-            onClick={() => navigate("/chat")}
+            className={`${styles.btn} ${styles.msgIcon} ${
+              activePage === "/chat" && styles.activePage
+            }`}
+            onClick={() => {
+              setActivePage("/chat");
+              navigate("/chat");
+            }}
           >
             <img
               src={ChatIcon}
@@ -54,8 +61,13 @@ function Navbar() {
             <span>Mode</span>
           </Button>*/}
           <Button
-            className={`${styles.btn} ${styles.msgIcon}`}
-            onClick={() => navigate("/dashboard")}
+            className={`${styles.btn} ${
+              activePage === "/dashboard" && styles.activePage
+            } `}
+            onClick={() => {
+              setActivePage("/dashboard");
+              navigate("/dashboard");
+            }}
           >
             <img
               src={DashboardIcon}

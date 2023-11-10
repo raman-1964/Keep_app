@@ -72,6 +72,7 @@
 }
 
 .login-to-signup {
+  margin-bottom: 0.4rem;
   margin-top: 0.8rem;
   display: flex;
   justify-content: flex-end;
@@ -84,6 +85,14 @@
 .login-to-signup span {
   color: rgb(40, 40, 209);
   cursor: pointer;
+}
+.loginButton {
+  width: 100%;
+  filter: drop-shadow(5px 5px 5px rgba(0, 0, 0, 0.3));
+}
+.loginButton:hover {
+  background: #7050ef;
+  color: #fff;
 }
 
 @media only screen and (max-width: 1018px) {

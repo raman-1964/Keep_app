@@ -45,7 +45,7 @@ function* createFolderRequest(action) {
     yield put(createFolderSuccess(res));
     toast.success("Folder added to Personal successfully", defaultToastSetting);
   } catch (e) {
-    toast.error(`${e}`, defaultToastSetting);
+    toast.error(`${e.message}`, defaultToastSetting);
     yield put(createFolderFailed(e));
   } finally {
     setNewFolderModal(false);
@@ -63,9 +63,9 @@ function* deleteFolderRequest(action) {
       setSelectedFolder({});
       yield put(clearNote());
     }
-    toast.success("folder deleted successfully", defaultToastSetting);
+    toast.success("Folder deleted successfully", defaultToastSetting);
   } catch (e) {
-    toast.error(`${e}`, defaultToastSetting);
+    toast.error(`${e.message}`, defaultToastSetting);
     yield put(deleteFolderFailed(e));
   } finally {
     setDeleteModal(false);
@@ -78,9 +78,9 @@ function* shareFolderRequest(action) {
   try {
     const res = yield call(shareFolderRequestApi, { _id, sharedTo: arr });
     yield put(shareFolderSuccess({ _id, type, res }));
-    toast.success("folder shared successfully", defaultToastSetting);
+    toast.success("Folder shared successfully", defaultToastSetting);
   } catch (e) {
-    toast.error(`${e}`, defaultToastSetting);
+    toast.error(`${e.message}`, defaultToastSetting);
     yield put(shareFolderFailed(e));
   } finally {
     setShareModal(false);
@@ -100,7 +100,7 @@ function* removeSharedFolderRequest(action) {
     }
     toast.success("Successfully removed from folder.", defaultToastSetting);
   } catch (e) {
-    toast.error(`${e}`, defaultToastSetting);
+    toast.error(`${e.message}`, defaultToastSetting);
     yield put(deleteFolderFailed(e));
   } finally {
     setDeleteModal(false);

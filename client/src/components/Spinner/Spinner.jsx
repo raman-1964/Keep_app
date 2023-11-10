@@ -1,12 +1,12 @@
 import React from "react";
-import "./Spinner.css";
+import styles from "./Spinner.module.css";
 
 function Spinner({ className, theme = "dark" }) {
   return (
     <div className="spinnerContainer">
       <div
-        className={`lds-ring ${className ?? ""} ${
-          theme === "light" && "light"
+        className={`${styles.lds_ring} ${className ?? ""} ${
+          theme === "light" && styles.light
         }`}
       >
         <div></div>

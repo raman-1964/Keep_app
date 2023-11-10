@@ -12,6 +12,7 @@ const user_routes = require("./routes/user");
 const chat_routes = require("./routes/chat");
 const message_routes = require("./routes/message");
 const upload_routes = require("./routes/upload");
+const errorMiddleware = require("./midddleware/error");
 
 const app = express();
 app.use(express.json());
@@ -26,6 +27,14 @@ app.use("/api/user", user_routes);
 app.use("/api/chat", chat_routes);
 app.use("/api/message", message_routes);
 app.use("/api/upload", upload_routes);
+
+app.all("*", (req, res, next) => {
+  const err = new Error(`Can't find ${req.originalUrl} on the server`);
+  err.statusCode = 404;
+  next(err);
+});
+
+app.use(errorMiddleware);
 
 const server = app.listen(process.env.APP_PORT, () => {
   console.log(`listening to port No. ${process.env.APP_PORT}`);

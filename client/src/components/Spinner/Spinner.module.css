@@ -3,14 +3,14 @@
   align-self: center;
   transform: translateX(-3px) translateY(-1px);
 }
-.lds-ring {
+.lds_ring {
   display: grid;
   place-items: center;
   position: relative;
   width: 1.8rem;
   height: 1.8rem;
 }
-.lds-ring div {
+.lds_ring div {
   box-sizing: border-box;
   display: block;
   position: absolute;
@@ -19,23 +19,23 @@
   margin: 2px;
   border-radius: 50%;
   border: 2px solid #572bf4;
-  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  animation: lds_ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
   border-color: #572bf4 transparent transparent transparent;
 }
 .light div {
   border-color: #fefefe transparent transparent transparent;
 }
 
-.lds-ring div:nth-child(1) {
+.lds_ring div:nth-child(1) {
   animation-delay: -0.45s;
 }
-.lds-ring div:nth-child(2) {
+.lds_ring div:nth-child(2) {
   animation-delay: -0.3s;
 }
-.lds-ring div:nth-child(3) {
+.lds_ring div:nth-child(3) {
   animation-delay: -0.15s;
 }
-@keyframes lds-ring {
+@keyframes lds_ring {
   0% {
     transform: rotate(0deg);
   }

@@ -16,10 +16,10 @@ import { defaultToastSetting } from "../../utils/constants";
 function* loginRequest(action) {
   try {
     const res = yield call(loginRequestApi, action.payload);
-    toast.success("logged in successfully", defaultToastSetting);
+    toast.success("Logged in successfully", defaultToastSetting);
     yield put(loginSuccess(res));
   } catch (e) {
-    toast.error(`${e}`, defaultToastSetting);
+    toast.error(`${e.message}`, defaultToastSetting);
     yield put(loginFailed(e));
   }
 }
@@ -27,10 +27,10 @@ function* loginRequest(action) {
 function* signupRequest(action) {
   try {
     const res = yield call(signupRequestApi, action.payload);
-    toast.success("registered successfully", defaultToastSetting);
+    toast.success("Registered successfully", defaultToastSetting);
     yield put(signupSuccess(res));
   } catch (e) {
-    toast.error(`${e}`, defaultToastSetting);
+    toast.error(`${e.message}`, defaultToastSetting);
     yield put(signupFailed(e));
   }
 }

@@ -94,7 +94,6 @@ function InputHome({
           <Input
             type="text"
             placeholder="Enter title..."
-            
             autoComplete="off"
             name="title"
             value={note}
@@ -108,8 +107,6 @@ function InputHome({
           <h1>Text</h1>
           <Input
             type="textarea"
-            cols=""
-            rows="8"
             placeholder="Enter text..."
             className="textarea scrollbar"
             name="text"
@@ -120,23 +117,25 @@ function InputHome({
             {error && error["text"] ? error["text"][0] : ""}
           </p>
         </div>
-        {toggle || updateNoteLoading ? (
-          <Button
-            loading={updateNoteLoading}
-            onClick={() => addOrUpdate("update")}
-            spinnerTheme="light"
-          >
-            Update
-          </Button>
-        ) : (
-          <Button
-            loading={addnoteLoading}
-            onClick={() => addOrUpdate("add")}
-            spinnerTheme="light"
-          >
-            Add
-          </Button>
-        )}
+        <div className="addBtnCont">
+          {toggle || updateNoteLoading ? (
+            <Button
+              loading={updateNoteLoading}
+              onClick={() => addOrUpdate("update")}
+              spinnerTheme="light"
+            >
+              Update
+            </Button>
+          ) : (
+            <Button
+              loading={addnoteLoading}
+              onClick={() => addOrUpdate("add")}
+              spinnerTheme="light"
+            >
+              Add
+            </Button>
+          )}
+        </div>
       </div>
     </>
   );

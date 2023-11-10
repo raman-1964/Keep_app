@@ -1,34 +1,31 @@
+const { asyncHandler } = require("../midddleware/asyncHandler");
 const { Chat } = require("../models/chat");
 const { Message } = require("../models/message");
 
-const createMessage = async (req, res, next) => {
-  try {
-    const { chatId, msg } = req.body;
-    if (!chatId) return res.status(400).send("chatId not provided");
+const createMessage = asyncHandler(async (req, res, next) => {
+  const { chatId, msg } = req.body;
+  if (!chatId) return res.status(400).send({ msg: "ChatId not provided" });
 
-    const chat = await Chat.findOne({ _id: chatId });
-    if (!chat) return res.send(400).send("given chatId doesn't exist");
+  const chat = await Chat.findOne({ _id: chatId });
+  if (!chat) return res.send(400).send({ msg: "Given chatId doesn't exist" });
 
-    const newMessage = new Message({
-      sender: req.user_token_details._id,
-      chat: chatId,
-      seenBy: [req.user_token_details._id],
-      msg,
-    });
-    await newMessage.save();
-    await newMessage.populate("sender", "-password");
-    await newMessage.populate("chat", "-password");
-    await newMessage.populate("chat.users", "username");
+  const newMessage = new Message({
+    sender: req.user_token_details._id,
+    chat: chatId,
+    seenBy: [req.user_token_details._id],
+    msg,
+  });
+  await newMessage.save();
+  await newMessage.populate("sender", "-password");
+  await newMessage.populate("chat", "-password");
+  await newMessage.populate("chat.users", "username");
 
-    await Chat.updateOne({ _id: chatId }, { latestMessage: newMessage._id });
+  await Chat.updateOne({ _id: chatId }, { latestMessage: newMessage._id });
 
-    return res.status(201).send(newMessage);
-  } catch (error) {
-    res.status(400).send(error.message);
-  }
-};
+  return res.status(201).send(newMessage);
+});
 
-const getMessages = async (req, res, next) => {
+const getMessages = asyncHandler(async (req, res, next) => {
   const { chatId } = req.query;
   const count = await Message.find({ chat: chatId }).countDocuments();
 
@@ -65,9 +62,9 @@ const getMessages = async (req, res, next) => {
   return res
     .status(200)
     .send({ allMessages: allMessages.reverse(), ...resp_data });
-};
+});
 
-const getUnseenMessages = async (req, res, next) => {
+const getUnseenMessages = asyncHandler(async (req, res, next) => {
   const allChats = await Chat.find({
     users: { $elemMatch: { $eq: req.user_token_details._id } },
   }).lean();
@@ -82,9 +79,9 @@ const getUnseenMessages = async (req, res, next) => {
   }
 
   return res.status(200).send(response);
-};
+});
 
-const seenMessages = async (req, res, next) => {
+const seenMessages = asyncHandler(async (req, res, next) => {
   let { messages_id, seenBy } = req.body;
   if (!seenBy) seenBy = req.user_token_details._id;
 
@@ -94,7 +91,7 @@ const seenMessages = async (req, res, next) => {
   );
 
   return res.status(200).send("message seen by your receiver");
-};
+});
 
 module.exports = {
   createMessage,
