@@ -45,9 +45,6 @@
   font-size: 0.8rem;
   font-weight: 600;
 }
-.activePage {
-  border-bottom: 2px solid #fff;
-}
 
 @media only screen and (max-width: 768px) {
   .icons .btn span {

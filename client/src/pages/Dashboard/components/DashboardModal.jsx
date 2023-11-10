@@ -292,15 +292,16 @@ const ChangePhotoModal = ({ setModal, setImageURL, userId, imageURL }) => {
           )}
         </div>
       )}
-
-      <Button
-        onClick={() => {
-          dispatch(changePhotoRequest(imageURL));
-          setModal(false);
-        }}
-      >
-        Change Photo
-      </Button>
+      <div className={styles.modalBtnCont}>
+        <Button
+          onClick={() => {
+            dispatch(changePhotoRequest(imageURL));
+            setModal(false);
+          }}
+        >
+          Change Photo
+        </Button>
+      </div>
     </>
   );
 };

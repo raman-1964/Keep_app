@@ -117,33 +117,25 @@ const follow_unfollow = asyncHandler(async (req, res, next) => {
   res.status(200).send(me);
 });
 
-const update_photo = async (req, res, next) => {
-  try {
-    const { imgUrl } = req.body;
+const update_photo = asyncHandler(async (req, res, next) => {
+  const { imgUrl } = req.body;
 
-    const me = await Users.findOne({ _id: req.user_token_details._id });
+  const me = await Users.findOne({ _id: req.user_token_details._id });
 
-    me.imgUrl = imgUrl;
-    await me.save();
+  me.imgUrl = imgUrl;
+  await me.save();
 
-    res.status(200).send(imgUrl);
-  } catch (error) {
-    console.log(error);
-  }
-};
+  res.status(200).send(imgUrl);
+});
 
-const getAnotherUser = async (req, res, next) => {
-  try {
-    const { username } = req.params;
+const getAnotherUser = asyncHandler(async (req, res, next) => {
+  const { username } = req.params;
 
-    const user = await Users.findOne({ username });
-    if (!user) return res.status(400).send({ msg: "user not found" });
+  const user = await Users.findOne({ username });
+  if (!user) return res.status(400).send({ msg: "user not found" });
 
-    res.status(200).send(user);
-  } catch (error) {
-    console.log(error);
-  }
-};
+  res.status(200).send(user);
+});
 
 module.exports = {
   getUser,

@@ -36,14 +36,6 @@ app.all("*", (req, res, next) => {
 
 app.use(errorMiddleware);
 
-app.all("*", (req, res, next) => {
-  const err = new Error(`Can't find ${req.originalUrl} on the server`);
-  err.statusCode = 404;
-  next(err);
-});
-
-app.use(errorMiddleware);
-
 const server = app.listen(process.env.APP_PORT, () => {
   console.log(`listening to port No. ${process.env.APP_PORT}`);
 });
