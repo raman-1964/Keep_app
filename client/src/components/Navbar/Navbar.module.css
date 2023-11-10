@@ -12,13 +12,20 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: 1.8rem;
+  gap: 1.2rem;
 }
 .icons .btn {
   background: none;
   display: flex;
   align-items: center;
   gap: 0.2rem;
+  width: auto;
+  border-radius: 0;
+  padding: 0.3rem 0.8rem;
+  color: #000;
+}
+.icons .btn:hover {
+  color: #000;
 }
 .msgIcon {
   position: relative;

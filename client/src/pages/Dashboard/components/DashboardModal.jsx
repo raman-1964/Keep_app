@@ -54,19 +54,23 @@ const DashboardEditModal = ({ userInfo, setEditModal }) => {
         <h1>Edit Bio</h1>
         <Input
           type="textarea"
+          className="textarea scrollbar"
           placeholder="enter your Bio"
           name="bio"
           value={updatedData}
           setValue={setUpdatedData}
         />
       </div>
-      <Button
-        spinnerTheme="light"
-        onClick={() => handleUpdate()}
-        loading={updateUserLoading}
-      >
-        Update
-      </Button>
+
+      <div className={styles.modalBtnCont}>
+        <Button
+          spinnerTheme="light"
+          onClick={() => handleUpdate()}
+          loading={updateUserLoading}
+        >
+          Update
+        </Button>
+      </div>
     </>
   );
 };
@@ -129,13 +133,17 @@ const ChangePasswordModal = ({ setModal }) => {
         />
       </div>
 
-      <Button
-        spinnerTheme="light"
-        loading={changePasswordLoading}
-        onClick={() => dispatch(changePasswordRequest({ password, setModal }))}
-      >
-        Change Password
-      </Button>
+      <div className={styles.modalBtnCont}>
+        <Button
+          spinnerTheme="light"
+          loading={changePasswordLoading}
+          onClick={() =>
+            dispatch(changePasswordRequest({ password, setModal }))
+          }
+        >
+          Change Password
+        </Button>
+      </div>
     </>
   );
 };
@@ -163,13 +171,16 @@ const FeedbackModal = () => {
         <h1>Write your Issues...</h1>
         <Input
           type="textarea"
+          className="textarea scrollbar"
           placeholder="Describe Issues you faced..."
           name="message"
           value={feedback}
           setValue={setFeedback}
         />
       </div>
-      <Button spinnerTheme="light">Submit Feedback</Button>
+      <div className={styles.modalBtnCont}>
+        <Button spinnerTheme="light">Submit Feedback</Button>
+      </div>
     </>
   );
 };
@@ -281,15 +292,16 @@ const ChangePhotoModal = ({ setModal, setImageURL, userId, imageURL }) => {
           )}
         </div>
       )}
-
-      <Button
-        onClick={() => {
-          dispatch(changePhotoRequest(imageURL));
-          setModal(false);
-        }}
-      >
-        Change Photo
-      </Button>
+      <div className={styles.modalBtnCont}>
+        <Button
+          onClick={() => {
+            dispatch(changePhotoRequest(imageURL));
+            setModal(false);
+          }}
+        >
+          Change Photo
+        </Button>
+      </div>
     </>
   );
 };

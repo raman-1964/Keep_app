@@ -243,11 +243,13 @@ const Dashboard = () => {
               {dimensions.width > 768 ? (
                 <div className={styles.followersListContainer}>
                   <p>{toggle}</p>
-                  {toggle === "Following" ? (
-                    <FollowerContainer data={userData?.following} />
-                  ) : (
-                    <FollowerContainer data={userData?.followers} />
-                  )}
+                  <FollowerContainer
+                    data={
+                      toggle === "Following"
+                        ? userData?.following
+                        : userData?.followers
+                    }
+                  />
                 </div>
               ) : null}
             </div>
@@ -485,17 +487,12 @@ const Dashboard = () => {
         className="modal"
       >
         <h1 className="modalHeading">{toggle}</h1>
-        {toggle === "Following" ? (
-          <FollowerContainer
-            style={{ maxHeight: "66vh" }}
-            data={userData?.following}
-          />
-        ) : (
-          <FollowerContainer
-            style={{ maxHeight: "66vh" }}
-            data={userData?.followers}
-          />
-        )}
+        <FollowerContainer
+          style={{ maxHeight: "66vh" }}
+          data={
+            toggle === "Following" ? userData?.following : userData?.followers
+          }
+        />
       </Modal>
     </>
   );

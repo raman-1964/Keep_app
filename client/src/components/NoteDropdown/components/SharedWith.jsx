@@ -95,13 +95,15 @@ const SharedWith = ({
       {sharedTo.length ? sharePersonList(sharedTo, "to") : null}
       {willShared.length ? sharePersonList(willShared) : null}
 
-      <Button
-        spinnerTheme="light"
-        loading={shareFolderLoading}
-        onClick={() => shareBtn()}
-      >
-        Share
-      </Button>
+      <div className={styles.btnCont}>
+        <Button
+          spinnerTheme="light"
+          loading={shareFolderLoading}
+          onClick={() => shareBtn()}
+        >
+          Share
+        </Button>
+      </div>
     </div>
   );
 };

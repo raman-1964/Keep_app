@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ChatIcon from "../../assets/img/chatIcon.png";
 import DashboardIcon from "../../assets/img/dashboardIcon.png";
@@ -34,7 +34,7 @@ function Navbar() {
             <span>Home</span>
           </button> */}
           <Button
-            className={`${styles.btn} ${styles.msgIcon}`}
+            className={`${styles.btn} ${styles.msgIcon} `}
             onClick={() => navigate("/chat")}
           >
             <img
@@ -54,7 +54,7 @@ function Navbar() {
             <span>Mode</span>
           </Button>*/}
           <Button
-            className={`${styles.btn} ${styles.msgIcon}`}
+            className={`${styles.btn} `}
             onClick={() => navigate("/dashboard")}
           >
             <img
