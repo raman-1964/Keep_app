@@ -2,6 +2,7 @@
     width: 100%;
     height: 100vh;
     /* background-color: rgb(24, 89, 149); */
+    overflow: scroll;
 }
 
 .navbar{
@@ -111,4 +112,14 @@
 }
 .featureContainer h1{
     text-align: center;
+}
+
+
+
+
+
+.developerMessegeContainer{
+    background-color: #826cdd;
+    height: 15rem;
+    width: 100%;
 }

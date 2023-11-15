@@ -11,6 +11,7 @@ import Button from "../../widgets/Button/Button";
 function Navbar() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  // const location  = use
 
   const { unseenMessage } = useSelector((state) => state.messageReducer);
   // const [dark, setDark] = useState(false);
