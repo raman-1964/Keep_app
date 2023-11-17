@@ -40,7 +40,7 @@ function SignUp({ setLoginToggle }) {
   };
 
   useEffect(() => {
-    if (userToken) navigate("/");
+    if (userToken) navigate("/home");
   }, [userToken]);
 
   // console.log(suggestedUserName);

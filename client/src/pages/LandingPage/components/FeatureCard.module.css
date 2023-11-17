@@ -1,13 +1,22 @@
 .Card{
-    background-color: #e7e3f8;
+    background-color: #f6f6f6;
     display: inline-block;
     height: 20rem;
-    width: 20rem;
+    max-width: 20rem;
+    width: 92%;
     margin: 0.5rem;
     border-radius: 0.3rem;
     overflow: hidden;
     padding: 0.8rem;
+    border-bottom:4px solid #9e8ee9;
+    filter: drop-shadow(1px 1px 3px rgb(199, 199, 199));
+    outline: 1px dotted #826cdd;
 }
+.Card:hover{
+    transform: scale(1.05);
+    transition: all 0.3s;
+}
+
 .featureImg{
     display: grid;
     place-items: center;
@@ -16,7 +25,7 @@
 
 }
 .featureImg img{
-   outline: 4px solid grey;
+   outline: 4px solid 9e8ee9;
    border: 6px solid rgb(57 57 57);
    height: 4rem;
    width: 4rem;
@@ -27,6 +36,7 @@
 .cardHeading{
     text-align: center;
     margin: 0.2rem 0 1rem 0;
+    font-weight:500;
 
 }
 .cardPara{

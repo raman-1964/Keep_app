@@ -1,0 +1,43 @@
+.developerCard{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* gap: 1rem; */
+    margin: 1rem;
+    padding: 1rem;
+    background-color: #e7e3f8;
+    flex-shrink: 0;
+    width: 20rem;
+    border: 1px solid #826cdd;
+    border-radius: 0.3rem;
+}
+.developerImg{
+    height: 8rem;
+    width: 8rem;
+    border-radius:50%;
+    border: 3px solid white;
+    outline: 3px solid #826cdd;
+    overflow: hidden;
+
+}
+
+.developerImg img{
+    height: 9rem;
+    
+}
+
+.name{
+    margin-top: 1rem ;
+}
+
+.proffesion{
+    margin-bottom: 1rem;
+}
+/* .messege{
+    font-size: 1.2rem;
+    width: 80%;
+    margin:2rem 0;
+    color: #667085;
+    font-style: italic;
+} */
