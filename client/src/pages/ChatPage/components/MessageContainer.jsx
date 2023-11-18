@@ -8,6 +8,7 @@ import {
 import {
   makeRTCconnection,
   getRemoteStream,
+  nothingDoneTocall,
 } from "../../../store/Actions/socket-call";
 import Input from "../../../widgets/Input/Input";
 import Spinner from "../../../components/Spinner/Spinner";
@@ -48,7 +49,9 @@ const MessageContainer = ({
     isNextPage,
     isNextPageLoading,
   } = useSelector((state) => state.messageReducer);
-  const { socket } = useSelector((state) => state.socketCallReducer);
+  const { socket, waitToJoin } = useSelector(
+    (state) => state.socketCallReducer
+  );
 
   const createMessage = (str, e) => {
     if (str === "send") {
@@ -170,7 +173,17 @@ const MessageContainer = ({
     await _call.createOffer();
 
     dispatch(makeRTCconnection(_call));
+    // setTimeout(() => {
+    //   console.log(waitToJoin);
+    //   if (waitToJoin === "ini") {
+    //     dispatch(nothingDoneTocall());
+    //   }
+    // }, 13000);
     navigate(`/call/${selectedUser.name}`);
+
+    await new Promise((resolve) => setTimeout(resolve, 13000));
+    console.log(waitToJoin);
+    if (waitToJoin === "ini") dispatch(nothingDoneTocall());
   };
 
   useEffect(() => {

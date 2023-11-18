@@ -12,6 +12,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import {
   destroyConnection,
   getCallerData,
+  handleAnswerCall,
+  handleCallAgain,
+  handleDeclineCall,
+  nothingDoneTocall,
 } from "../../store/Actions/socket-call";
 import { toast } from "react-toastify";
 import { defaultToastSetting } from "../../utils/constants";
@@ -27,11 +31,16 @@ const CallerPage = () => {
   const [audioTrack, setAudioTrack] = useState(true);
   const [videoTrack, setVideoTrack] = useState(true);
   const [callDeclined, setCallDeclined] = useState(false);
-  const [waitToJoin, setWaitToJoin] = useState(true);
+  // const [waitToJoin, setWaitToJoin] = useState("started");
 
-  const { socket, callerData, connection, remoteStream } = useSelector(
-    (state) => state.socketCallReducer
-  );
+  const {
+    socket,
+    callerData,
+    callDropDown,
+    connection,
+    remoteStream,
+    waitToJoin,
+  } = useSelector((state) => state.socketCallReducer);
 
   const toggleCamera = () => {
     let vidTrack = localRef.current.srcObject
@@ -70,19 +79,27 @@ const CallerPage = () => {
     if (connection) localRef.current.srcObject = connection.getLocalStream();
     dispatch(getCallerData(user));
   }, []);
-  console.log(callerData);
+
+  useEffect(() => {
+    // console.log(waitToJoin);
+    if (waitToJoin === "") {
+      socket.emit("nothing-done-to-call", { room: user });
+      setCallDeclined(true);
+      toast.warning("didn't pick the call", defaultToastSetting);
+    }
+  }, [waitToJoin]);
 
   useEffect(() => {
     if (socket) {
       async function recieveAnswer(answer) {
-        setWaitToJoin(false);
+        dispatch(handleAnswerCall());
         if (connection) await connection.answeRecieved(answer);
       }
 
       function offerDeclined() {
         toast.warning("call declined", defaultToastSetting);
-        setWaitToJoin(false);
         setCallDeclined(true);
+        dispatch(handleDeclineCall());
       }
 
       function callCuted() {
@@ -103,6 +120,8 @@ const CallerPage = () => {
       };
     }
   }, [socket]);
+
+  console.log(waitToJoin);
 
   useEffect(() => {
     if (remoteRef.current) remoteRef.current.srcObject = remoteStream;
@@ -186,9 +205,16 @@ const CallerPage = () => {
               <img
                 src={phone}
                 className={` ${styles.icon}`}
-                onClick={() => {
+                onClick={async () => {
+                  dispatch(handleCallAgain());
+                  // setTimeout(() => {
+                  //   if (waitToJoin === "ini") dispatch(nothingDoneTocall());
+                  // }, 13000);
                   setCallDeclined(false);
                   connection.callAgain();
+
+                  await new Promise((resolve) => setTimeout(resolve, 13000));
+                  if (waitToJoin === "ini") dispatch(nothingDoneTocall());
                 }}
               />
               <p>call again</p>
