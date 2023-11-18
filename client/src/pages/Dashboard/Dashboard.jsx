@@ -34,8 +34,10 @@ import { getLikeNoteRequest } from "../../store/Actions/noteAction";
 import { folderType } from "../../utils/constants";
 import NoteContainer from "../../components/NoteContainer/NoteContainer";
 import { useWindowDimension } from "../../components/CustomHooks/CustomHooks";
+import { useNavigate } from "react-router";
 
 const Dashboard = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const { userDataLoading, userData, deleteUserLoading } = useSelector(
@@ -145,7 +147,10 @@ const Dashboard = () => {
                     </div>
                     <div
                       className={styles.dropDownContent}
-                      onClick={() => dispatch(logoutRequest())}
+                      onClick={() => {
+                        navigate("/");
+                        dispatch(logoutRequest());
+                      }}
                     >
                       <Logout height="1rem" className={styles.svgIcon} />
                       <h1 className={styles.dropDownContentheading}>Logout</h1>
@@ -295,7 +300,10 @@ const Dashboard = () => {
                   >
                     <div
                       className={styles.dropDownContent}
-                      onClick={() => dispatch(logoutRequest())}
+                      onClick={() => {
+                        navigate("/");
+                        dispatch(logoutRequest());
+                      }}
                     >
                       <Logout height="1rem" className={styles.svgIcon} />
                       <h1 className={styles.dropDownContentheading}>Logout</h1>

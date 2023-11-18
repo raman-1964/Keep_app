@@ -1,18 +1,18 @@
 import React, { useState } from "react";
-import Logo from "../../components/Logo/Logo";
+import { useNavigate } from "react-router";
 import styles from "./LandingPage.module.css";
+import Logo from "../../components/Logo/Logo";
 import MacNotesView from "../../assets/img/LapNotes.png";
 import MacChatView from "../../assets/img/LapChat.png";
 import MobNotesView from "../../assets/img/MobNotes.png";
 import MobChatView from "../../assets/img/MobChat.png";
 import FeatureCard from "./components/FeatureCard";
 import { FeatureList } from "./components/data";
-
 import DeveloperCard from "./components/DeveloperCard";
 import { Developers } from "./components/data";
-import Footer from "./components/Footer";
 
 const LandingPage = () => {
+  const navigate = useNavigate();
   return (
     <>
       <div className={styles.container}>
@@ -26,19 +26,17 @@ const LandingPage = () => {
               and loved ones.
             </p>
             <div className={styles.btnCont}>
-              <button className={styles.btn}>Get Started!</button>
-              <button className={`${styles.btn} ${styles.signInbtn}`}>
-                Sign In
+              <button
+                className={styles.btn}
+                onClick={() => navigate("/login-signup")}
+              >
+                Get Started !
               </button>
             </div>
           </div>
           <div className={styles.rightContainer}>
-            {/* <div className={styles.macframeCont}> */}
             <img src={MacNotesView} alt="" className={styles.macframeCont} />
-            {/* </div> */}
-            {/* <div className={styles.mobileframeCont}> */}
             <img src={MobNotesView} className={styles.mobileframeCont} alt="" />
-            {/* </div> */}
           </div>
         </div>
 
@@ -51,28 +49,19 @@ const LandingPage = () => {
               Ride the waves of instant connection, <br /> where every message
               tells a story.
             </p>
-            <div className={styles.btnCont}>
-              <button className={styles.btn}>Get Started!</button>
-              <button className={`${styles.btn} ${styles.signInbtn}`}>
-                Sign In
-              </button>
-            </div>
           </div>
           <div className={styles.rightContainer}>
-            {/* <div className={styles.macframeCont}> */}
             <img src={MacChatView} alt="" className={styles.macframeCont} />
-            {/* </div> */}
-            {/* <div className={styles.mobileframeCont}> */}
             <img src={MobChatView} className={styles.mobileframeCont} alt="" />
-            {/* </div> */}
           </div>
         </div>
 
-        <div className={styles.featureContainer}>
+        <div className={styles.cardContainer}>
           <h1>Features</h1>
-          <div className={styles.cardContainer}>
+          <div className={styles.featureCardContainer}>
             {FeatureList.map((item, index) => (
               <FeatureCard
+                key={index}
                 src={item.src}
                 heading={item.heading}
                 txt={item.txt}
@@ -80,18 +69,24 @@ const LandingPage = () => {
             ))}
           </div>
         </div>
-        <div className={styles.developerMessegeContainer}>
+
+        <div className={`${styles.cardContainer} ${styles.mt5}`}>
           <h1>Developers</h1>
-          <div className={styles.developerListCont}>
+          <div className={styles.developerCardContainer}>
             {Developers.map((item, index) => (
-              <DeveloperCard img={item.img} name={item.name} msg={item.msg} linkedin={item.linkedin} />
+              <DeveloperCard
+                key={index}
+                img={item.img}
+                name={item.name}
+                linkedin={item.linkedin}
+                role={item.role}
+              />
             ))}
           </div>
         </div>
 
-
         <div className={styles.whyguftagu}>
-          <h1>Why GUFTAGU?</h1>
+          <h1>Why Guftagu?</h1>
           <div className={styles.boxCont}>
             <div className={styles.box}>
               <h3>Simplicity meets Efficiency</h3>
@@ -123,16 +118,16 @@ const LandingPage = () => {
             </div>
           </div>
         </div>
+
         <div className={styles.sloganCont}>
           <h1>
             Connect, Chat, and Keep Notes in one convenient platform. Experience
             a new level of productivity and organization.
           </h1>
-          <p>
+          <div onClick={() => navigate("/login-signup")}>
             Join the <Logo /> Community Today!
-          </p>
+          </div>
         </div>
-        <Footer />
       </div>
     </>
   );

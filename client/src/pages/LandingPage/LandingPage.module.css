@@ -23,14 +23,14 @@
 
 .cont2 .leftContainer {
   padding-right: 3rem;
-  padding-left: 0rem;
+  padding-left: 3rem;
 }
 
 .leftContainer {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   flex: 1;
   gap: 1rem;
   padding-left: 6rem;
@@ -38,10 +38,12 @@
 
 .leftContainer h1 {
   font-size: 2.6rem;
+  text-align: center;
 }
 
 .leftContainer p {
   color: #aea0ed;
+  text-align: center;
 }
 
 .btnCont {
@@ -52,22 +54,16 @@
   border-radius: 0.4rem;
   font-size: 1.5rem;
   background-color: #826cdd;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 2rem;
   margin-right: 1rem;
   border-style: none;
   outline: none;
   color: #fff;
   font-weight: lighter;
-}
-.signInbtn {
-  background-color: #fff !important;
-  color: #000 !important;
-  border: 1px solid #826cdd !important;
+  cursor: pointer;
 }
 
 .btn:hover {
-  outline: 1px solid #3d21ac !important;
-
   transform: scale(1.02);
   transition: all 0.3s;
 }
@@ -93,42 +89,32 @@
   height: 64%;
 }
 
-/* ----------------------------------------------- */
-.featureContainer {
-  /* height: 90vh; */
-  /* max-height: 40rem; */
+.cardContainer {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
 }
-.featureContainer h1 {
+.cardContainer h1 {
   font-size: 2.6rem;
-  text-align: center;
   margin: 1rem 0;
 }
 
-.cardContainer {
+.featureCardContainer {
   display: grid;
   place-items: center;
   grid-template-columns: auto auto auto;
   max-width: 60rem;
-
   row-gap: 1rem;
 }
-.developerMessegeContainer {
+
+.mt5 {
   margin-top: 5rem;
 }
-.developerMessegeContainer h1 {
-  font-size: 2.6rem;
-  text-align: center;
-}
 
-.developerListCont {
+.developerCardContainer {
   display: flex;
-  flex-wrap: nowrap;
-  overflow: scroll;
-  width: 100%;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .whyguftagu {
@@ -159,14 +145,13 @@
   align-self: flex-start;
   gap: 0.5rem;
 }
-.box:hover{
+.box:hover {
   transform: scale(1.02);
   transition: all 0.3s;
 }
 
-
 .sloganCont {
-  margin-top: 5rem;
+  margin: 5rem 0rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -178,7 +163,7 @@
   width: 80%;
 }
 
-.sloganCont p {
+.sloganCont div {
   text-align: center;
   font-weight: lighter;
   margin-top: 2rem;
@@ -209,7 +194,7 @@
     padding-left: 3vw;
     gap: 0;
   }
-  .cardContainer {
+  .featureCardContainer {
     grid-template-columns: auto auto auto;
   }
   .box {
@@ -223,9 +208,6 @@
     align-items: center;
     justify-content: flex-start;
   }
-  /* .leftContainer{
-        
-    } */
 
   .rightContainer {
     margin: 1rem;
@@ -244,13 +226,20 @@
     width: 26%;
   }
 
-  .cardContainer {
+  .featureCardContainer {
     grid-template-columns: auto auto;
   }
 }
 
 @media only screen and (max-width: 535px) {
-  .cardContainer {
+  .featureCardContainer {
     grid-template-columns: auto;
+  }
+  .sloganCont h1 {
+    font-size: 1.5rem;
+  }
+  .cardContainer h1,
+  .whyguftagu h1 {
+    font-size: 2rem;
   }
 }

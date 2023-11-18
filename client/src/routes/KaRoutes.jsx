@@ -15,14 +15,14 @@ function KaRoutes() {
     if (userToken) return true;
     return false;
   };
-//checkAuthentication() ? 
-  return checkAuthentication()? (
+  //checkAuthentication() ?
+  return checkAuthentication() ? (
     <>
       <Navbar />
 
       <div>
         <Routes>
-        <Route path="/" element={<LandingPage />} />
+          <Route path="/" element={<LandingPage />} />
           <Route path="/home" element={<Home />} />
           <Route path="/chat" element={<ChatPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
@@ -31,9 +31,15 @@ function KaRoutes() {
         </Routes>
       </div>
     </>
-  ) 
-  : (
-    <Navigate to="/login-signup" />
+  ) : (
+    <>
+      <Navbar />
+      <div>
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+        </Routes>
+      </div>
+    </>
   );
 }
 
