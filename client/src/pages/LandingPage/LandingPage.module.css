@@ -1,125 +1,256 @@
-.container{
-    width: 100%;
-    height: 100vh;
-    /* background-color: rgb(24, 89, 149); */
-    overflow: scroll;
+.container {
+  width: 100%;
+  height: calc(100vh - 3.5rem);
+  overflow: scroll;
 }
 
-.navbar{
-    /* width: 100%; */
-    display: flex;
-    justify-content: space-between;
+.AnimationContainer {
+  display: flex;
+  height: 88vh;
+  max-height: 40rem;
+  min-height: 30rem;
+}
+.cont2 {
+  flex-direction: row-reverse;
+}
+.cont2 .mobileframeCont {
+  left: 2rem;
+}
+
+.cont2 .rightContainer {
+  padding: 0 0 0 1rem;
+}
+
+.cont2 .leftContainer {
+  padding-right: 3rem;
+  padding-left: 0rem;
+}
+
+.leftContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  flex: 1;
+  gap: 1rem;
+  padding-left: 6rem;
+}
+
+.leftContainer h1 {
+  font-size: 2.6rem;
+}
+
+.leftContainer p {
+  color: #aea0ed;
+}
+
+.btnCont {
+  margin: 2rem 0rem;
+}
+
+.btnCont .btn {
+  border-radius: 0.4rem;
+  font-size: 1.5rem;
+  background-color: #826cdd;
+  padding: 0.5rem 1rem;
+  margin-right: 1rem;
+  border-style: none;
+  outline: none;
+  color: #fff;
+  font-weight: lighter;
+}
+.signInbtn {
+  background-color: #fff !important;
+  color: #000 !important;
+  border: 1px solid #826cdd !important;
+}
+
+.btn:hover {
+  outline: 1px solid #3d21ac !important;
+
+  transform: scale(1.02);
+  transition: all 0.3s;
+}
+
+.rightContainer {
+  position: relative;
+  width: 60%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-right: 1rem;
+}
+
+.macframeCont {
+  width: 100%;
+  max-width: 45rem;
+}
+
+.mobileframeCont {
+  position: absolute;
+  top: 12rem;
+  right: 2rem;
+  height: 64%;
+}
+
+/* ----------------------------------------------- */
+.featureContainer {
+  /* height: 90vh; */
+  /* max-height: 40rem; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.featureContainer h1 {
+  font-size: 2.6rem;
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.cardContainer {
+  display: grid;
+  place-items: center;
+  grid-template-columns: auto auto auto;
+  max-width: 60rem;
+
+  row-gap: 1rem;
+}
+.developerMessegeContainer {
+  margin-top: 5rem;
+}
+.developerMessegeContainer h1 {
+  font-size: 2.6rem;
+  text-align: center;
+}
+
+.developerListCont {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow: scroll;
+  width: 100%;
+}
+
+.whyguftagu {
+  margin-top: 5rem;
+}
+
+.whyguftagu h1 {
+  font-size: 2.6rem;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.boxCont {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.box {
+  border-left: 4px solid #b0a3eb;
+  max-width: 20rem;
+  margin: 1rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-self: flex-start;
+  gap: 0.5rem;
+}
+.box:hover{
+  transform: scale(1.02);
+  transition: all 0.3s;
+}
+
+
+.sloganCont {
+  margin-top: 5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.sloganCont h1 {
+  text-align: center;
+  font-weight: lighter;
+  color: dimgray;
+  width: 80%;
+}
+
+.sloganCont p {
+  text-align: center;
+  font-weight: lighter;
+  margin-top: 2rem;
+  color: green;
+}
+
+@media only screen and (max-width: 1440px) {
+  .box {
+    max-width: 18rem;
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  .cont1 .leftContainer {
+    padding-left: 3vw;
+    gap: 0;
+  }
+  .leftContainer h1 {
+    font-size: 2.2rem;
+  }
+  .mobileframeCont {
+    width: 30%;
+    height: auto;
+  }
+
+  .cont2 .leftContainer {
+    padding-right: 1rem;
+    padding-left: 3vw;
+    gap: 0;
+  }
+  .cardContainer {
+    grid-template-columns: auto auto auto;
+  }
+  .box {
+    max-width: 20rem;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .AnimationContainer {
+    flex-direction: column-reverse;
     align-items: center;
-    /* background-color: aqua; */
-    padding:0rem 1rem;
+    justify-content: flex-start;
+  }
+  /* .leftContainer{
+        
+    } */
 
-}
-.AnimationContainer{
-    display: flex;
-    /* background-color: bisque; */
-    height: 90vh;
-    max-height: 40rem;
-    padding: 0rem 0.5rem 0 2rem;
-}
-
-.leftContainer{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
+  .rightContainer {
+    margin: 1rem;
     flex: 1;
-    gap: 1rem;
-}
-
-.leftContainer h1{
-    font-size: 2.6rem;
-}
-/* .leftContainer .textSlogan:before{
-    content:"";
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-color: green;
-} */
-
-.leftContainer p{
-    color: #aea0ed;
-}
-
-.btnCont{
-    margin: 2rem 0rem;
-}
-
-.btnCont .btn{
-    border-radius: 0.4rem;
-    font-size: 1.5rem;
-    background-color: #826cdd;
-    padding: 0.5rem 1rem;
-    margin-right: 1rem;
-    border-style: none;
-    outline: none;
-    color: #fff;
-    font-weight: lighter;
-}
-.signInbtn{
-    background-color: #fff !important;
-    color: #000 !important;
-    border: 1px solid #826cdd !important;
-
-}
-
-.btn:hover{
-    outline:1px solid #3d21ac !important;
-}
-
-.rightContainer{
-    position: relative;
-   /* flex: 1; */
-   width: 60%;
-   /* border: 1px solid green; */
-
-}
-
-.macframeCont{
-    /* width: 100%; */
-    /* height: 30rem; */
-    position: absolute;
+    width: 80%;
+  }
+  .cont1 .mobileframeCont {
     top: 3rem;
     right: 0;
-    z-index: -2;
+    width: 26%;
+  }
 
+  .cont2 .mobileframeCont {
+    top: 3rem;
+    left: 0rem;
+    width: 26%;
+  }
+
+  .cardContainer {
+    grid-template-columns: auto auto;
+  }
 }
 
-.macframeCont img{
-    /* width: 100%; */
-    width: 45rem;
-}
-
-.mobileframeCont{
-    position: absolute;
-    top: 7rem;
-    right: 1rem;
-}
-.mobileframeCont img{
-    width: 15rem;
-}
-
-
-.featureContainer{
-    height: 90vh;
-    max-height: 40rem;
-    /* background-color: rgb(253, 253, 253); */
-}
-.featureContainer h1{
-    text-align: center;
-}
-
-
-
-
-
-.developerMessegeContainer{
-    background-color: #826cdd;
-    height: 15rem;
-    width: 100%;
+@media only screen and (max-width: 535px) {
+  .cardContainer {
+    grid-template-columns: auto;
+  }
 }

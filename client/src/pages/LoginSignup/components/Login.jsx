@@ -36,7 +36,7 @@ function Login({ setLoginToggle }) {
   };
 
   useEffect(() => {
-    if (userToken) navigate("/");
+    if (userToken) navigate("/home");
   }, [userToken]);
 
   return (
