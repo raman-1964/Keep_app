@@ -54,10 +54,7 @@
 }
 
 .landingPageNavbtn {
-  font-size: 1rem !important;
-  padding: 0.5rem 0.7rem;
-  border-radius: 0.3rem;
-  background-color: #816cdd;
+  width: auto;
 }
 
 @media only screen and (max-width: 768px) {

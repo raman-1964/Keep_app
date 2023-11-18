@@ -19,7 +19,7 @@ function Navbar() {
   }, []);
 
   const loggedInUser = localStorage.getItem("Raman-Keep-Username");
-  
+
   return (
     <>
       {loggedInUser ? (
@@ -27,7 +27,7 @@ function Navbar() {
           <Logo />
 
           <div className={styles.icons}>
-          <Button
+            <Button
               className={`${styles.btn} ${styles.msgIcon}`}
               onClick={() => navigate("/home")}
             >
@@ -68,10 +68,10 @@ function Navbar() {
           <Logo />
           <div className={styles.icons}>
             <Button
-              className={`${styles.btn} ${styles.msgIcon}`}
+              className={`${styles.landingPageNavbtn} `}
               onClick={() => navigate("/login-signup")}
             >
-              <span className={styles.landingPageNavbtn}>Login / Signup</span>
+              Login / Signup
             </Button>
           </div>
         </nav>

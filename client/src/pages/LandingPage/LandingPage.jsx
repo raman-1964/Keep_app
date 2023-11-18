@@ -15,7 +15,7 @@ const LandingPage = () => {
   const navigate = useNavigate();
   return (
     <>
-      <div className={styles.container}>
+      <div className={`${styles.container} scrollbar`}>
         <div className={`${styles.AnimationContainer} ${styles.cont1}`}>
           <div className={styles.leftContainer}>
             <h1 className={styles.textSlogan}>
