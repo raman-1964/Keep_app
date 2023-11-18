@@ -1,0 +1,48 @@
+.developerCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  margin: 1rem 0.5rem;
+  width: 30%;
+  max-width: 18rem;
+  border-radius: 0.3rem;
+  border: 1px dotted #826cdd;
+  border-bottom: 4px solid #9e8ee9;
+  filter: drop-shadow(1px 1px 3px rgb(199, 199, 199));
+}
+.developerCard:hover {
+  transform: scale(1.05);
+  transition: all 0.3s;
+}
+.developerImg {
+  height: 8rem;
+  width: 8rem;
+  border-radius: 50%;
+  border: 3px solid white;
+  outline: 3px solid #826cdd;
+  overflow: hidden;
+}
+
+.developerImg img {
+  height: 9rem;
+}
+
+.name {
+  margin-top: 1rem;
+}
+
+.proffesion {
+  margin-bottom: 1rem;
+}
+
+@media only screen and (max-width: 768px) {
+  .developerCard {
+    width: 45%;
+  }
+}
+@media only screen and (max-width: 535px) {
+  .developerCard {
+    width: 90%;
+  }
+}

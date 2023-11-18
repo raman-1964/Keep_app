@@ -7,6 +7,7 @@ import Navbar from "../components/Navbar/Navbar";
 import Dashboard from "../pages/Dashboard/Dashboard";
 import ErrorPage from "../pages/ErrorPage/ErrorPage";
 import CallerPage from "../pages/CallerPage/CallerPage";
+import LandingPage from "../pages/LandingPage/LandingPage";
 
 function KaRoutes() {
   const { userToken } = useSelector((state) => state.loginReducer);
@@ -14,13 +15,15 @@ function KaRoutes() {
     if (userToken) return true;
     return false;
   };
-
+  //checkAuthentication() ?
   return checkAuthentication() ? (
     <>
       <Navbar />
+
       <div>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/home" element={<Home />} />
           <Route path="/chat" element={<ChatPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/call/:user" element={<CallerPage />} />
@@ -29,7 +32,14 @@ function KaRoutes() {
       </div>
     </>
   ) : (
-    <Navigate to="/login-signup" />
+    <>
+      <Navbar />
+      <div>
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+        </Routes>
+      </div>
+    </>
   );
 }
 
