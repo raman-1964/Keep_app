@@ -173,17 +173,7 @@ const MessageContainer = ({
     await _call.createOffer();
 
     dispatch(makeRTCconnection(_call));
-    // setTimeout(() => {
-    //   console.log(waitToJoin);
-    //   if (waitToJoin === "ini") {
-    //     dispatch(nothingDoneTocall());
-    //   }
-    // }, 13000);
     navigate(`/call/${selectedUser.name}`);
-
-    await new Promise((resolve) => setTimeout(resolve, 13000));
-    console.log(waitToJoin);
-    if (waitToJoin === "ini") dispatch(nothingDoneTocall());
   };
 
   useEffect(() => {

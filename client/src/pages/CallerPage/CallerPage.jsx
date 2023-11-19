@@ -26,12 +26,12 @@ const CallerPage = () => {
   const navigate = useNavigate();
 
   const localRef = useRef(null);
+  const a = useRef(null);
   const remoteRef = useRef(null);
 
   const [audioTrack, setAudioTrack] = useState(true);
   const [videoTrack, setVideoTrack] = useState(true);
   const [callDeclined, setCallDeclined] = useState(false);
-  // const [waitToJoin, setWaitToJoin] = useState("started");
 
   const {
     socket,
@@ -80,8 +80,15 @@ const CallerPage = () => {
     dispatch(getCallerData(user));
   }, []);
 
+  function nothinDone() {
+    if (a.current === "ini") dispatch(nothingDoneTocall());
+  }
+
   useEffect(() => {
-    // console.log(waitToJoin);
+    a.current = waitToJoin;
+
+    if (!callDropDown.from && a.current === "ini") setTimeout(nothinDone, 5000);
+
     if (waitToJoin === "") {
       socket.emit("nothing-done-to-call", { room: user });
       setCallDeclined(true);
@@ -120,8 +127,6 @@ const CallerPage = () => {
       };
     }
   }, [socket]);
-
-  console.log(waitToJoin);
 
   useEffect(() => {
     if (remoteRef.current) remoteRef.current.srcObject = remoteStream;
@@ -207,14 +212,9 @@ const CallerPage = () => {
                 className={` ${styles.icon}`}
                 onClick={async () => {
                   dispatch(handleCallAgain());
-                  // setTimeout(() => {
-                  //   if (waitToJoin === "ini") dispatch(nothingDoneTocall());
-                  // }, 13000);
                   setCallDeclined(false);
                   connection.callAgain();
-
-                  await new Promise((resolve) => setTimeout(resolve, 13000));
-                  if (waitToJoin === "ini") dispatch(nothingDoneTocall());
+                  setTimeout(nothinDone, 5000);
                 }}
               />
               <p>call again</p>
