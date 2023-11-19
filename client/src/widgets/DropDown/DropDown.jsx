@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import styles from "./DropDown.module.css";
+import { useOutsideClickHandler } from "../../components/CustomHooks/CustomHooks";
 
 const DropDown = ({
   children,
@@ -17,6 +18,8 @@ const DropDown = ({
 
   const [dropdownActive, setDropdownActive] = useState(false);
   const onClose = () => setDropdownActive(false);
+
+  useOutsideClickHandler(dropdownRef, onClose);
 
   useEffect(() => {
     menuRef.current.querySelectorAll("div").forEach((button) => {
