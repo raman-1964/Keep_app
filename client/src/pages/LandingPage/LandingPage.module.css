@@ -150,26 +150,24 @@
   transition: all 0.3s;
 }
 
-.sloganCont {
-  margin: 5rem 0rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.sloganCont h1 {
+.slogan {
   text-align: center;
+  margin-top: 4rem;
   font-weight: lighter;
+  font-size: 1.8rem;
+  padding: 0 5rem;
   color: dimgray;
-  width: 80%;
 }
 
-.sloganCont div {
-  text-align: center;
-  font-weight: lighter;
-  margin-top: 2rem;
+.community {
+  display: flex;
+  width: 10rem;
+  margin: 3rem auto;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
   color: green;
 }
-
 @media only screen and (max-width: 1440px) {
   .box {
     max-width: 18rem;
@@ -235,8 +233,9 @@
   .featureCardContainer {
     grid-template-columns: auto;
   }
-  .sloganCont h1 {
-    font-size: 1.5rem;
+  .slogan {
+    font-size: 1.3rem;
+    padding: 0.2rem;
   }
   .cardContainer h1,
   .whyguftagu h1 {

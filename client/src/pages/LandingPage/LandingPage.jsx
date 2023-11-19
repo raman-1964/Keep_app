@@ -119,14 +119,17 @@ const LandingPage = () => {
           </div>
         </div>
 
-        <div className={styles.sloganCont}>
-          <h1>
-            Connect, Chat, and Keep Notes in one convenient platform. Experience
-            a new level of productivity and organization.
-          </h1>
-          <div onClick={() => navigate("/login-signup")}>
-            Join the <Logo /> Community Today!
-          </div>
+        <h1 className={styles.slogan}>
+          Connect, Chat, and Keep Notes in one convenient platform. Experience a
+          new level of productivity and organization.
+        </h1>
+        <div
+          className={styles.community}
+          onClick={() => navigate("/login-signup")}
+        >
+          <p>Join the</p>
+          <Logo />
+          <p>Community Today!</p>
         </div>
       </div>
     </>
