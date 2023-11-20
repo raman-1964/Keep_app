@@ -9,6 +9,9 @@ import {
   FOLLOW_UNFOLLOW_FAILED,
   FOLLOW_UNFOLLOW_REQUEST,
   FOLLOW_UNFOLLOW_SUCCESS,
+  SEND_FEEDBACK_FAILED,
+  SEND_FEEDBACK_REQUEST,
+  SEND_FEEDBACK_SUCCESS,
   UPDATE_USER_INFO_FAILED,
   UPDATE_USER_INFO_REQUEST,
   UPDATE_USER_INFO_SUCCESS,
@@ -23,6 +26,7 @@ const initialState = {
   updateUserLoading: false,
   changePasswordLoading: false,
   followUnfollowLoading: false,
+  sendFeedbackLoading: false,
   userData: {},
 };
 
@@ -113,6 +117,22 @@ export const userReducer = (state = initialState, action) => {
       return {
         ...state,
         followUnfollowLoading: false,
+      };
+
+    case SEND_FEEDBACK_REQUEST:
+      return {
+        ...state,
+        sendFeedbackLoading: true,
+      };
+    case SEND_FEEDBACK_SUCCESS:
+      return {
+        ...state,
+        sendFeedbackLoading: false,
+      };
+    case SEND_FEEDBACK_FAILED:
+      return {
+        ...state,
+        sendFeedbackLoading: false,
       };
 
     case CHANGE_PHOTO_SUCCESS:

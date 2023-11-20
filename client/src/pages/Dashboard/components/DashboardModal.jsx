@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   changePasswordRequest,
   changePhotoRequest,
+  sendFeedbackRequest,
   updateUserInfoRequest,
 } from "../../../store/Actions/userAction";
 import UserName from "../../../components/userName/UserName";
@@ -148,11 +149,14 @@ const ChangePasswordModal = ({ setModal }) => {
   );
 };
 
-const FeedbackModal = () => {
+const FeedbackModal = ({ setModal }) => {
+  const { sendFeedbackLoading } = useSelector((state) => state.userReducer);
+  const dispatch = useDispatch();
   const [feedback, setFeedback] = useState({
     subject: "",
     message: "",
   });
+
   return (
     <>
       <h1 className="modalHeading">Help Us To Improve</h1>
@@ -179,7 +183,13 @@ const FeedbackModal = () => {
         />
       </div>
       <div className={styles.modalBtnCont}>
-        <Button spinnerTheme="light">Submit Feedback</Button>
+        <Button
+          spinnerTheme="light"
+          loading={sendFeedbackLoading}
+          onClick={() => dispatch(sendFeedbackRequest({ feedback, setModal }))}
+        >
+          Submit Feedback
+        </Button>
       </div>
     </>
   );
@@ -193,14 +203,16 @@ const ViewPhotoModal = ({ imageURL }) => {
   );
 };
 
-const ChangePhotoModal = ({ setModal, setImageURL, userId, imageURL }) => {
+const ChangePhotoModal = ({ setModal, userId, imgURL }) => {
   const dispatch = useDispatch();
 
   let inputRef = useRef(null);
   const [uploadLoading, setUploadLoading] = useState(false);
+  const [imageURL, setImageURL] = useState(imgURL);
 
   const fileChangeHandler = (files, cb) => {
     const imgFile = files[0];
+    console.log(imgFile);
 
     const type = imgFile.type.split("/")[0];
     if (type !== "image") {
@@ -211,7 +223,6 @@ const ChangePhotoModal = ({ setModal, setImageURL, userId, imageURL }) => {
 
     uploadFile(process.env.REACT_APP_UPLOAD_BUCKET, imgFile, userId)
       .then((res) => {
-        setImageURL(res);
         setImageURL(res);
       })
       .catch((err) => console.log(err))
@@ -246,7 +257,7 @@ const ChangePhotoModal = ({ setModal, setImageURL, userId, imageURL }) => {
           onDrop={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            fileChangeHandler(e.dataTransfer.files[0]);
+            fileChangeHandler(e.dataTransfer.files);
           }}
         >
           {!uploadLoading ? (

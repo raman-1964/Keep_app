@@ -59,7 +59,6 @@ const Dashboard = () => {
   const [followingFollowerModal, setFollowingFollowerModal] = useState(false);
   const [changePhotoModal, setChangePhotoModal] = useState(false);
   const [viewPhotoModal, setViewPhotoModal] = useState(false);
-  const [imageURL, setImageURL] = useState(userData?.imgUrl);
 
   useLayoutEffect(() => {
     dispatch(userInfoRequest());
@@ -455,7 +454,7 @@ const Dashboard = () => {
         showCloseButton
         className="modal"
       >
-        <FeedbackModal />
+        <FeedbackModal setModal={setFeedbackBool} />
       </Modal>
 
       <Modal
@@ -474,8 +473,8 @@ const Dashboard = () => {
       >
         <ChangePhotoModal
           setModal={setChangePhotoModal}
-          setImageURL={setImageURL}
-          imageURL={userData?.imgUrl}
+          // setImageURL={setImageURL}
+          imgURL={userData?.imgUrl}
           userId={userData._id}
         />
       </Modal>

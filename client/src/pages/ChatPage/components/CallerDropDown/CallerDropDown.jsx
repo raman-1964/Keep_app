@@ -8,14 +8,17 @@ import {
   handleAnswerCall,
   handleDeclineCall,
   makeRTCconnection,
+  nothingDoneTocall,
 } from "../../../../store/Actions/socket-call";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { defaultToastSetting } from "../../../../utils/constants";
 
 const CallerDropDown = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { socket, callDropDown, answerCall } = useSelector(
+  const { socket, waitToJoin, callDropDown, answerCall } = useSelector(
     (state) => state.socketCallReducer
   );
 
@@ -41,13 +44,30 @@ const CallerDropDown = () => {
   };
 
   useEffect(() => {
+    if (socket) {
+      function nothingDone() {
+        dispatch(nothingDoneTocall());
+        toast.warning("You missed one call", defaultToastSetting);
+      }
+
+      socket.on("nothing-done-to-call", nothingDone);
+      return () => {
+        socket.off("nothing-done-to-call", nothingDone);
+      };
+    }
+  }, [socket]);
+
+  useEffect(() => {
     if (answerCall) createAnswer();
   }, [answerCall]);
 
   return (
     <>
-      {callDropDown.show ? (
+      {waitToJoin === "started" ? (
         <div className={styles.callerDropDown}>
+          <audio autoPlay style={{ display: "none" }}>
+            <source src="/calm.mp3" type="audio/mp3" />
+          </audio>
           <p>{callDropDown.from} is calling</p>
           <div className={styles.callerBtns}>
             <Button

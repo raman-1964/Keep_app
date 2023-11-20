@@ -13,6 +13,9 @@ import {
   SEARCH_USER_FAILED,
   SEARCH_USER_REQUEST,
   SEARCH_USER_SUCCESS,
+  SEND_FEEDBACK_FAILED,
+  SEND_FEEDBACK_REQUEST,
+  SEND_FEEDBACK_SUCCESS,
   UPDATE_USER_INFO_FAILED,
   UPDATE_USER_INFO_REQUEST,
   UPDATE_USER_INFO_SUCCESS,
@@ -79,6 +82,16 @@ export const followUnfollowSuccess = (data) => {
 };
 export const followUnfollowFailed = (data) => {
   return { type: FOLLOW_UNFOLLOW_FAILED, payload: data };
+};
+
+export const sendFeedbackRequest = (data) => {
+  return { type: SEND_FEEDBACK_REQUEST, payload: data };
+};
+export const sendFeedbackSuccess = (data) => {
+  return { type: SEND_FEEDBACK_SUCCESS, payload: data };
+};
+export const sendFeedbackFailed = (data) => {
+  return { type: SEND_FEEDBACK_FAILED, payload: data };
 };
 
 export const changePhotoRequest = (data) => {

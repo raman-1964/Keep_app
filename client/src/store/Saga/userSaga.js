@@ -7,6 +7,8 @@ import {
   deleteUserSuccess,
   followUnfollowFailed,
   followUnfollowSuccess,
+  sendFeedbackFailed,
+  sendFeedbackSuccess,
   updateUserInfoFailed,
   updateUserInfoSuccess,
   userInfoFailed,
@@ -17,6 +19,7 @@ import {
   CHANGE_PHOTO_REQUEST,
   DELETE_USER_REQUEST,
   FOLLOW_UNFOLLOW_REQUEST,
+  SEND_FEEDBACK_REQUEST,
   UPDATE_USER_INFO_REQUEST,
   USER_INFO_REQUEST,
 } from "../Constants/userConstants";
@@ -25,6 +28,7 @@ import {
   changePhotoApi,
   deleteUserRequestApi,
   follow_unfollow_Api,
+  sendFeedbackApi,
   updateUserInfoRequestApi,
   userInfoRequestApi,
 } from "../../services/user.services";
@@ -93,6 +97,19 @@ function* follow_unfollow(action) {
   }
 }
 
+function* sendFeedback(action) {
+  const { feedback, setModal } = action.payload;
+  try {
+    const res = yield call(sendFeedbackApi, feedback);
+    yield put(sendFeedbackSuccess(res));
+  } catch (error) {
+    toast.error(`${error.message}`, defaultToastSetting);
+    yield put(sendFeedbackFailed(error));
+  } finally {
+    if (setModal) setModal(false);
+  }
+}
+
 function* changePhoto(action) {
   try {
     const res = yield call(changePhotoApi, action.payload);
@@ -108,6 +125,7 @@ function* userSaga() {
   yield takeEvery(UPDATE_USER_INFO_REQUEST, updateUserInfoRequest);
   yield takeEvery(CHANGE_PASSWORD_REQUEST, changePasswordRequest);
   yield takeEvery(FOLLOW_UNFOLLOW_REQUEST, follow_unfollow);
+  yield takeEvery(SEND_FEEDBACK_REQUEST, sendFeedback);
   yield takeEvery(CHANGE_PHOTO_REQUEST, changePhoto);
 }
 

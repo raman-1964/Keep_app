@@ -84,6 +84,11 @@ io.on("connection", (socket) => {
     socket.in(room).emit("answer", answer);
   });
 
+  //    NOTHING DONE TO CALLL
+  socket.on("nothing-done-to-call", ({ room }) => {
+    socket.in(room).emit("nothing-done-to-call");
+  });
+
   //  ICE CANDIDATE
   socket.on("ice-candidate", ({ room, candidate }) => {
     socket.in(room).emit("ice-candidate", candidate);

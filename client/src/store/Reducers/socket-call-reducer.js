@@ -7,16 +7,19 @@ import {
   DESTROY_CONNECTION,
   DECLINE_CALL,
   CALLER_DATA_SUCCESS,
+  NOTHING_DONE_TO_CALL,
+  CALL_AGAIN,
 } from "../Constants/socket-call";
 import io from "socket.io-client";
 
 const initialState = {
   socket: null,
-  callDropDown: { show: false, offer: null, from: null, config: null },
+  callDropDown: { offer: null, from: null, config: null },
   callerData: {},
   answerCall: false,
   connection: null,
   remoteStream: null,
+  waitToJoin: "ini",
 };
 
 export const socketCallReducer = (state = initialState, action) => {
@@ -46,29 +49,43 @@ export const socketCallReducer = (state = initialState, action) => {
     case OFFER_RECEIVED:
       return {
         ...state,
-        callDropDown: { show: true, ...action.payload },
+        waitToJoin: "started",
+        callDropDown: { ...action.payload },
       };
 
     case ANSWER_CALL:
       return {
         ...state,
-        callDropDown: { ...state.callDropDown, show: false },
+        waitToJoin: "answered",
         answerCall: true,
       };
 
     case DECLINE_CALL:
       return {
         ...state,
-        callDropDown: { ...state.callDropDown, show: false },
+        waitToJoin: "declined",
+      };
+
+    case NOTHING_DONE_TO_CALL:
+      return {
+        ...state,
+        waitToJoin: "",
+      };
+
+    case CALL_AGAIN:
+      return {
+        ...state,
+        waitToJoin: "ini",
       };
 
     case DESTROY_CONNECTION:
       return {
         ...state,
-        callDropDown: { show: false, offer: null, from: null, config: null },
+        callDropDown: { offer: null, from: null, config: null },
         answerCall: false,
         connection: null,
         remoteStream: null,
+        waitToJoin: "ini",
       };
     case CALLER_DATA_SUCCESS:
       return {

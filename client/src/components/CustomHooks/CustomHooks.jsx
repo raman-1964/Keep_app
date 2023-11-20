@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const useWindowDimension = () => {
   const [dimensions, setDimensions] = useState(getWindowDimension());
@@ -18,4 +18,22 @@ const useWindowDimension = () => {
   return { dimensions };
 };
 
-export { useWindowDimension };
+const useOutsideClickHandler = (ref, action, disableOutsideClick = false) => {
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (!disableOutsideClick) {
+        if (!ref.current || ref.current?.contains(event.target)) return null;
+
+        event.stopPropagation();
+        action();
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [ref]);
+};
+
+export { useWindowDimension, useOutsideClickHandler };
