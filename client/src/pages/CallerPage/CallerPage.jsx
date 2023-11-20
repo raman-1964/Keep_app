@@ -87,7 +87,8 @@ const CallerPage = () => {
   useEffect(() => {
     a.current = waitToJoin;
 
-    if (!callDropDown.from && a.current === "ini") setTimeout(nothinDone, 5000);
+    if (!callDropDown.from && a.current === "ini")
+      setTimeout(nothinDone, 30000);
 
     if (waitToJoin === "") {
       socket.emit("nothing-done-to-call", { room: user });
@@ -214,7 +215,7 @@ const CallerPage = () => {
                   dispatch(handleCallAgain());
                   setCallDeclined(false);
                   connection.callAgain();
-                  setTimeout(nothinDone, 5000);
+                  setTimeout(nothinDone, 30000);
                 }}
               />
               <p>call again</p>

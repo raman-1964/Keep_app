@@ -85,6 +85,7 @@ export const socketCallReducer = (state = initialState, action) => {
         answerCall: false,
         connection: null,
         remoteStream: null,
+        waitToJoin: "ini",
       };
     case CALLER_DATA_SUCCESS:
       return {

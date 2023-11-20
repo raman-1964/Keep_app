@@ -57,6 +57,17 @@ export const follow_unfollow_Api = async (data) => {
   }
 };
 
+export const sendFeedbackApi = async (data) => {
+  try {
+    const res = await axios.post(BASE_URL + "/email/feedback", data, {
+      headers: { ...authHeader() },
+    });
+    return res.data;
+  } catch (e) {
+    throw Error(e.response?.data?.msg ?? "Something went wrong");
+  }
+};
+
 export const changePhotoApi = async (imgUrl) => {
   try {
     const res = await axios.put(

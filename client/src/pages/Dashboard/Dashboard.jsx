@@ -446,7 +446,7 @@ const Dashboard = () => {
         showCloseButton
         className="modal"
       >
-        <FeedbackModal />
+        <FeedbackModal setModal={setFeedbackBool} />
       </Modal>
 
       <Modal
